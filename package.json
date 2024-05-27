@@ -1,0 +1,35 @@
+{
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.12",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.1",
+    "rimraf": "^5.0.7",
+    "typescript": "^5.4.5"
+  },
+  "name": "public-bathrooms",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf dist",
+    "build": "npm run clean && npx tsc",
+    "prestart": "npm run build",
+    "start": "nodemon dist/index.js",
+    "dev": "npm run clean && concurrently \"npx tsc -w\" \"npm run start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JamieBarlow/find-bathrooms.git"
+  },
+  "author": "JamieBarlow",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JamieBarlow/find-bathrooms/issues"
+  },
+  "homepage": "https://github.com/JamieBarlow/find-bathrooms#readme",
+  "description": ""
+}
