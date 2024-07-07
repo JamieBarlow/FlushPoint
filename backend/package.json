@@ -12,13 +12,13 @@
   },
   "name": "public-bathrooms",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf dist",
     "build": "npm run clean && npx tsc",
     "preserve": "npm run build",
-    "serve": "nodemon dist/index.js",
+    "serve": "nodemon dist/routes/index.js",
     "dev": "npm run clean && concurrently \"npx tsc -w\" \"npm run serve\""
   },
   "repository": {

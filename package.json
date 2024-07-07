@@ -8,7 +8,7 @@
     "clean": "npx --prefix backend rimraf dist",
     "build": "npm run clean && npx tsc --project backend/tsconfig.json",
     "preserve": "npm run build",
-    "serve": "nodemon backend/dist/index.js",
+    "serve": "nodemon backend/dist/routes/index.js",
     "dev": "npm run clean && concurrently \"npx tsc -w --project backend/tsconfig.json\" \"npm run serve\"",
     "start:backend": "npm run dev",
     "start:frontend": "npm --prefix frontend run dev",
