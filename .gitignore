@@ -1,3 +1,4 @@
-/dist
-/API queries
-/node_modules
+dist/
+API queries/
+node_modules/
+.env

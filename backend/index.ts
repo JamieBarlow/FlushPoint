@@ -1,8 +1,8 @@
 import express, { Express, Request, Response } from "express";
 const port = 8000;
-const app = express();
+const app: Express = express();
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Testing Express & TS setup");
 });
 
