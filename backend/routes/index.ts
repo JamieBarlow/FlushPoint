@@ -1,6 +1,10 @@
+import "dotenv/config";
 import express, { Express, Request, Response } from "express";
 import { registerUser, loginUser } from "../controllers/userController";
 import errorHandler from "../middleware/errorhandler";
+import "colors";
+import connectDB from "../dbconfig/db";
+
 const port = 8000;
 const app = express();
 const router = express.Router();
@@ -22,5 +26,6 @@ router.post("/login", loginUser);
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`now listening on port ${port}`);
+  console.log(`now listening on port ${port}`.red.underline.bold);
+  connectDB();
 });
