@@ -1,13 +1,13 @@
 import { Schema, model, connect } from "mongoose";
 
-interface User {
+interface IUser {
   name: string;
   email: string;
   password: string;
   isAdmin: boolean;
 }
 
-const userSchema = new Schema<User>(
+const userSchema = new Schema<IUser>(
   {
     name: {
       type: String,
@@ -32,6 +32,6 @@ const userSchema = new Schema<User>(
   }
 );
 
-const user = model("User", userSchema);
+const User = model<IUser>("User", userSchema);
 
-export default user;
+export default User;
