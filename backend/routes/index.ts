@@ -1,13 +1,12 @@
 import "dotenv/config";
-import express, { Express, Request, Response } from "express";
-import { registerUser, loginUser } from "../controllers/userController";
+import express, { Request, Response } from "express";
 import errorHandler from "../middleware/errorhandler";
 import "colors";
 import connectDB from "../dbconfig/db";
+import userRoutes from "./userRoutes";
 
 const port = 8000;
 const app = express();
-const router = express.Router();
 
 // For parsing JSON request data
 app.use(express.json());
@@ -15,12 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routing
-app.use("/", router);
-router.get("/", (req: Request, res: Response) => {
-  res.send("Testing Express & TS setup");
-});
-router.post("/register", registerUser);
-router.post("/login", loginUser);
+app.use("/users", userRoutes);
 
 // Custom error handler
 app.use(errorHandler);

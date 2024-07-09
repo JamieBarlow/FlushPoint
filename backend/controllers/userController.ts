@@ -1,6 +1,17 @@
 import { Request, Response } from "express";
 
+const renderRegister = (req: Request, res: Response) => {
+  res.send("Register User");
+};
+
+const renderLogin = (req: Request, res: Response) => {
+  res.send("Login page");
+};
+
 const registerUser = (req: Request, res: Response) => {
+  // @route /
+  // @access Public
+
   const { name, email, password } = req.body;
   // Validation
   if (!name || !email || !password) {
@@ -15,4 +26,11 @@ const loginUser = (req: Request, res: Response) => {
   res.send("Login Route");
 };
 
-export { registerUser, loginUser };
+const userController = {
+  renderRegister,
+  renderLogin,
+  registerUser,
+  loginUser,
+};
+
+export default userController;
