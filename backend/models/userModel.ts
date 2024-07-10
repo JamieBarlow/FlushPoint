@@ -1,7 +1,7 @@
 import { Schema, model, connect } from "mongoose";
 
 interface IUser {
-  name: string;
+  username: string;
   email: string;
   password: string;
   isAdmin: boolean;
@@ -9,9 +9,9 @@ interface IUser {
 
 const userSchema = new Schema<IUser>(
   {
-    name: {
+    username: {
       type: String,
-      required: [true, "Please add a name"],
+      required: [true, "Please add a username"],
     },
     email: {
       type: String,

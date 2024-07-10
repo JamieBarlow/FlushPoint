@@ -14,9 +14,9 @@ const renderLogin = (req: Request, res: Response) => {
 const registerUser = async (req: Request, res: Response) => {
   // @route /users/register
   // @access Public
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body;
   // Form validation
-  if (!name || !email || !password) {
+  if (!username || !email || !password) {
     res.status(400);
     throw new AppError("Please include all fields", 400);
   }
@@ -32,7 +32,7 @@ const registerUser = async (req: Request, res: Response) => {
 
   // Create user
   const user = new User({
-    name,
+    username,
     email,
     password: hashedPassword,
     isAdmin: false,
@@ -43,7 +43,7 @@ const registerUser = async (req: Request, res: Response) => {
   if (user) {
     res.status(201).json({
       _id: user.id,
-      name: user.name,
+      username: user.username,
       email: user.email,
     });
   } else {
@@ -52,8 +52,18 @@ const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-const loginUser = (req: Request, res: Response) => {
-  res.send("Login Route");
+const loginUser = async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  const user = await User.findOne({ username });
+  let validPassword;
+  if (user) {
+    validPassword = await bcrypt.compare(password, user.password);
+  }
+  if (validPassword) {
+    res.send("User logged in successfully");
+  } else {
+    res.send("Invalid username or password");
+  }
 };
 
 const userController = {
