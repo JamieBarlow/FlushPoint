@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import User from "../models/userModel";
 import AppError from "../middleware/AppError";
 import bcrypt from "bcrypt";
+import { IUser } from "../models/userModel";
 
 const renderRegister = (req: Request, res: Response) => {
   res.send("Register User");
@@ -10,6 +11,12 @@ const renderRegister = (req: Request, res: Response) => {
 const renderLogin = (req: Request, res: Response) => {
   res.send("Login page");
 };
+
+declare module "express-session" {
+  interface SessionData {
+    user: Omit<IUser, "password">;
+  }
+}
 
 const registerUser = async (req: Request, res: Response) => {
   // @route /users/register
@@ -58,11 +65,21 @@ const loginUser = async (req: Request, res: Response) => {
   let validPassword;
   if (user) {
     validPassword = await bcrypt.compare(password, user.password);
-  }
-  if (validPassword) {
-    res.send("User logged in successfully");
+    if (validPassword) {
+      const { email, isAdmin } = user;
+      req.session.user = {
+        username,
+        email,
+        isAdmin,
+      };
+      console.log(`${req.sessionID}`.bgGreen);
+      console.log(`${JSON.stringify(req.session)}`.bgBlue);
+      res.send("User logged in successfully");
+    } else {
+      res.status(403).send("Invalid username or password");
+    }
   } else {
-    res.send("Invalid username or password");
+    res.status(403).send("Invalid username or password");
   }
 };
 
