@@ -13,4 +13,8 @@ router
   .get(userController.renderLogin)
   .post(userController.loginUser);
 
+router.route("/logout").post(userController.logoutUser);
+
+router.route("/secret").get(userController.testLogin);
+
 export default router;

@@ -3,6 +3,7 @@ import { connect } from "mongoose";
 
 const connectDB = async () => {
   try {
+    // Connect to dev or prod DB depending on environment
     const env = process.env.NODE_ENV || "development";
     const uri =
       env === "production"

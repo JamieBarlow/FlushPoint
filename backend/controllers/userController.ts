@@ -53,6 +53,12 @@ const registerUser = async (req: Request, res: Response) => {
       username: user.username,
       email: user.email,
     });
+    const { isAdmin } = user;
+    req.session.user = {
+      username,
+      email,
+      isAdmin,
+    };
   } else {
     res.status(400);
     throw new AppError("invalid user data", 400);
@@ -83,11 +89,33 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+const testLogin = async (req: Request, res: Response) => {
+  if (!req.session.user) {
+    res.send("You're not logged in, sorry");
+  } else if (req.session.user.username) {
+    res.send("You're logged in!");
+  } else {
+    res.status(403).send("Unknown error");
+  }
+};
+
+const logoutUser = async (req: Request, res: Response) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Failed to destroy session", err);
+      res.status(500).send("Error logging out");
+    }
+    res.send("Logged out successfully");
+  });
+};
+
 const userController = {
   renderRegister,
   renderLogin,
   registerUser,
   loginUser,
+  testLogin,
+  logoutUser,
 };
 
 export default userController;
