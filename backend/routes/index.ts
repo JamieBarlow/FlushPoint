@@ -6,6 +6,13 @@ import connectDB from "../dbconfig/db";
 import userRoutes from "./userRoutes";
 import session from "express-session";
 import { v4 as uuid } from "uuid";
+import MongoStore from "connect-mongo";
+
+const env = process.env.NODE_ENV || "development";
+const dbUrl =
+  env === "production" ? process.env.MONGO_URI_PROD : process.env.MONGO_URI_DEV;
+const sessionSecret =
+  env === "production" ? process.env.MONGO_SESSION_SECRET : "LmARXFZ4g69fbU";
 
 const port = 8000;
 const app = express();
@@ -23,6 +30,14 @@ app.use(
     secret: "some secret",
     cookie: { maxAge: 120000 },
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: dbUrl,
+      touchAfter: 24 * 60 * 60,
+      crypto: {
+        secret: sessionSecret!,
+      },
+      collectionName: "sessions",
+    }),
   })
 );
 

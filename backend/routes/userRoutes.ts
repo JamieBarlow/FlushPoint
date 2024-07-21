@@ -1,5 +1,6 @@
 import express from "express";
 import userController from "../controllers/userController";
+import requireLogin from "../middleware/requireLogin";
 
 const router = express.Router();
 
@@ -15,6 +16,9 @@ router
 
 router.route("/logout").post(userController.logoutUser);
 
-router.route("/secret").get(userController.testLogin);
+router.route("/secret").get(requireLogin, userController.testLogin);
+
+// To protect multiple routes
+// router.use(requireLogin)
 
 export default router;
