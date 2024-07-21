@@ -2,3 +2,4 @@ dist/
 API queries/
 node_modules/
 .env
+testdata/

@@ -90,13 +90,14 @@ const loginUser = async (req: Request, res: Response) => {
 };
 
 const testLogin = async (req: Request, res: Response) => {
-  if (!req.session.user) {
-    res.send("You're not logged in, sorry");
-  } else if (req.session.user.username) {
-    res.send("You're logged in!");
-  } else {
-    res.status(403).send("Unknown error");
-  }
+  res.send("You've passed the auth middleware, you're logged in");
+  // if (!req.session.user) {
+  //   res.send("You're not logged in, sorry");
+  // } else if (req.session.user.username) {
+  //   res.send("You're logged in!");
+  // } else {
+  //   res.status(403).send("Unknown error");
+  // }
 };
 
 const logoutUser = async (req: Request, res: Response) => {
