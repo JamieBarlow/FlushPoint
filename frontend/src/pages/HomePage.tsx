@@ -5,7 +5,7 @@ interface Bathroom {
   name: string;
 }
 
-export default function HomePage() {
+export default function HomePage(): JSX.Element {
   const [bathrooms, setBathrooms] = useState<Bathroom[]>([]);
   useEffect(() => {
     fetch("http://localhost:8000/bathrooms")
