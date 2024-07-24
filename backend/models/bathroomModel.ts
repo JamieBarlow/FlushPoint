@@ -27,30 +27,30 @@ const tagsSchema = new Schema({
   },
   female: {
     type: String,
-    enum: ["yes", "no", null],
-    default: null,
+    enum: ["yes", "no", undefined],
+    default: undefined,
   },
   male: {
     type: String,
-    enum: ["yes", "no", null],
-    default: null,
+    enum: ["yes", "no", undefined],
+    default: undefined,
   },
   unisex: {
     type: String,
     // note 'yes' means gender-neutral, not gender segregated. Can also combine with gender_segregated: 'no' to be more explicit
-    enum: ["yes", null],
-    default: null,
+    enum: ["yes", undefined],
+    default: undefined,
   },
   gender_segregated: {
     type: String,
-    enum: ["yes", "no", null],
-    default: null,
+    enum: ["yes", "no", undefined],
+    default: undefined,
   },
   child: {
     type: String,
     // Seats and urinals specifically for children
-    enum: ["yes", "no", null],
-    default: null,
+    enum: ["yes", "no", undefined],
+    default: undefined,
   },
   check_date: {
     type: String,
@@ -68,8 +68,8 @@ const tagsSchema = new Schema({
   },
   "disused:amenity": {
     type: String,
-    enum: ["toilets", null],
-    default: null,
+    enum: ["toilets", undefined],
+    default: undefined,
   },
   description: {
     type: String,
@@ -83,19 +83,19 @@ const tagsSchema = new Schema({
   // refers to access to toilet building/facility only - see toilets:wheelchair for disabled access to toilet itself
   wheelchair: {
     type: String,
-    enum: ["yes", "no", "limited", "designated", null],
+    enum: ["yes", "no", "limited", "designated", undefined],
   },
   // combine w wheelchair property if "yes"
   "ramp:wheelchair": {
     type: String,
-    enum: ["yes", null],
-    default: null,
+    enum: ["yes", undefined],
+    default: undefined,
   },
   // Provisions for toilet itself - https://wiki.openstreetmap.org/wiki/Key:toilets:wheelchair
   "toilets:wheelchair": {
     type: String,
-    enum: ["yes", "no", null],
-    default: null,
+    enum: ["yes", "no", undefined],
+    default: undefined,
   },
   // if unsure of any of above - values should only be explicitly entered if known
   "wheelchair:description": {
@@ -108,8 +108,8 @@ const tagsSchema = new Schema({
   },
   changing_table: {
     type: String,
-    enum: ["yes", "no", "limited", null],
-    default: null,
+    enum: ["yes", "no", "limited", undefined],
+    default: undefined,
   },
   "changing_table:location": {
     type: String,
@@ -117,8 +117,8 @@ const tagsSchema = new Schema({
   },
   drinking_water: {
     type: String,
-    enum: ["yes", "no", null],
-    default: null,
+    enum: ["yes", "no", undefined],
+    default: undefined,
   },
   "toilets:position": {
     type: String,
@@ -128,43 +128,43 @@ const tagsSchema = new Schema({
     // "yes" = available for all toilet users (for free). "no" = non available. "limited" means e.g. only available in female-only stalls.
     // If not freely available but can be bought, use vending=feminine_hygiene
     type: String,
-    enum: ["yes", "no", "limited", null],
-    default: null,
+    enum: ["yes", "no", "limited", undefined],
+    default: undefined,
   },
   vending: {
     type: String,
-    enum: ["feminine_hygiene", null],
-    default: null,
+    enum: ["feminine_hygiene", undefined],
+    default: undefined,
   },
   supervised: {
     type: String,
-    enum: ["yes", "no", "interval", null],
-    default: null,
+    enum: ["yes", "no", "interval", undefined],
+    default: undefined,
   },
   access: {
     type: String,
     // 'yes' = public, with or without fee. 'Customers' = may require purchase or key/code.
     // Don't use this property if toilet is in a different building/amenity - see toilets:access instead.
-    enum: ["yes", "customers", null],
-    default: null,
+    enum: ["yes", "customers", undefined],
+    default: undefined,
   },
   "toilets:access": {
     type: String,
     // use instead of 'access' only if amenity != "toilets" (i.e. not dedicated toilet building)
-    enum: ["yes", "customers", null],
-    default: null,
+    enum: ["yes", "customers", undefined],
+    default: undefined,
   },
   // Doesn't refer to locking outside operating hours. Use 'yes' if requires key/card during opening hours, e.g. customer access
   locked: {
     type: String,
-    enum: ["yes", "no", null],
-    default: null,
+    enum: ["yes", "no", undefined],
+    default: undefined,
   },
   // refers to entrance
   indoor: {
     type: String,
-    enum: ["yes", "no", null],
-    default: null,
+    enum: ["yes", "no", undefined],
+    default: undefined,
   },
   // Zero-based floor number of a feature (where 0 is the ground level and -1 is the basement)
   level: {
@@ -174,8 +174,8 @@ const tagsSchema = new Schema({
   },
   shower: {
     type: String,
-    enum: ["yes", "no", null],
-    default: null,
+    enum: ["yes", "no", undefined],
+    default: undefined,
   },
   // A flag to other mappers that something may need changing / checking
   fixme: {

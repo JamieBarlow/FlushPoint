@@ -20,15 +20,15 @@ const streets = [
 ];
 
 // use for options where yes/no is available but not required
-const boolNotRequired = ["yes", "no", null];
+const boolNotRequired = ["yes", "no", undefined];
 
 const fees = ["yes", "no", "unknown"];
-const unisex = ["yes", null];
-const disused = ["toilets", null];
-const wheelchair = ["yes", "no", "limited", "designated", null];
-const ramp = ["yes", null];
+const unisex = ["yes", undefined];
+const disused = ["toilets", undefined];
+const wheelchair = ["yes", "no", "limited", "designated", undefined];
+const ramp = ["yes", undefined];
 const operator = ["Oxford City Council", "Oxford University"];
-const changing_table = ["yes", "no", "limited", null];
+const changing_table = ["yes", "no", "limited", undefined];
 const changing_table_location = [
   "wheelchair_toilet",
   "female_toilet",
@@ -37,10 +37,10 @@ const changing_table_location = [
   "dedicated_room",
   "room",
 ];
-const menstrual_products = ["yes", "no", "limited", null];
-const vending = ["feminine_hygiene", null];
-const supervised = ["yes", "no", "interval", null];
-const access = ["yes", "customers", null];
+const menstrual_products = ["yes", "no", "limited", undefined];
+const vending = ["feminine_hygiene", undefined];
+const supervised = ["yes", "no", "interval", undefined];
+const access = ["yes", "customers", undefined];
 
 const seedHelpers = {
   streets,

@@ -23,7 +23,7 @@ const {
 function getRand(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-function yesNoNull() {
+function yesNoUndefined() {
   return boolNotRequired[getRand(0, 2)];
 }
 function getIsoDate() {
@@ -42,7 +42,7 @@ const seedDB = async (req: Request, res: Response) => {
   let i = 1;
   const street = streets[getRand(0, 17)];
   const wheelchairAccess = wheelchair[getRand(0, 4)];
-  const rampAccess = wheelchairAccess === "yes" ? "yes" : null;
+  const rampAccess = wheelchairAccess === "yes" ? "yes" : undefined;
 
   const bathroom = new Bathroom({
     type: "node",
@@ -53,11 +53,11 @@ const seedDB = async (req: Request, res: Response) => {
       amenity: "toilets",
       "addr:street": street,
       fee: "no",
-      female: yesNoNull(),
-      male: yesNoNull(),
+      female: yesNoUndefined(),
+      male: yesNoUndefined(),
       unisex: unisex[getRand(0, 1)],
-      gender_segregated: yesNoNull(),
-      child: yesNoNull(),
+      gender_segregated: yesNoUndefined(),
+      child: yesNoUndefined(),
       check_date: getIsoDate(),
       name: `${street} public toilets`,
       opening_hours:
@@ -65,19 +65,19 @@ const seedDB = async (req: Request, res: Response) => {
       source: "local_knowledge",
       wheelchair: wheelchairAccess,
       "ramp:wheelchair": rampAccess,
-      "toilets:wheelchair": yesNoNull(),
+      "toilets:wheelchair": yesNoUndefined(),
       operator: operator[getRand(0, 1)],
       changing_table: changing_table[getRand(0, 3)],
       "changing_table:location": changing_table_location[getRand(0, 5)],
-      drinking_water: yesNoNull(),
+      drinking_water: yesNoUndefined(),
       "toilets:position": "seated",
       "toilets:menstrual_products": menstrual_products[getRand(0, 3)],
       vending: vending[getRand(0, 1)],
       supervised: supervised[getRand(0, 3)],
       access: access[getRand(0, 2)],
-      indoor: yesNoNull(),
+      indoor: yesNoUndefined(),
       level: getRand(-10, 10),
-      shower: yesNoNull(),
+      shower: yesNoUndefined(),
     },
   });
   await bathroom.save();

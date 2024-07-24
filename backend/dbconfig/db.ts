@@ -9,7 +9,10 @@ const connectDB = async () => {
       env === "production"
         ? process.env.MONGO_URI_PROD
         : process.env.MONGO_URI_DEV;
-    const conn = await connect(`${uri}`);
+    const options = {
+      ignoreUndefined: true,
+    };
+    const conn = await connect(`${uri}`, options);
     console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);
   } catch (error: any) {
     console.log(`Error: ${error.message}`.red.underline.bold);
