@@ -4,6 +4,9 @@ import requireLogin from "../middleware/requireLogin";
 
 const router = express.Router();
 
-router.route("/").post(bathroomController.createBathroom);
+router
+  .route("/")
+  .get(bathroomController.showBathrooms)
+  .post(bathroomController.createBathroom);
 
 export default router;

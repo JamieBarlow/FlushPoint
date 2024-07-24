@@ -8,6 +8,7 @@ import bathroomRoutes from "./bathroomRoutes";
 import session from "express-session";
 import { v4 as uuid } from "uuid";
 import MongoStore from "connect-mongo";
+import cors from "cors";
 
 const env = process.env.NODE_ENV || "development";
 const dbUrl =
@@ -18,6 +19,11 @@ const sessionSecret =
 const port = 8000;
 const app = express();
 
+const corsOptions = {
+  origin: "http://localhost:5173",
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 // For parsing JSON request data
 app.use(express.json());
 // Use built-in middleware to parse x-www-form-urlencoded request body data
