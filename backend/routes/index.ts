@@ -4,6 +4,7 @@ import errorHandler from "../middleware/errorhandler";
 import "colors";
 import connectDB from "../dbconfig/db";
 import userRoutes from "./userRoutes";
+import bathroomRoutes from "./bathroomRoutes";
 import session from "express-session";
 import { v4 as uuid } from "uuid";
 import MongoStore from "connect-mongo";
@@ -43,6 +44,7 @@ app.use(
 
 // Routing
 app.use("/users", userRoutes);
+app.use("/bathrooms", bathroomRoutes);
 
 // Custom error handler
 app.use(errorHandler);

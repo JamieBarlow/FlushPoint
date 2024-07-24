@@ -154,6 +154,7 @@ const tagsSchema = new Schema({
     enum: ["yes", "customers", null],
     default: null,
   },
+  // Doesn't refer to locking outside operating hours. Use 'yes' if requires key/card during opening hours, e.g. customer access
   locked: {
     type: String,
     enum: ["yes", "no", null],
@@ -195,11 +196,15 @@ const bathroomSchema = new Schema({
     required: true,
   },
   lat: {
-    type: String,
+    type: Number,
+    min: -90,
+    max: 90,
     required: true,
   },
   long: {
-    type: String,
+    type: Number,
+    min: -90,
+    max: 90,
     required: true,
   },
   tags: {
