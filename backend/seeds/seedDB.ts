@@ -2,6 +2,7 @@ import Bathroom from "../models/bathroomModel";
 import AppError from "../middleware/AppError";
 import { Request, Response } from "express";
 import seedHelpers from "./seedHelpers";
+import { faker, fakerEN_GB } from "@faker-js/faker";
 
 const {
   streets,
@@ -20,6 +21,7 @@ const {
   access,
 } = seedHelpers;
 
+// Used to generate a random index number within a range
 function getRand(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -39,50 +41,62 @@ function getIsoDate() {
 
 const seedDB = async (req: Request, res: Response) => {
   await Bathroom.deleteMany({});
-  let i = 1;
-  const street = streets[getRand(0, 17)];
-  const wheelchairAccess = wheelchair[getRand(0, 4)];
-  const rampAccess = wheelchairAccess === "yes" ? "yes" : undefined;
-
-  const bathroom = new Bathroom({
-    type: "node",
-    bathroom_id: i,
-    lat: getRand(-90, 90),
-    long: getRand(-90, 90),
-    tags: {
-      amenity: "toilets",
-      "addr:street": street,
-      fee: "no",
-      female: yesNoUndefined(),
-      male: yesNoUndefined(),
-      unisex: unisex[getRand(0, 1)],
-      gender_segregated: yesNoUndefined(),
-      child: yesNoUndefined(),
-      check_date: getIsoDate(),
-      name: `${street} public toilets`,
-      opening_hours:
-        "Mo 10:00-16:00; Tu 10:00-20:00; We 11:00-18:00; Th 11:30-15:30; Fr 09:00-12:00; PH off",
-      source: "local_knowledge",
-      wheelchair: wheelchairAccess,
-      "ramp:wheelchair": rampAccess,
-      "toilets:wheelchair": yesNoUndefined(),
-      operator: operator[getRand(0, 1)],
-      changing_table: changing_table[getRand(0, 3)],
-      "changing_table:location": changing_table_location[getRand(0, 5)],
-      drinking_water: yesNoUndefined(),
-      "toilets:position": "seated",
-      "toilets:menstrual_products": menstrual_products[getRand(0, 3)],
-      vending: vending[getRand(0, 1)],
-      supervised: supervised[getRand(0, 3)],
-      access: access[getRand(0, 2)],
-      indoor: yesNoUndefined(),
-      level: getRand(-10, 10),
-      shower: yesNoUndefined(),
-    },
+  // number of seeded items to create
+  let numBathrooms = 10;
+  const bathrooms = [];
+  // fake GPS coords within range for Oxford
+  const geo = fakerEN_GB.location.nearbyGPSCoordinate({
+    isMetric: false,
+    origin: [51.752022, -1.257726],
+    radius: 10,
   });
-  await bathroom.save();
-  if (bathroom) {
-    res.status(201).json(bathroom);
+  for (let i = 0; i < numBathrooms; i++) {
+    // const street = streets[getRand(0, 17)];
+    const street = fakerEN_GB.location.streetAddress();
+    const wheelchairAccess = wheelchair[getRand(0, 4)];
+    const rampAccess = wheelchairAccess === "yes" ? "yes" : undefined;
+    const bathroom = new Bathroom({
+      type: "node",
+      bathroom_id: i,
+      lat: geo[0],
+      long: geo[1],
+      tags: {
+        amenity: "toilets",
+        "addr:street": street,
+        fee: "no",
+        female: yesNoUndefined(),
+        male: yesNoUndefined(),
+        unisex: unisex[getRand(0, 1)],
+        gender_segregated: yesNoUndefined(),
+        child: yesNoUndefined(),
+        check_date: getIsoDate(),
+        name: `${fakerEN_GB.location.street()} public toilets`,
+        opening_hours:
+          "Mo 10:00-16:00; Tu 10:00-20:00; We 11:00-18:00; Th 11:30-15:30; Fr 09:00-12:00; PH off",
+        description: faker.lorem.paragraph(2),
+        source: "local_knowledge",
+        wheelchair: wheelchairAccess,
+        "ramp:wheelchair": rampAccess,
+        "toilets:wheelchair": yesNoUndefined(),
+        operator: faker.company.name(),
+        changing_table: changing_table[getRand(0, 3)],
+        "changing_table:location": changing_table_location[getRand(0, 5)],
+        drinking_water: yesNoUndefined(),
+        "toilets:position": "seated",
+        "toilets:menstrual_products": menstrual_products[getRand(0, 3)],
+        vending: vending[getRand(0, 1)],
+        supervised: supervised[getRand(0, 3)],
+        access: access[getRand(0, 2)],
+        indoor: yesNoUndefined(),
+        level: getRand(-10, 10),
+        shower: yesNoUndefined(),
+      },
+    });
+    await bathroom.save();
+    bathrooms.push(bathroom);
+  }
+  if (bathrooms) {
+    res.status(201).json(bathrooms);
   } else {
     res.status(400);
     throw new AppError("bathroom could not be created", 400);
