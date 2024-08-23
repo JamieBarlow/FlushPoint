@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import BathroomCard from "../components/BathroomCard";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function HomePage() {
   const [bathrooms, setBathrooms] = useState<BathroomType[]>([]);
@@ -31,10 +32,11 @@ export default function HomePage() {
         <Heading textAlign={"center"}>All bathrooms</Heading>
         <Wrap justify={"center"}>
           {bathrooms.map((bathroom, index) => (
-            <BathroomCard bathroom={bathroom} key={index} />
+            <BathroomCard bathroom={bathroom} key={index} index={index} />
           ))}
         </Wrap>
       </Box>
+      <Footer />
     </>
   );
 }

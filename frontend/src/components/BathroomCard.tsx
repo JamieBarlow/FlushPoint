@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { BsArrowUpRight } from "react-icons/bs";
 
-export default function BathroomCard({ bathroom }) {
+export default function BathroomCard({ bathroom, index }) {
   return (
     <Center py={6}>
       <Box
@@ -33,7 +33,9 @@ export default function BathroomCard({ bathroom }) {
         <Box h={"200px"} borderBottom={"1px"} borderColor="black">
           <Img
             src={
-              "https://images.unsplash.com/photo-1542435503-956c469947f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
+              index % 2 === 0
+                ? "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80"
+                : "https://images.unsplash.com/photo-1552454799-ca5cfdc612c8?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             }
             roundedTop={"sm"}
             objectFit="cover"
