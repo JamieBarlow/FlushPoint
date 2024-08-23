@@ -1,6 +1,19 @@
 import { useState, useEffect } from "react";
 import type { BathroomType } from "../../../backend/models/bathroomModel";
 import dbUrl from "../../../backend/routes/index";
+import {
+  Flex,
+  Text,
+  Heading,
+  Wrap,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Stack,
+  StackDivider,
+} from "@chakra-ui/react";
+import BathroomCard from "../components/BathroomCard";
 
 export default function HomePage() {
   const [bathrooms, setBathrooms] = useState<BathroomType[]>([]);
@@ -11,14 +24,12 @@ export default function HomePage() {
   }, []);
   return (
     <div>
-      <h1>All bathrooms</h1>
-      <ul>
-        {bathrooms.map((bathroom) => (
-          <li key={bathroom.tags.bathroom_id}>
-            {bathroom.tags.name} {bathroom.tags.opening_hours}
-          </li>
+      <Heading>All bathrooms</Heading>
+      <Wrap justify={"center"}>
+        {bathrooms.map((bathroom, index) => (
+          <BathroomCard bathroom={bathroom} key={index} />
         ))}
-      </ul>
+      </Wrap>
     </div>
   );
 }
