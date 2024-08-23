@@ -2,6 +2,51 @@ import { Schema, model } from "mongoose";
 
 const iso8601Regex = /^\d{4}-\d{2}-\d{2}$/;
 
+interface Tags {
+  amenity: string;
+  building: string;
+  "addr:street": string;
+  fee: string;
+  female: string;
+  male: string;
+  unisex: string;
+  gender_segregated: string;
+  child: string;
+  check_date: string;
+  name: string;
+  opening_hours: string;
+  "disused:amenity": string;
+  description: string;
+  source: string;
+  wheelchair: string;
+  "ramp:wheelchair": string;
+  "toilets:wheelchair": string;
+  "wheelchair:description": string;
+  operator: string;
+  changing_table: string;
+  "changing_table:location": string;
+  drinking_water: string;
+  "toilets:position": string;
+  "toilets:menstrual_products": string;
+  vending: string;
+  supervised: string;
+  access: string;
+  "toilets:access": string;
+  locked: string;
+  indoor: string;
+  level: number;
+  shower: string;
+  fixme: string;
+}
+
+export interface BathroomType {
+  type: string;
+  bathroom_id: number;
+  lat: number;
+  long: number;
+  tags: Tags;
+}
+
 const tagsSchema = new Schema({
   amenity: {
     type: String,
@@ -184,7 +229,7 @@ const tagsSchema = new Schema({
   },
 });
 
-const bathroomSchema = new Schema({
+const bathroomSchema = new Schema<BathroomType>({
   type: {
     type: String,
     required: true,

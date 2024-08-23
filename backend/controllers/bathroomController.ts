@@ -3,12 +3,8 @@ import AppError from "../middleware/AppError";
 import Bathroom from "../models/bathroomModel";
 
 const showBathrooms = async (req: Request, res: Response) => {
-  const mockBathrooms = [
-    { id: 1, name: "Bathroom A" },
-    { id: 2, name: "Bathroom B" },
-    { id: 3, name: "Bathroom C" },
-  ];
-  res.json(mockBathrooms);
+  const bathrooms = await Bathroom.find({});
+  res.json(bathrooms);
 };
 
 const createBathroom = async (req: Request, res: Response) => {

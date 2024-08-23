@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
+import type { BathroomType } from "../../../backend/models/bathroomModel";
+import dbUrl from "../../../backend/routes/index";
 
-interface Bathroom {
-  id: number;
-  name: string;
-}
-
-export default function HomePage(): JSX.Element {
-  const [bathrooms, setBathrooms] = useState<Bathroom[]>([]);
+export default function HomePage() {
+  const [bathrooms, setBathrooms] = useState<BathroomType[]>([]);
   useEffect(() => {
     fetch("http://localhost:8000/bathrooms")
       .then((response) => response.json())
@@ -17,7 +14,9 @@ export default function HomePage(): JSX.Element {
       <h1>All bathrooms</h1>
       <ul>
         {bathrooms.map((bathroom) => (
-          <li key={bathroom.id}>{bathroom.name}</li>
+          <li key={bathroom.tags.bathroom_id}>
+            {bathroom.tags.name} {bathroom.tags.opening_hours}
+          </li>
         ))}
       </ul>
     </div>
