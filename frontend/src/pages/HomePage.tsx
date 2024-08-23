@@ -3,6 +3,7 @@ import type { BathroomType } from "../../../backend/models/bathroomModel";
 import dbUrl from "../../../backend/routes/index";
 import {
   Flex,
+  Box,
   Text,
   Heading,
   Wrap,
@@ -14,6 +15,7 @@ import {
   StackDivider,
 } from "@chakra-ui/react";
 import BathroomCard from "../components/BathroomCard";
+import Navbar from "../components/Navbar";
 
 export default function HomePage() {
   const [bathrooms, setBathrooms] = useState<BathroomType[]>([]);
@@ -23,13 +25,16 @@ export default function HomePage() {
       .then((data) => setBathrooms(data));
   }, []);
   return (
-    <div>
-      <Heading>All bathrooms</Heading>
-      <Wrap justify={"center"}>
-        {bathrooms.map((bathroom, index) => (
-          <BathroomCard bathroom={bathroom} key={index} />
-        ))}
-      </Wrap>
-    </div>
+    <>
+      <Navbar />
+      <Box className="pageWrapper">
+        <Heading textAlign={"center"}>All bathrooms</Heading>
+        <Wrap justify={"center"}>
+          {bathrooms.map((bathroom, index) => (
+            <BathroomCard bathroom={bathroom} key={index} />
+          ))}
+        </Wrap>
+      </Box>
+    </>
   );
 }
