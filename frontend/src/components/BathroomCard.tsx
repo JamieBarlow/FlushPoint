@@ -19,9 +19,8 @@ import {
 import { Link as ReactRouterLink } from "react-router-dom";
 import { BsArrowUpRight } from "react-icons/bs";
 
-export default function TestCard({ bathroom, index, variation, children }) {
+export default function BathroomCard({ bathroom, index, variation, children }) {
   const containerStyles = {
-    w: "xs",
     rounded: "sm",
     my: "5",
     mx: [0, 5],
@@ -52,7 +51,7 @@ export default function TestCard({ bathroom, index, variation, children }) {
   };
   return (
     <Center py={6}>
-      <Box sx={containerStyles}>
+      <Box sx={containerStyles} w={variation === "index" ? "xs" : null}>
         <Box
           className="bathroom__previewImg"
           h={"200px"}
