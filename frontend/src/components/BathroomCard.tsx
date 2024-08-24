@@ -19,7 +19,7 @@ import {
 import { Link as ReactRouterLink } from "react-router-dom";
 import { BsArrowUpRight } from "react-icons/bs";
 
-export default function BathroomCard({ bathroom, index }) {
+export default function TestCard({ bathroom, index, variation, children }) {
   const containerStyles = {
     w: "xs",
     rounded: "sm",
@@ -53,7 +53,12 @@ export default function BathroomCard({ bathroom, index }) {
   return (
     <Center py={6}>
       <Box sx={containerStyles}>
-        <Box h={"200px"} borderBottom={"1px"} borderColor="black">
+        <Box
+          className="bathroom__previewImg"
+          h={"200px"}
+          borderBottom={"1px"}
+          borderColor="black"
+        >
           <Img
             src={
               index % 2 === 0
@@ -68,41 +73,26 @@ export default function BathroomCard({ bathroom, index }) {
           />
         </Box>
         <Stack divider={<StackDivider />} spacing="2">
-          <Box p={4}>
-            <Box sx={addressBox}>
-              <Text fontSize={"xs"} fontWeight="medium">
-                {bathroom.tags["addr:street"]}
-              </Text>
-            </Box>
-            <Heading color={"black"} fontSize={"2xl"} noOfLines={3}>
-              {bathroom.tags.name}
-            </Heading>
-            <Text color={"gray.500"} noOfLines={2}>
-              {bathroom.tags.description}
-            </Text>
-          </Box>
-          <Box p={4}>
-            <Text color={"gray.500"} noOfLines={4}>
-              {bathroom.tags.opening_hours}
-            </Text>
-          </Box>
+          {children}
         </Stack>
-        <HStack borderTop={"1px"} color="black">
-          <Flex sx={linkBox}>
-            <ChakraLink
-              as={ReactRouterLink}
-              to={`/bathrooms/${bathroom._id}`}
-              fontSize={"md"}
-              fontWeight={"semibold"}
-            >
-              View more
-            </ChakraLink>
-            <BsArrowUpRight />
-          </Flex>
-          <Flex sx={linkBox} borderLeft={"1px"}>
-            Add review
-          </Flex>
-        </HStack>
+        {variation === "index" ? (
+          <HStack borderTop={"1px"} color="black">
+            <Flex sx={linkBox}>
+              <ChakraLink
+                as={ReactRouterLink}
+                to={`/bathrooms/${bathroom._id}`}
+                fontSize={"md"}
+                fontWeight={"semibold"}
+              >
+                View more
+              </ChakraLink>
+              <BsArrowUpRight />
+            </Flex>
+            <Flex sx={linkBox} borderLeft={"1px"}>
+              Add review
+            </Flex>
+          </HStack>
+        ) : null}
       </Box>
     </Center>
   );
