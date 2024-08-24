@@ -13,23 +13,46 @@ import {
   CardFooter,
   Stack,
   StackDivider,
+  Link as ChakraLink,
+  LinkProps,
 } from "@chakra-ui/react";
+import { Link as ReactRouterLink } from "react-router-dom";
 import { BsArrowUpRight } from "react-icons/bs";
 
 export default function BathroomCard({ bathroom, index }) {
+  const containerStyles = {
+    w: "xs",
+    rounded: "sm",
+    my: "5",
+    mx: [0, 5],
+    overflow: "hidden",
+    bg: "white",
+    border: "1px",
+    borderColor: "black",
+    boxShadow: useColorModeValue("6px 6px 0 black", "6px 6px 0 cyan"),
+  };
+  const addressBox = {
+    bg: "black",
+    display: "inline-block",
+    px: 2,
+    py: 1,
+    color: "white",
+    mb: 2,
+  };
+  const linkBox = {
+    p: "4",
+    alignItems: "center",
+    justifyContent: "space-between",
+    roundedBottom: "sm",
+    cursor: "pointer",
+    w: "full",
+    ":hover": {
+      color: "blue",
+    },
+  };
   return (
     <Center py={6}>
-      <Box
-        w="xs"
-        rounded={"sm"}
-        my={5}
-        mx={[0, 5]}
-        overflow={"hidden"}
-        bg="white"
-        border={"1px"}
-        borderColor="black"
-        boxShadow={useColorModeValue("6px 6px 0 black", "6px 6px 0 cyan")}
-      >
+      <Box sx={containerStyles}>
         <Box h={"200px"} borderBottom={"1px"} borderColor="black">
           <Img
             src={
@@ -46,14 +69,7 @@ export default function BathroomCard({ bathroom, index }) {
         </Box>
         <Stack divider={<StackDivider />} spacing="2">
           <Box p={4}>
-            <Box
-              bg="black"
-              display={"inline-block"}
-              px={2}
-              py={1}
-              color="white"
-              mb={2}
-            >
+            <Box sx={addressBox}>
               <Text fontSize={"xs"} fontWeight="medium">
                 {bathroom.tags["addr:street"]}
               </Text>
@@ -72,28 +88,19 @@ export default function BathroomCard({ bathroom, index }) {
           </Box>
         </Stack>
         <HStack borderTop={"1px"} color="black">
-          <Flex
-            p={4}
-            alignItems="center"
-            justifyContent={"space-between"}
-            roundedBottom={"sm"}
-            cursor={"pointer"}
-            w="full"
-          >
-            <Text fontSize={"md"} fontWeight={"semibold"}>
+          <Flex sx={linkBox}>
+            <ChakraLink
+              as={ReactRouterLink}
+              to={`/bathrooms/${bathroom._id}`}
+              fontSize={"md"}
+              fontWeight={"semibold"}
+            >
               View more
-            </Text>
+            </ChakraLink>
             <BsArrowUpRight />
           </Flex>
-          <Flex
-            p={4}
-            alignItems="center"
-            justifyContent={"space-between"}
-            roundedBottom={"sm"}
-            borderLeft={"1px"}
-            cursor="pointer"
-          >
-            HI
+          <Flex sx={linkBox} borderLeft={"1px"}>
+            Add review
           </Flex>
         </HStack>
       </Box>

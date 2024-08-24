@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import type { BathroomType } from "../../../backend/models/bathroomModel";
 import dbUrl from "../../../backend/routes/index";
 import {
@@ -19,22 +18,11 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function HomePage() {
-  const [bathrooms, setBathrooms] = useState<BathroomType[]>([]);
-  useEffect(() => {
-    fetch("http://localhost:8000/bathrooms")
-      .then((response) => response.json())
-      .then((data) => setBathrooms(data));
-  }, []);
   return (
     <>
       <Navbar />
       <Box className="pageWrapper">
-        <Heading textAlign={"center"}>All bathrooms</Heading>
-        <Wrap justify={"center"}>
-          {bathrooms.map((bathroom, index) => (
-            <BathroomCard bathroom={bathroom} key={index} index={index} />
-          ))}
-        </Wrap>
+        <Heading textAlign={"center"}>Home page</Heading>
       </Box>
       <Footer />
     </>
