@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Stack,
   Box,
   Button,
   Checkbox,
@@ -9,15 +10,22 @@ import {
   Heading,
   Input,
   Textarea,
+  Select,
+  RadioGroup,
+  Radio,
 } from "@chakra-ui/react";
-import { Form } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../layout/Navbar";
+import Footer from "../layout/Footer";
+import { FaRegThumbsUp } from "react-icons/fa";
 
 export default function NewBathroomForm() {
   const [formData, setFormData] = useState({});
   const {} = formData;
   let onChange;
+
+  const formInputStyles = {
+    mb: "20px",
+  };
   return (
     <>
       <Navbar />
@@ -26,18 +34,74 @@ export default function NewBathroomForm() {
         <Box maxW="480px">
           {/* Update to React Router <Form> */}
           <form>
-            <FormControl isRequired mb="40px">
+            <FormControl isRequired sx={formInputStyles}>
               <FormLabel>Bathroom name:</FormLabel>
               <Input type="text" name="name" />
               <FormHelperText>
                 Enter the location name (e.g. 'London Road Public Toilets')
               </FormHelperText>
             </FormControl>
-            <FormControl mb="40px">
+            <FormControl isRequired sx={formInputStyles}>
+              <FormLabel>Address</FormLabel>
+              <Input type="text" name="address" />
+              <FormHelperText>
+                (include street and full postcode if known)
+              </FormHelperText>
+            </FormControl>
+            <FormControl mb="40px" sx={formInputStyles}>
               <FormLabel>Description</FormLabel>
               <Textarea placeholder="Enter a description" name="description" />
             </FormControl>
-            <FormControl display="flex" alignItems="center" mb="40px">
+            <FormControl sx={formInputStyles}>
+              <FormLabel>Operator</FormLabel>
+              <Input type="text" name="operator" />
+              <FormHelperText>(e.g. Westminster City Council)</FormHelperText>
+            </FormControl>
+            <FormControl sx={formInputStyles}>
+              <FormLabel>Opening Hours</FormLabel>
+              <Input type="text" name="openingHours" />
+              <FormHelperText>
+                (e.g. Mo 10:00-16:00; Tu 10:00-20:00; We 11:00-18:00; Th
+                11:30-15:30; Fr 09:00-12:00; PH off)
+              </FormHelperText>
+            </FormControl>
+            <FormControl sx={formInputStyles}>
+              <FormLabel>Gender Access</FormLabel>
+              <Select placeholder="Select option" variant="outline">
+                <option value="option1">Gender segregated</option>
+                <option value="option1">Unisex (gender neutral)</option>
+                <option value="option2">Male only</option>
+                <option value="option3">Female only</option>
+                <option value="option3">Don't know</option>
+              </Select>
+            </FormControl>
+            <FormControl sx={formInputStyles}>
+              <FormLabel>Wheelchair accessibility</FormLabel>
+              <Checkbox
+                value="Building Access"
+                size="lg"
+                icon={<FaRegThumbsUp />}
+              >
+                Building Access?
+              </Checkbox>
+            </FormControl>
+            <FormControl sx={formInputStyles}>
+              <FormLabel>Wheelchair toilet access</FormLabel>
+              <RadioGroup>
+                <Stack direction="row">
+                  <Radio value="1">
+                    No unrestricted building access (stairs only)
+                  </Radio>
+                  <Radio value="2">Partial/limited access</Radio>
+                  <Radio value="3">Designated (e.g. elevator)</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+            <FormControl
+              display="flex"
+              alignItems="center"
+              sx={formInputStyles}
+            >
               <Checkbox name="isFree" size="lg" colorScheme="teal" />
               <FormLabel ml="10px" mb="0">
                 Is free?
@@ -46,19 +110,6 @@ export default function NewBathroomForm() {
             <Button type="submit">Submit</Button>
           </form>
         </Box>
-        {/* <form>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              name="name"
-              value={name}
-              onChange={onChange}
-              placeholder="Bathroom name"
-            />
-          </div>
-        </form> */}
       </Box>
       <Footer />
     </>

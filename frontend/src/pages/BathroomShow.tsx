@@ -1,31 +1,26 @@
 import { useState, useEffect } from "react";
 import type { BathroomType } from "../../../backend/models/bathroomModel";
-import dbUrl from "../../../backend/routes/index";
 import {
-  Flex,
   Box,
   Text,
   Heading,
-  Wrap,
   Stack,
   StackDivider,
   Button,
 } from "@chakra-ui/react";
 import BathroomCard from "../components/BathroomCard";
 import { useParams } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 export default function BathroomShow() {
   const { id } = useParams();
-  const [bathroom, setBathroom] = useState(null);
+  const [bathroom, setBathroom] = useState<BathroomType | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [genderAccess, setGenderAccess] = useState(null);
-  const [wheelchairAccess, setWheelchairAccess] = useState(null);
-  const [changingTable, setChangingTable] = useState(null);
-  const [changingLocation, setChangingLocation] = useState(null);
-  const [toiletPositions, setToiletPositions] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [genderAccess, setGenderAccess] = useState<string | null>(null);
+  const [wheelchairAccess, setWheelchairAccess] = useState<string | null>(null);
+  const [changingTable, setChangingTable] = useState<string | null>(null);
+  const [changingLocation, setChangingLocation] = useState<string | null>(null);
+  const [toiletPositions, setToiletPositions] = useState<string | null>(null);
   useEffect(() => {
     const fetchBathroom = async () => {
       try {
@@ -37,7 +32,11 @@ export default function BathroomShow() {
         setBathroom(data);
         setLoading(false);
       } catch (error) {
-        setError(error.message);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unknown error occured");
+        }
         setLoading(false);
       }
     };
@@ -45,6 +44,7 @@ export default function BathroomShow() {
   }, [id]);
   useEffect(() => {
     let gender, wheelchair, changing_table, changing_location, position;
+    // Gender access
     if (bathroom) {
       if (bathroom.tags.unisex === "yes") {
         gender = "Unisex (gender neutral)";
@@ -62,6 +62,8 @@ export default function BathroomShow() {
         gender = "Unknown";
       }
       setGenderAccess(gender);
+
+      // Wheelchair access
       if (
         bathroom.tags.wheelchair === "yes" &&
         bathroom.tags["toilets:wheelchair"] === "no"
@@ -88,6 +90,8 @@ export default function BathroomShow() {
         }
       }
       setWheelchairAccess(wheelchair);
+
+      // Changing table access
       if (bathroom.tags.changing_table) {
         changing_table = bathroom.tags.changing_table;
       } else {
@@ -146,123 +150,117 @@ export default function BathroomShow() {
 
   return (
     <>
-      <Navbar />
       <Box className="pageWrapper" py="40px">
-        {bathroom ? (
-          <>
-            <BathroomCard bathroom={bathroom}>
-              <Box className="bathroom__main" p={4}>
-                <Box sx={addressBox}>
-                  <Text fontSize={"xs"} fontWeight="medium">
-                    {bathroom.tags["addr:street"]}
-                  </Text>
-                </Box>
-                <Heading color={"black"} fontSize={"2xl"} noOfLines={3}>
-                  {bathroom.tags.name}
-                </Heading>
-                <Text color={"gray.500"}>{bathroom.tags.description}</Text>
-                <Box>
-                  <Text sx={dataHeader}>Operated by:</Text>
-                  <Text sx={dataText}>{bathroom.tags.operator}</Text>
-                </Box>
+        {bathroom && (
+          <BathroomCard bathroom={bathroom}>
+            <Box className="bathroom__main" p={4}>
+              <Box sx={addressBox}>
+                <Text fontSize={"xs"} fontWeight="medium">
+                  {bathroom.tags["addr:street"]}
+                </Text>
               </Box>
-              <Box className="bathroom__openingHours" p={4}>
-                <Text color={"gray.500"}>{bathroom.tags.opening_hours}</Text>
+              <Heading color={"black"} fontSize={"2xl"} noOfLines={3}>
+                {bathroom.tags.name}
+              </Heading>
+              <Text color={"gray.500"}>{bathroom.tags.description}</Text>
+              <Box>
+                <Text sx={dataHeader}>Operated by:</Text>
+                <Text sx={dataText}>{bathroom.tags.operator}</Text>
               </Box>
-              <Stack
-                className="bathroom__accessibility"
-                p={4}
-                divider={<StackDivider borderColor="gray.200" />}
-                direction="row"
-                align="center"
-              >
-                <Box>
-                  <Text sx={dataHeader}>Fee?</Text>
-                  <Text sx={dataText}>{bathroom.tags.fee}</Text>
-                </Box>
-                <Box>
-                  <Text sx={dataHeader}>Gender Access?</Text>
-                  <Text sx={dataText}>{genderAccess}</Text>
-                  {genderAccess === "Unknown" && <Button>Add info</Button>}
-                </Box>
+            </Box>
+            <Box className="bathroom__openingHours" p={4}>
+              <Text color={"gray.500"}>{bathroom.tags.opening_hours}</Text>
+            </Box>
+            <Stack
+              className="bathroom__accessibility"
+              p={4}
+              divider={<StackDivider borderColor="gray.200" />}
+              direction="row"
+              align="center"
+            >
+              <Box>
+                <Text sx={dataHeader}>Fee?</Text>
+                <Text sx={dataText}>{bathroom.tags.fee}</Text>
+              </Box>
+              <Box>
+                <Text sx={dataHeader}>Gender Access?</Text>
+                <Text sx={dataText}>{genderAccess}</Text>
+                {genderAccess === "Unknown" && <Button>Add info</Button>}
+              </Box>
 
+              <Box>
+                <Text sx={dataHeader}>Wheelchair?</Text>
+                <Text sx={dataText}>{wheelchairAccess}</Text>
+                {wheelchairAccess === "Unknown" && <Button>Add info</Button>}
+                {bathroom.tags["wheelchair:description"] && (
+                  <>
+                    <Text sx={dataHeader}>Wheelchair info</Text>
+                    <Text sx={dataText}>
+                      {bathroom.tags["wheelchair:description"]}
+                    </Text>
+                  </>
+                )}
+              </Box>
+              <Box>
+                <Text sx={dataHeader}>Changing Table?</Text>
+                <Text sx={dataText}>{changingTable}</Text>
+                {changingTable === "Unknown" && <Button>Add info</Button>}
+              </Box>
+              {changingTable !== "Unknown" && (
                 <Box>
-                  <Text sx={dataHeader}>Wheelchair?</Text>
-                  <Text sx={dataText}>{wheelchairAccess}</Text>
-                  {wheelchairAccess === "Unknown" && <Button>Add info</Button>}
-                  {bathroom.tags["wheelchair:description"] && (
-                    <>
-                      <Text sx={dataHeader}>Wheelchair info</Text>
-                      <Text sx={dataText}>
-                        {bathroom.tags["wheelchair:description"]}
-                      </Text>
-                    </>
-                  )}
+                  <Text sx={dataHeader}>Table location</Text>
+                  <Text sx={dataText}>{changingLocation}</Text>
+                  {changingLocation === "Unknown" && <Button>Add info</Button>}
                 </Box>
+              )}
+            </Stack>
+            <Stack
+              className="bathroom_accessibility"
+              p={4}
+              divider={<StackDivider borderColor="gray.200" />}
+              direction="row"
+              align="center"
+            >
+              {toiletPositions && (
                 <Box>
-                  <Text sx={dataHeader}>Changing Table?</Text>
-                  <Text sx={dataText}>{changingTable}</Text>
-                  {changingTable === "Unknown" && <Button>Add info</Button>}
+                  <Text sx={dataHeader}>Toilet positions</Text>
+                  <Text sx={dataText}>{toiletPositions}</Text>
                 </Box>
-                {changingTable !== "Unknown" && (
-                  <Box>
-                    <Text sx={dataHeader}>Table location</Text>
-                    <Text sx={dataText}>{changingLocation}</Text>
-                    {changingLocation === "Unknown" && (
-                      <Button>Add info</Button>
-                    )}
-                  </Box>
-                )}
-              </Stack>
-              <Stack
-                className="bathroom_accessibility"
-                p={4}
-                divider={<StackDivider borderColor="gray.200" />}
-                direction="row"
-                align="center"
-              >
-                {toiletPositions && (
-                  <Box>
-                    <Text sx={dataHeader}>Toilet positions</Text>
-                    <Text sx={dataText}>{toiletPositions}</Text>
-                  </Box>
-                )}
-                {bathroom.tags.access && (
-                  <Box>
-                    <Text sx={dataHeader}>Access</Text>
-                    <Text sx={dataText}>{bathroom.tags.access}</Text>
-                  </Box>
-                )}
-                {bathroom.tags.level && (
-                  <Box>
-                    <Text sx={dataHeader}>Floor</Text>
-                    <Text sx={dataText}>{bathroom.tags.level}</Text>
-                  </Box>
-                )}
-                {bathroom.tags.shower && (
-                  <Box>
-                    <Text sx={dataHeader}>Shower?</Text>
-                    <Text sx={dataText}>{bathroom.tags.shower}</Text>
-                  </Box>
-                )}
-              </Stack>
-              <Stack
-                className="bathroom__updated"
-                p={4}
-                divider={<StackDivider borderColor="gray.200" />}
-                direction="row"
-                align="center"
-              >
+              )}
+              {bathroom.tags.access && (
                 <Box>
-                  <Text sx={dataHeader}>Last Updated:</Text>
-                  <Text sx={dataText}>{bathroom.tags.check_date}</Text>
+                  <Text sx={dataHeader}>Access</Text>
+                  <Text sx={dataText}>{bathroom.tags.access}</Text>
                 </Box>
-              </Stack>
-            </BathroomCard>
-          </>
-        ) : null}
+              )}
+              {bathroom.tags.level && (
+                <Box>
+                  <Text sx={dataHeader}>Floor</Text>
+                  <Text sx={dataText}>{bathroom.tags.level}</Text>
+                </Box>
+              )}
+              {bathroom.tags.shower && (
+                <Box>
+                  <Text sx={dataHeader}>Shower?</Text>
+                  <Text sx={dataText}>{bathroom.tags.shower}</Text>
+                </Box>
+              )}
+            </Stack>
+            <Stack
+              className="bathroom__updated"
+              p={4}
+              divider={<StackDivider borderColor="gray.200" />}
+              direction="row"
+              align="center"
+            >
+              <Box>
+                <Text sx={dataHeader}>Last Updated:</Text>
+                <Text sx={dataText}>{bathroom.tags.check_date}</Text>
+              </Box>
+            </Stack>
+          </BathroomCard>
+        )}
       </Box>
-      <Footer />
     </>
   );
 }

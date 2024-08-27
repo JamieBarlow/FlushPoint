@@ -1,22 +1,7 @@
 import { useState, useEffect } from "react";
 import type { BathroomType } from "../../../backend/models/bathroomModel";
-import dbUrl from "../../../backend/routes/index";
-import {
-  Flex,
-  Box,
-  Text,
-  Heading,
-  Wrap,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Stack,
-  StackDivider,
-} from "@chakra-ui/react";
+import { Box, Text, Heading, Wrap } from "@chakra-ui/react";
 import BathroomCard from "../components/BathroomCard";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 export default function Index() {
   const [bathrooms, setBathrooms] = useState<BathroomType[]>([]);
@@ -35,7 +20,6 @@ export default function Index() {
   };
   return (
     <>
-      <Navbar />
       <Box className="pageWrapper">
         <Heading textAlign={"center"}>All bathrooms</Heading>
         <Wrap justify={"center"}>
@@ -68,7 +52,6 @@ export default function Index() {
           ))}
         </Wrap>
       </Box>
-      <Footer />
     </>
   );
 }

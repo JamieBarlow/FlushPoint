@@ -1,25 +1,31 @@
 import {
-  Text,
   Img,
   Flex,
   Center,
   useColorModeValue,
   HStack,
-  Heading,
   Box,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
   Stack,
   StackDivider,
   Link as ChakraLink,
-  LinkProps,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { BsArrowUpRight } from "react-icons/bs";
+import { BathroomType } from "../../../backend/models/bathroomModel";
 
-export default function BathroomCard({ bathroom, index, variation, children }) {
+interface BathroomProps {
+  bathroom: BathroomType;
+  index?: number;
+  variation?: string;
+  children: React.ReactNode;
+}
+
+export default function BathroomCard({
+  bathroom,
+  index,
+  variation,
+  children,
+}: BathroomProps) {
   const containerStyles = {
     rounded: "sm",
     my: "5",
@@ -51,7 +57,7 @@ export default function BathroomCard({ bathroom, index, variation, children }) {
   };
   return (
     <Center py={6}>
-      <Box sx={containerStyles} w={variation === "index" ? "xs" : null}>
+      <Box sx={containerStyles} w={variation === "index" ? "xs" : ""}>
         <Box
           className="bathroom__previewImg"
           h={"200px"}
@@ -60,7 +66,7 @@ export default function BathroomCard({ bathroom, index, variation, children }) {
         >
           <Img
             src={
-              index % 2 === 0
+              index! % 2 === 0
                 ? "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80"
                 : "https://images.unsplash.com/photo-1552454799-ca5cfdc612c8?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             }

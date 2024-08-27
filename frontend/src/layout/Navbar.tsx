@@ -1,14 +1,8 @@
 import { FaToiletsPortable } from "react-icons/fa6";
 import { IoMdMenu } from "react-icons/io";
-import {
-  Flex,
-  Box,
-  Heading,
-  Text,
-  Button,
-  Spacer,
-  HStack,
-} from "@chakra-ui/react";
+import { Flex, Heading, Text, Button, Spacer, HStack } from "@chakra-ui/react";
+
+import { NavLink } from "react-router-dom";
 
 export default function Navbar() {
   return (
@@ -30,6 +24,7 @@ export default function Navbar() {
           <Spacer />
         </Flex>
         <HStack spacing="20px">
+          <NavLink to="/bathrooms">All bathrooms</NavLink>
           <Text>Username</Text>
           <Button colorScheme="blue">
             <IoMdMenu size="20" />

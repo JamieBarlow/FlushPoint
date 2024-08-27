@@ -2,9 +2,14 @@ import { Request, Response } from "express";
 import AppError from "../middleware/AppError";
 import Bathroom from "../models/bathroomModel";
 
-const showBathrooms = async (req: Request, res: Response) => {
+const showBathroomsIndex = async (req: Request, res: Response) => {
   const bathrooms = await Bathroom.find({});
   res.json(bathrooms);
+};
+
+const showBathroom = async (req: Request, res: Response) => {
+  const bathroom = await Bathroom.findById(req.params.id);
+  res.json(bathroom);
 };
 
 const createBathroom = async (req: Request, res: Response) => {
@@ -48,7 +53,8 @@ const createBathroom = async (req: Request, res: Response) => {
   await bathroom.save();
 
   if (bathroom) {
-    res.status(201).json(bathroom);
+    // res.status(201).json(bathroom);
+    res.redirect(`/bathrooms/${bathroom._id}`);
   } else {
     res.status(400);
     throw new AppError("bathroom could not be created", 400);
@@ -56,7 +62,8 @@ const createBathroom = async (req: Request, res: Response) => {
 };
 
 const bathroomController = {
-  showBathrooms,
+  showBathroomsIndex,
+  showBathroom,
   createBathroom,
 };
 

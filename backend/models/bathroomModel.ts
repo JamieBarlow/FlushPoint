@@ -40,6 +40,7 @@ interface Tags {
 }
 
 export interface BathroomType {
+  _id: string;
   type: string;
   bathroom_id: number;
   lat: number;
