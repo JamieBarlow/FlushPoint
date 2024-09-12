@@ -2,14 +2,10 @@ import { useState, useEffect } from "react";
 import type { BathroomType } from "../../../backend/models/bathroomModel";
 import { Box, Text, Heading, Wrap } from "@chakra-ui/react";
 import BathroomCard from "../components/BathroomCard";
+import { useLoaderData } from "react-router-dom";
 
 export default function Index() {
-  const [bathrooms, setBathrooms] = useState<BathroomType[]>([]);
-  useEffect(() => {
-    fetch("http://localhost:8000/bathrooms")
-      .then((response) => response.json())
-      .then((data) => setBathrooms(data));
-  }, []);
+  const bathrooms = useLoaderData() as BathroomType[];
   const addressBox = {
     bg: "black",
     display: "inline-block",

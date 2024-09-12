@@ -10,10 +10,12 @@ import {
 } from "@chakra-ui/react";
 import BathroomCard from "../components/BathroomCard";
 import { useParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 
 export default function BathroomShow() {
+  const bathroom = useLoaderData() as BathroomType;
   const { id } = useParams();
-  const [bathroom, setBathroom] = useState<BathroomType | null>(null);
+  // const [bathroom, setBathroom] = useState<BathroomType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [genderAccess, setGenderAccess] = useState<string | null>(null);
@@ -21,27 +23,27 @@ export default function BathroomShow() {
   const [changingTable, setChangingTable] = useState<string | null>(null);
   const [changingLocation, setChangingLocation] = useState<string | null>(null);
   const [toiletPositions, setToiletPositions] = useState<string | null>(null);
-  useEffect(() => {
-    const fetchBathroom = async () => {
-      try {
-        const response = await fetch(`http://localhost:8000/bathrooms/${id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch bathroom data");
-        }
-        const data = await response.json();
-        setBathroom(data);
-        setLoading(false);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("An unknown error occured");
-        }
-        setLoading(false);
-      }
-    };
-    fetchBathroom();
-  }, [id]);
+  // useEffect(() => {
+  //   const fetchBathroom = async () => {
+  //     try {
+  //       const response = await fetch(`http://localhost:8000/bathrooms/${id}`);
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch bathroom data");
+  //       }
+  //       const data = await response.json();
+  //       setBathroom(data);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       if (error instanceof Error) {
+  //         setError(error.message);
+  //       } else {
+  //         setError("An unknown error occured");
+  //       }
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchBathroom();
+  // }, [id]);
   useEffect(() => {
     let gender, wheelchair, changing_table, changing_location, position;
     // Gender access
