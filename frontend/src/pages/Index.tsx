@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import type { BathroomType } from "../../../backend/models/bathroomModel";
 import { Box, Text, Heading, Wrap } from "@chakra-ui/react";
 import BathroomCard from "../components/BathroomCard";
