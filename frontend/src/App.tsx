@@ -16,8 +16,8 @@ import ShowBathroomError from "./pages/ShowBathroomError";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<RootLayout />}>
-      <Route path="/bathrooms" errorElement={<NotFound />}>
+    <Route path="/" element={<RootLayout />} errorElement={<NotFound />}>
+      <Route path="/bathrooms">
         <Route index element={<Index />} loader={indexLoader} />
         <Route
           path=":id"

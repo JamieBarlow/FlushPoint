@@ -4,7 +4,7 @@ export default async function showLoader({ params }: LoaderFunctionArgs) {
   const { id } = params;
   const res = await fetch(`http://localhost:8000/bathrooms/${id}`);
   if (!res.ok) {
-    throw new Error("Failed to fetch bathroom data");
+    throw Error("Failed to fetch bathroom data");
   }
   return res.json();
 }
