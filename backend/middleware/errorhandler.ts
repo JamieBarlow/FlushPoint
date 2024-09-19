@@ -8,7 +8,7 @@ const errorHandler = (
   next: NextFunction
 ) => {
   const statusCode = res.statusCode ? res.statusCode : 500;
-  const errObj = new AppError("Error test", statusCode);
+  const errObj = new AppError(err.message || "Server Error", statusCode);
   res.json({
     message: errObj.message,
     statusCode: errObj.status,

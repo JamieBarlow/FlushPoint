@@ -13,7 +13,7 @@ import { Link as ReactRouterLink } from "react-router-dom";
 import { BsArrowUpRight } from "react-icons/bs";
 import { BathroomType } from "../../../backend/models/bathroomModel";
 
-interface BathroomProps {
+interface BathroomCardProps {
   bathroom: BathroomType;
   index?: number;
   variation?: string;
@@ -25,7 +25,7 @@ export default function BathroomCard({
   index,
   variation,
   children,
-}: BathroomProps) {
+}: BathroomCardProps) {
   const containerStyles = {
     rounded: "sm",
     my: "5",
@@ -80,6 +80,7 @@ export default function BathroomCard({
         <Stack divider={<StackDivider />} spacing="2">
           {children}
         </Stack>
+        {/* Links for index variation */}
         {variation === "index" ? (
           <HStack borderTop={"1px"} color="black">
             <Flex sx={linkBox}>
