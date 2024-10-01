@@ -12,7 +12,9 @@ import cors from "cors";
 
 const env = process.env.NODE_ENV || "development";
 const dbUrl =
-  env === "production" ? process.env.MONGO_URI_PROD : process.env.MONGO_URI_DEV;
+  env === "production"
+    ? process.env.MONGO_URI_PROD
+    : process.env.MONGO_URI_DEV || process.env.MONGO_URI_GH;
 const sessionSecret =
   env === "production" ? process.env.MONGO_SESSION_SECRET : "LmARXFZ4g69fbU";
 
@@ -20,7 +22,7 @@ const port = 8000;
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
