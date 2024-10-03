@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Stack,
   Box,
@@ -14,26 +13,24 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
-import Navbar from "../layout/Navbar";
-import Footer from "../layout/Footer";
 import { FaRegThumbsUp } from "react-icons/fa";
+import { Form, useActionData } from "react-router-dom";
+
+interface ActionData {
+  error?: string;
+}
 
 export default function NewBathroomForm() {
-  const [formData, setFormData] = useState({});
-  const {} = formData;
-  let onChange;
-
+  const data = useActionData() as ActionData | null;
   const formInputStyles = {
     mb: "20px",
   };
   return (
     <>
-      <Navbar />
       <Box className="pageWrapper" py="40px">
         <Heading>New Bathroom</Heading>
         <Box maxW="480px">
-          {/* Update to React Router <Form> */}
-          <form>
+          <Form method="post">
             <FormControl isRequired sx={formInputStyles}>
               <FormLabel>Bathroom name:</FormLabel>
               <Input type="text" name="name" />
@@ -108,10 +105,10 @@ export default function NewBathroomForm() {
               </FormLabel>
             </FormControl>
             <Button type="submit">Submit</Button>
-          </form>
+          </Form>
+          {data?.error && <p>{data.error}</p>}
         </Box>
       </Box>
-      <Footer />
     </>
   );
 }
