@@ -25,18 +25,14 @@ export default function BathroomShow() {
     let gender, wheelchair, changing_table, changing_location, position;
     // Gender access
     if (bathroom) {
-      if (bathroom.tags.unisex === "yes") {
+      if (bathroom.tags.gender_segregated === "no") {
         gender = "Unisex (gender neutral)";
+      } else if (bathroom.tags.gender_segregated === "yes") {
+        gender = "Male and female (gender segregated)";
       } else if (bathroom.tags.male === "yes") {
         gender = "Male only";
       } else if (bathroom.tags.female === "yes") {
         gender = "Female only";
-      } else if (
-        bathroom.tags.male === "yes" &&
-        bathroom.tags.female === "yes"
-      ) {
-        // Accounting for user error - "yes" should mean exclusive to that gender
-        gender = "Gender segregated";
       } else {
         gender = "Unknown";
       }

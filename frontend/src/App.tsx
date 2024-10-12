@@ -20,11 +20,13 @@ export const createBathroom: ActionFunction = async ({ request }) => {
   // gather data from form
   const data = await request.formData();
   const submission = {
+    // lat and long
     name: data.get("name"),
     address: data.get("address"),
     description: data.get("description"),
     operator: data.get("operator"),
     openingHours: data.get("openingHours"),
+    gender: data.get("gender"),
   };
   console.log(submission);
   // validation

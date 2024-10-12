@@ -64,12 +64,18 @@ export default function NewBathroomForm() {
             </FormControl>
             <FormControl sx={formInputStyles}>
               <FormLabel>Gender Access</FormLabel>
-              <Select placeholder="Select option" variant="outline">
-                <option value="option1">Gender segregated</option>
-                <option value="option1">Unisex (gender neutral)</option>
-                <option value="option2">Male only</option>
-                <option value="option3">Female only</option>
-                <option value="option3">Don't know</option>
+              <Select
+                placeholder="Select option"
+                variant="outline"
+                name="gender"
+              >
+                <option value="Gender segregated">Gender segregated</option>
+                <option value="Unisex (gender neutral)">
+                  Unisex (gender neutral)
+                </option>
+                <option value="Male only">Male only</option>
+                <option value="Female only">Female only</option>
+                <option value="Don't know">Don't know</option>
               </Select>
             </FormControl>
             <FormControl sx={formInputStyles}>
