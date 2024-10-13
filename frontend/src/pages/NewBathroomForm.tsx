@@ -123,15 +123,25 @@ export default function NewBathroomForm() {
                 name="wheelchairDescription"
               />
             </FormControl>
-            <FormControl
-              display="flex"
-              alignItems="center"
-              sx={formInputStyles}
-            >
-              <Checkbox name="isFree" size="lg" colorScheme="teal" />
-              <FormLabel ml="10px" mb="0">
-                Is free?
-              </FormLabel>
+            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
+              <FormLabel>Fee for entry?</FormLabel>
+              <RadioGroup defaultValue="unknown" name="fee">
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Yes</Radio>
+                  <Radio value="no">No (free)</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
+              <FormLabel>Seats / urinals for children?</FormLabel>
+              <RadioGroup defaultValue="unknown" name="child">
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Yes</Radio>
+                  <Radio value="no">No</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
             </FormControl>
             <Button type="submit">Submit</Button>
           </Form>

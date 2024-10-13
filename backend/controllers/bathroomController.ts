@@ -42,6 +42,12 @@ const createBathroom = async (req: Request, res: Response) => {
     femaleOnly: "",
   };
 
+  // Fetches today's date in ISO format
+  const getDate = () => {
+    const now = new Date().toISOString().split("T")[0];
+    return now;
+  };
+
   const bathroom = new Bathroom({
     type: "node",
     bathroom_id: 1,
@@ -71,9 +77,9 @@ const createBathroom = async (req: Request, res: Response) => {
           ? data.wheelchairToiletAccess
           : undefined,
       "wheelchair:description": data.wheelchairDescription,
-      fee: "no",
-      child: "no",
-      check_date: "2024-07-24",
+      fee: data.fee,
+      child: data.child,
+      check_date: getDate(),
       source: "local_knowledge",
       changing_table: "yes",
       "changing_table:location": "dedicated_room",

@@ -31,6 +31,8 @@ export const createBathroom: ActionFunction = async ({ request }) => {
     wheelchairBuildingAccess: data.get("wheelchairBuildingAccess"),
     wheelchairToiletAccess: data.get("wheelchairToiletAccess"),
     wheelchairDescription: data.get("wheelchairDescription"),
+    fee: data.get("fee"),
+    child: data.get("child"),
   };
   console.log(submission);
   // validation

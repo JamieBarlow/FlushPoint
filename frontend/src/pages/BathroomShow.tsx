@@ -210,6 +210,12 @@ export default function BathroomShow() {
                   <Text sx={dataText}>{bathroom.tags.shower}</Text>
                 </Box>
               )}
+              {bathroom.tags.child && (
+                <Box>
+                  <Text sx={dataHeader}>Seats / urinals for children?</Text>
+                  <Text sx={dataText}>{bathroom.tags.child}</Text>
+                </Box>
+              )}
             </Stack>
             <Stack
               className="bathroom__updated"
