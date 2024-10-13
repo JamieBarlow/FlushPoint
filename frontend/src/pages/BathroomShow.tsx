@@ -17,13 +17,18 @@ export default function BathroomShow() {
   const { id } = useParams();
   // const [bathroom, setBathroom] = useState<BathroomType | null>(null);
   const [genderAccess, setGenderAccess] = useState<string | null>(null);
-  const [wheelchairAccess, setWheelchairAccess] = useState<string | null>(null);
+  const [wheelchairBuildingAccess, setWheelchairBuildingAccess] = useState<
+    string | null
+  >(null);
+  const [wheelchairToiletAccess, setWheelchairToiletAccess] = useState<
+    string | null
+  >(null);
   const [changingTable, setChangingTable] = useState<string | null>(null);
   const [changingLocation, setChangingLocation] = useState<string | null>(null);
   const [toiletPositions, setToiletPositions] = useState<string | null>(null);
   useEffect(() => {
-    let gender, wheelchair, changing_table, changing_location, position;
-    // Gender access
+    let gender, changing_table, changing_location, position;
+    // Gender access display
     if (bathroom) {
       if (bathroom.tags.gender_segregated === "no") {
         gender = "Unisex (gender neutral)";
@@ -39,32 +44,8 @@ export default function BathroomShow() {
       setGenderAccess(gender);
 
       // Wheelchair access
-      if (
-        bathroom.tags.wheelchair === "yes" &&
-        bathroom.tags["toilets:wheelchair"] === "no"
-      ) {
-        wheelchair = "Building access only";
-      } else if (
-        bathroom.tags.wheelchair === "yes" &&
-        bathroom.tags["toilets:wheelchair"] === "yes"
-      ) {
-        wheelchair = "Building and toilet access";
-      } else {
-        switch (bathroom.tags.wheelchair) {
-          case "no":
-            wheelchair = "No unrestricted building access (stairs only)";
-            break;
-          case "limited":
-            wheelchair = "Partial/limited access";
-            break;
-          case "designated":
-            wheelchair = "Designated (e.g. elevator)";
-            break;
-          default:
-            wheelchair = "Unknown";
-        }
-      }
-      setWheelchairAccess(wheelchair);
+      setWheelchairBuildingAccess(bathroom.tags.wheelchair);
+      setWheelchairToiletAccess(bathroom.tags["toilets:wheelchair"]);
 
       // Changing table access
       if (bathroom.tags.changing_table) {
@@ -164,18 +145,27 @@ export default function BathroomShow() {
               </Box>
 
               <Box>
-                <Text sx={dataHeader}>Wheelchair?</Text>
-                <Text sx={dataText}>{wheelchairAccess}</Text>
-                {wheelchairAccess === "Unknown" && <Button>Add info</Button>}
-                {bathroom.tags["wheelchair:description"] && (
-                  <>
-                    <Text sx={dataHeader}>Wheelchair info</Text>
-                    <Text sx={dataText}>
-                      {bathroom.tags["wheelchair:description"]}
-                    </Text>
-                  </>
+                <Text sx={dataHeader}>Wheelchair (building)</Text>
+                <Text sx={dataText}>{wheelchairBuildingAccess}</Text>
+                {wheelchairBuildingAccess === "Unknown" && (
+                  <Button>Add info</Button>
                 )}
               </Box>
+              <Box>
+                <Text sx={dataHeader}>Wheelchair (toilet)</Text>
+                <Text sx={dataText}>{wheelchairToiletAccess}</Text>
+                {wheelchairToiletAccess === "Unknown" && (
+                  <Button>Add info</Button>
+                )}
+              </Box>
+              {bathroom.tags["wheelchair:description"] && (
+                <Box>
+                  <Text sx={dataHeader}>Wheelchair info</Text>
+                  <Text sx={dataText}>
+                    {bathroom.tags["wheelchair:description"]}
+                  </Text>
+                </Box>
+              )}
               <Box>
                 <Text sx={dataHeader}>Changing Table?</Text>
                 <Text sx={dataText}>{changingTable}</Text>

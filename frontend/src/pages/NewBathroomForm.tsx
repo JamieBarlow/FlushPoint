@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CheckboxGroup,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -13,7 +14,7 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
-import { FaRegThumbsUp } from "react-icons/fa";
+import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import { Form, useActionData } from "react-router-dom";
 
 interface ActionData {
@@ -62,14 +63,16 @@ export default function NewBathroomForm() {
                 11:30-15:30; Fr 09:00-12:00; PH off)
               </FormHelperText>
             </FormControl>
-            <FormControl sx={formInputStyles}>
+            <FormControl sx={formInputStyles} isRequired>
               <FormLabel>Gender Access</FormLabel>
               <Select
                 placeholder="Select option"
                 variant="outline"
                 name="gender"
               >
-                <option value="Gender segregated">Gender segregated</option>
+                <option value="Gender segregated">
+                  Gender segregated (M & F separate)
+                </option>
                 <option value="Unisex (gender neutral)">
                   Unisex (gender neutral)
                 </option>
@@ -78,27 +81,47 @@ export default function NewBathroomForm() {
                 <option value="Don't know">Don't know</option>
               </Select>
             </FormControl>
-            <FormControl sx={formInputStyles}>
-              <FormLabel>Wheelchair accessibility</FormLabel>
-              <Checkbox
-                value="Building Access"
-                size="lg"
-                icon={<FaRegThumbsUp />}
+            <FormControl
+              sx={formInputStyles}
+              isRequired
+              defaultValue={"unknown"}
+            >
+              <FormLabel>Wheelchair building access</FormLabel>
+              <RadioGroup
+                defaultValue="unknown"
+                name="wheelchairBuildingAccess"
               >
-                Building Access?
-              </Checkbox>
-            </FormControl>
-            <FormControl sx={formInputStyles}>
-              <FormLabel>Wheelchair toilet access</FormLabel>
-              <RadioGroup>
-                <Stack direction="row">
-                  <Radio value="1">
-                    No unrestricted building access (stairs only)
-                  </Radio>
-                  <Radio value="2">Partial/limited access</Radio>
-                  <Radio value="3">Designated (e.g. elevator)</Radio>
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Unrestricted (stepless entry)</Radio>
+                  <Radio value="limited">Limited (partially accessible)</Radio>
+                  <Radio value="no">Restricted (stairs only)</Radio>
+                  <Radio value="designated">Designated (e.g. elevator)</Radio>
+                  <Radio value="unknown">Unknown</Radio>
                 </Stack>
               </RadioGroup>
+            </FormControl>
+            <FormControl
+              sx={formInputStyles}
+              isRequired
+              defaultValue={"unknown"}
+            >
+              <FormLabel>Wheelchair toilet access</FormLabel>
+              <RadioGroup defaultValue="unknown" name="wheelchairToiletAccess">
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Unrestricted (stepless entry)</Radio>
+                  <Radio value="limited">Limited (partially accessible)</Radio>
+                  <Radio value="no">Restricted (stairs only)</Radio>
+                  <Radio value="designated">Designated (e.g. elevator)</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+            <FormControl mb="40px" sx={formInputStyles}>
+              <FormLabel>Any other wheelchair info?</FormLabel>
+              <Textarea
+                placeholder="Enter more info"
+                name="wheelchairDescription"
+              />
             </FormControl>
             <FormControl
               display="flex"

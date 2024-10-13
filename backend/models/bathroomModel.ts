@@ -140,7 +140,7 @@ const tagsSchema = new Schema({
   // Provisions for toilet itself - https://wiki.openstreetmap.org/wiki/Key:toilets:wheelchair
   "toilets:wheelchair": {
     type: String,
-    enum: ["yes", "no", undefined],
+    enum: ["yes", "no", "limited", "designated", undefined],
     default: undefined,
   },
   // if unsure of any of above - values should only be explicitly entered if known

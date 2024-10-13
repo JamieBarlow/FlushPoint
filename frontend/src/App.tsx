@@ -19,14 +19,18 @@ import ShowBathroomError from "./pages/ShowBathroomError";
 export const createBathroom: ActionFunction = async ({ request }) => {
   // gather data from form
   const data = await request.formData();
+  // Submission for request body
   const submission = {
-    // lat and long
+    // to add: lat and long
     name: data.get("name"),
     address: data.get("address"),
     description: data.get("description"),
     operator: data.get("operator"),
     openingHours: data.get("openingHours"),
     gender: data.get("gender"),
+    wheelchairBuildingAccess: data.get("wheelchairBuildingAccess"),
+    wheelchairToiletAccess: data.get("wheelchairToiletAccess"),
+    wheelchairDescription: data.get("wheelchairDescription"),
   };
   console.log(submission);
   // validation

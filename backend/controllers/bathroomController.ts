@@ -12,10 +12,16 @@ const showBathroom = async (req: Request, res: Response) => {
   res.json(bathroom);
 };
 
+interface genderOptions {
+  isSegregated: string;
+  maleOnly: string;
+  femaleOnly: string;
+}
+
 const createBathroom = async (req: Request, res: Response) => {
   const data = req.body;
   // Handling gender options
-  const genderMapping = {
+  const genderMapping: Record<string, genderOptions> = {
     "Don't Know": { isSegregated: "", maleOnly: "", femaleOnly: "" },
     "Gender segregated": {
       isSegregated: "yes",
@@ -30,9 +36,11 @@ const createBathroom = async (req: Request, res: Response) => {
     "Male only": { isSegregated: "yes", maleOnly: "yes", femaleOnly: "no" },
     "Female only": { isSegregated: "yes", maleOnly: "no", femaleOnly: "yes" },
   };
-
-  const { isSegregated, maleOnly, femaleOnly } =
-    genderMapping[data.gender] || {};
+  const { isSegregated, maleOnly, femaleOnly } = genderMapping[data.gender] || {
+    isSegregated: "",
+    maleOnly: "",
+    femaleOnly: "",
+  };
 
   const bathroom = new Bathroom({
     type: "node",
@@ -51,14 +59,22 @@ const createBathroom = async (req: Request, res: Response) => {
       female: femaleOnly,
       male: maleOnly,
       gender_segregated: isSegregated,
-      unisex: isSegregated === "no" ? "yes" : "",
+      unisex: isSegregated === "no" ? "yes" : undefined,
+      wheelchair:
+        data.wheelchairBuildingAccess !== "unknown"
+          ? data.wheelchairBuildingAccess
+          : undefined,
+      "ramp:wheelchair":
+        data.wheelchairBuildingAccess === "yes" ? "yes" : undefined,
+      "toilets:wheelchair":
+        data.wheelchairToiletAccess !== "unknown"
+          ? data.wheelchairToiletAccess
+          : undefined,
+      "wheelchair:description": data.wheelchairDescription,
       fee: "no",
       child: "no",
       check_date: "2024-07-24",
       source: "local_knowledge",
-      wheelchair: "limited",
-      "toilets:wheelchair": "yes",
-      "wheelchair:description": "does this meet wheelchair requirements?",
       changing_table: "yes",
       "changing_table:location": "dedicated_room",
       drinking_water: "no",
