@@ -78,11 +78,15 @@ const createBathroom = async (req: Request, res: Response) => {
           : undefined,
       "wheelchair:description": data.wheelchairDescription,
       fee: data.fee,
-      child: data.child,
+      child: data.child !== "unknown" ? data.child : undefined,
       check_date: getDate(),
       source: "local_knowledge",
-      changing_table: "yes",
-      "changing_table:location": "dedicated_room",
+      changing_table:
+        data.changing_table !== "unknown" ? data.changing_table : undefined,
+      "changing_table:location":
+        data["changing_table:location"][0] !== "unknown"
+          ? data["changing_table:location"].join(";")
+          : undefined,
       drinking_water: "no",
       "toilets:position": "seated;urinal",
       "toilets:menstrual_products": "yes",

@@ -33,6 +33,8 @@ export const createBathroom: ActionFunction = async ({ request }) => {
     wheelchairDescription: data.get("wheelchairDescription"),
     fee: data.get("fee"),
     child: data.get("child"),
+    changing_table: data.get("changing_table"),
+    "changing_table:location": data.getAll("changing_table:location"),
   };
   console.log(submission);
   // validation
@@ -41,6 +43,11 @@ export const createBathroom: ActionFunction = async ({ request }) => {
     submission.description.length < 10
   ) {
     return { error: "Description must be over 10 chars long" };
+  }
+  if (submission["changing_table:location"].length === 0) {
+    return {
+      error: "Please select at least one checkbox for changing table location",
+    };
   }
   // Send POST request to API
   try {

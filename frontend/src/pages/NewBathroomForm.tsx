@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
+  useCheckboxGroup,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -26,6 +27,7 @@ export default function NewBathroomForm() {
   const formInputStyles = {
     mb: "20px",
   };
+  const { value, getCheckboxProps } = useCheckboxGroup();
   return (
     <>
       <Box className="pageWrapper" py="40px">
@@ -143,6 +145,74 @@ export default function NewBathroomForm() {
                 </Stack>
               </RadioGroup>
             </FormControl>
+            <FormControl
+              sx={formInputStyles}
+              isRequired
+              defaultValue={"unknown"}
+            >
+              <FormLabel>Changing table</FormLabel>
+              <RadioGroup defaultValue="unknown" name="changing_table">
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Yes</Radio>
+                  <Radio value="no">No</Radio>
+                  <Radio value="limited">Limited</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+            <FormControl sx={formInputStyles} defaultValue={"unknown"}>
+              <FormLabel>
+                Changing table location (can select multiple)
+              </FormLabel>
+              <CheckboxGroup defaultValue={["unknown"]}>
+                <Stack spacing={4} direction="row">
+                  <Checkbox
+                    name="changing_table:location"
+                    {...getCheckboxProps({ value: "wheelchair_toilet" })}
+                  >
+                    Wheelchair toilet
+                  </Checkbox>
+                  <Checkbox
+                    name="changing_table:location"
+                    {...getCheckboxProps({ value: "female_toilet" })}
+                  >
+                    Female toilet
+                  </Checkbox>
+                  <Checkbox
+                    name="changing_table:location"
+                    {...getCheckboxProps({ value: "male_toilet" })}
+                  >
+                    Male toilet
+                  </Checkbox>
+                  <Checkbox
+                    name="changing_table:location"
+                    {...getCheckboxProps({ value: "unisex_toilet" })}
+                  >
+                    Unisex toilet
+                  </Checkbox>
+                  <Checkbox
+                    name="changing_table:location"
+                    {...getCheckboxProps({ value: "dedicated_room" })}
+                  >
+                    Dedicated room
+                  </Checkbox>
+                  <Checkbox
+                    name="changing_table:location"
+                    isDisabled={value[0] === "unknown"}
+                    {...getCheckboxProps({ value: "room" })}
+                  >
+                    Other room
+                  </Checkbox>
+                  <Checkbox
+                    name="changing_table:location"
+                    {...getCheckboxProps({ value: "unknown" })}
+                  >
+                    Unknown
+                  </Checkbox>
+                </Stack>
+              </CheckboxGroup>
+            </FormControl>
+            <h3>The selected checkboxes are: {value.sort().join(" and ")}</h3>
             <Button type="submit">Submit</Button>
           </Form>
           {data?.error && <p>{data.error}</p>}

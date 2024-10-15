@@ -62,15 +62,33 @@ const tagsSchema = new Schema({
     enum: ["toilets", "yes"],
     default: "yes",
   },
+  source: {
+    type: String,
+    enum: ["local_knowledge"],
+    default: "local_knowledge",
+  },
+  name: {
+    type: String,
+    // do not use if there is no explicit name - tagging with amenity:toilets is sufficient
+    maxLength: 50,
+  },
   "addr:street": {
     type: String,
     maxLength: 50,
   },
-  fee: {
+  description: {
     type: String,
-    required: true,
-    enum: ["yes", "no", "unknown"],
+    maxLength: 200,
   },
+  operator: {
+    type: String,
+    maxLength: 50,
+  },
+  opening_hours: {
+    type: String,
+    // example format: "Mo 10:00-16:00; Tu-Fr 10:00-20:00; We 11:00-18:00; Sa 11:30-15:30; PH off". See https://openingh.ypid.de/evaluation_tool/
+  },
+  // gender options
   female: {
     type: String,
     enum: ["yes", "no", undefined],
@@ -92,40 +110,7 @@ const tagsSchema = new Schema({
     enum: ["yes", "no", undefined],
     default: undefined,
   },
-  child: {
-    type: String,
-    // Seats and urinals specifically for children
-    enum: ["yes", "no", undefined],
-    default: undefined,
-  },
-  check_date: {
-    type: String,
-    required: true,
-    match: [iso8601Regex, "Please enter a valid date in the format YYYY-MM-DD"],
-  },
-  name: {
-    type: String,
-    // do not use if there is no explicit name - tagging with amenity:toilets is sufficient
-    maxLength: 50,
-  },
-  opening_hours: {
-    type: String,
-    // example format: "Mo 10:00-16:00; Tu-Fr 10:00-20:00; We 11:00-18:00; Sa 11:30-15:30; PH off". See https://openingh.ypid.de/evaluation_tool/
-  },
-  "disused:amenity": {
-    type: String,
-    enum: ["toilets", undefined],
-    default: undefined,
-  },
-  description: {
-    type: String,
-    maxLength: 200,
-  },
-  source: {
-    type: String,
-    enum: ["local_knowledge"],
-    default: "local_knowledge",
-  },
+  // wheelchair options
   // refers to access to toilet building/facility only - see toilets:wheelchair for disabled access to toilet itself
   wheelchair: {
     type: String,
@@ -148,10 +133,28 @@ const tagsSchema = new Schema({
     type: String,
     maxLength: 100,
   },
-  operator: {
+  fee: {
     type: String,
-    maxLength: 50,
+    required: true,
+    enum: ["yes", "no", "unknown"],
   },
+  child: {
+    type: String,
+    // Seats and urinals specifically for children
+    enum: ["yes", "no", undefined],
+    default: undefined,
+  },
+  check_date: {
+    type: String,
+    required: true,
+    match: [iso8601Regex, "Please enter a valid date in the format YYYY-MM-DD"],
+  },
+  "disused:amenity": {
+    type: String,
+    enum: ["toilets", undefined],
+    default: undefined,
+  },
+  // Changing table options. 'Limited' means there is a facility available, but not built to be used as a changing table
   changing_table: {
     type: String,
     enum: ["yes", "no", "limited", undefined],
@@ -161,6 +164,7 @@ const tagsSchema = new Schema({
     type: String,
     // options are: "wheelchair_toilet", "female_toilet", "male_toilet", "unisex_toilet", "dedicated_room", "room". If multiple, can be separated by semicolon
   },
+
   drinking_water: {
     type: String,
     enum: ["yes", "no", undefined],
