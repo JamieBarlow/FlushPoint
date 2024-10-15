@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
+  useCheckbox,
   useCheckboxGroup,
   FormControl,
   FormHelperText,
@@ -15,6 +16,7 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import { Form, useActionData } from "react-router-dom";
 
@@ -27,7 +29,17 @@ export default function NewBathroomForm() {
   const formInputStyles = {
     mb: "20px",
   };
-  const { value, getCheckboxProps } = useCheckboxGroup();
+  const { value, setValue, getCheckboxProps } = useCheckboxGroup();
+  const [isLocationUnknown, setIsLocationUnknown] = useState(false);
+
+  // Used to toggle disabled state for other checkboxes and set their values to 'false'
+  const handleCheckboxChange = (val: string) => {
+    if (val === "unknown") {
+      setIsLocationUnknown(!isLocationUnknown);
+      // setValue(["unknown"]);
+    }
+  };
+
   return (
     <>
       <Box className="pageWrapper" py="40px">
@@ -164,48 +176,55 @@ export default function NewBathroomForm() {
               <FormLabel>
                 Changing table location (can select multiple)
               </FormLabel>
-              <CheckboxGroup defaultValue={["unknown"]}>
+              <CheckboxGroup>
                 <Stack spacing={4} direction="row">
                   <Checkbox
                     name="changing_table:location"
                     {...getCheckboxProps({ value: "wheelchair_toilet" })}
+                    isDisabled={isLocationUnknown}
                   >
                     Wheelchair toilet
                   </Checkbox>
                   <Checkbox
                     name="changing_table:location"
                     {...getCheckboxProps({ value: "female_toilet" })}
+                    isDisabled={isLocationUnknown}
                   >
                     Female toilet
                   </Checkbox>
                   <Checkbox
                     name="changing_table:location"
                     {...getCheckboxProps({ value: "male_toilet" })}
+                    isDisabled={isLocationUnknown}
                   >
                     Male toilet
                   </Checkbox>
                   <Checkbox
                     name="changing_table:location"
                     {...getCheckboxProps({ value: "unisex_toilet" })}
+                    isDisabled={isLocationUnknown}
                   >
                     Unisex toilet
                   </Checkbox>
                   <Checkbox
                     name="changing_table:location"
                     {...getCheckboxProps({ value: "dedicated_room" })}
+                    isDisabled={isLocationUnknown}
                   >
                     Dedicated room
                   </Checkbox>
                   <Checkbox
                     name="changing_table:location"
-                    isDisabled={value[0] === "unknown"}
+                    isDisabled={isLocationUnknown}
                     {...getCheckboxProps({ value: "room" })}
+                    onChange={() => handleCheckboxChange("room")}
                   >
                     Other room
                   </Checkbox>
                   <Checkbox
                     name="changing_table:location"
                     {...getCheckboxProps({ value: "unknown" })}
+                    onChange={() => handleCheckboxChange("unknown")}
                   >
                     Unknown
                   </Checkbox>
@@ -213,6 +232,8 @@ export default function NewBathroomForm() {
               </CheckboxGroup>
             </FormControl>
             <h3>The selected checkboxes are: {value.sort().join(" and ")}</h3>
+            <p>{value}</p>
+            <p></p>
             <Button type="submit">Submit</Button>
           </Form>
           {data?.error && <p>{data.error}</p>}

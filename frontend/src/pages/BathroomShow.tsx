@@ -24,10 +24,12 @@ export default function BathroomShow() {
     string | null
   >(null);
   const [changingTable, setChangingTable] = useState<string | null>(null);
-  const [changingLocation, setChangingLocation] = useState<string | null>(null);
+  const [changingLocations, setChangingLocations] = useState<string | null>(
+    null
+  );
   const [toiletPositions, setToiletPositions] = useState<string | null>(null);
   useEffect(() => {
-    let gender, changing_table, changing_location, position;
+    let gender, changing_table, position;
     // Gender access display
     if (bathroom) {
       if (bathroom.tags.gender_segregated === "no") {
@@ -54,29 +56,15 @@ export default function BathroomShow() {
         changing_table = "Unknown";
       }
       setChangingTable(changing_table);
-      switch (bathroom.tags["changing_table:location"]) {
-        case "wheelchair_toilet":
-          changing_location = "Wheelchair toilet";
-          break;
-        case "female_toilet":
-          changing_location = "Female toilet";
-          break;
-        case "male_toilet":
-          changing_location = "Male toilet";
-          break;
-        case "unisex_toilet":
-          changing_location = "Unisex toilet";
-          break;
-        case "dedicated_room":
-          changing_location = "Dedicated room";
-          break;
-        case "room":
-          changing_location = "Multi-purpose rom";
-          break;
-        default:
-          changing_location = "Unknown";
-      }
-      setChangingLocation(changing_location);
+
+      // Changing table location
+      let changing_locations = bathroom.tags["changing_table:location"]
+        .split(";")
+        .map((str) => str.split("_").join(" "))
+        .join(", ");
+
+      console.log(changing_locations);
+      setChangingLocations(changing_locations);
 
       // Toilet position options.
       if (bathroom.tags["toilets:position"]) {
@@ -173,9 +161,9 @@ export default function BathroomShow() {
               </Box>
               {changingTable !== "Unknown" && (
                 <Box>
-                  <Text sx={dataHeader}>Table location</Text>
-                  <Text sx={dataText}>{changingLocation}</Text>
-                  {changingLocation === "Unknown" && <Button>Add info</Button>}
+                  <Text sx={dataHeader}>Table location(s)</Text>
+                  <Text sx={dataText}>{changingLocations}</Text>
+                  {changingLocations === "Unknown" && <Button>Add info</Button>}
                 </Box>
               )}
             </Stack>
