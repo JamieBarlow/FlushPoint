@@ -92,6 +92,25 @@ const tagsSchema = new Schema({
     type: String,
     enum: ["yes", "no", "donation", undefined],
   },
+  access: {
+    type: String,
+    // 'yes' = public, with or without fee. 'Customers' = may require purchase or key/code.
+    // Don't use this property if toilet is in a different building/amenity - see toilets:access instead.
+    enum: ["yes", "customers", undefined],
+    default: undefined,
+  },
+  "toilets:access": {
+    type: String,
+    // use instead of 'access' only if amenity != "toilets" (i.e. not dedicated toilet building)
+    enum: ["yes", "customers", undefined],
+    default: undefined,
+  },
+  // Doesn't refer to locking outside operating hours. Use 'yes' if requires key/card during opening hours, e.g. customer access
+  locked: {
+    type: String,
+    enum: ["yes", "no", undefined],
+    default: undefined,
+  },
   // gender options
   female: {
     type: String,
@@ -177,25 +196,6 @@ const tagsSchema = new Schema({
   supervised: {
     type: String,
     enum: ["yes", "no", "interval", undefined],
-    default: undefined,
-  },
-  access: {
-    type: String,
-    // 'yes' = public, with or without fee. 'Customers' = may require purchase or key/code.
-    // Don't use this property if toilet is in a different building/amenity - see toilets:access instead.
-    enum: ["yes", "customers", undefined],
-    default: undefined,
-  },
-  "toilets:access": {
-    type: String,
-    // use instead of 'access' only if amenity != "toilets" (i.e. not dedicated toilet building)
-    enum: ["yes", "customers", undefined],
-    default: undefined,
-  },
-  // Doesn't refer to locking outside operating hours. Use 'yes' if requires key/card during opening hours, e.g. customer access
-  locked: {
-    type: String,
-    enum: ["yes", "no", undefined],
     default: undefined,
   },
   // refers to entrance

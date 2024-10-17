@@ -27,6 +27,7 @@ export const createBathroom: ActionFunction = async ({ request }) => {
     description: data.get("description"),
     operator: data.get("operator"),
     openingHours: data.get("openingHours"),
+    access: data.get("access"),
     fee: data.get("fee"),
     gender: data.get("gender"),
     wheelchairBuildingAccess: data.get("wheelchairBuildingAccess"),

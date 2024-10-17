@@ -22,23 +22,22 @@ const dataText = {
 };
 
 interface DataDisplayProps {
-  data: BathroomType;
-  tag: keyof Tags;
+  data: string | number | undefined;
   header: string;
   addInfo?: boolean;
 }
 
 const DataDisplay = ({
   data,
-  tag,
   header,
   addInfo,
 }: DataDisplayProps): JSX.Element => {
+  console.log(data);
   return (
     <Box>
       <Text sx={dataHeader}>{header}</Text>
-      {data.tags[tag] ? (
-        <Text sx={dataText}>{data.tags[tag]}</Text>
+      {data ? (
+        <Text sx={dataText}>{data}</Text>
       ) : (
         addInfo && (
           <>
@@ -57,7 +56,8 @@ export default function BathroomShow() {
   let gender: keyof Tags | string | undefined,
     changing_table,
     changing_locations,
-    toilet_positions;
+    toilet_positions,
+    public_access;
   // Gender access display
   if (bathroom) {
     if (bathroom.tags.gender_segregated === "no") {
@@ -70,6 +70,16 @@ export default function BathroomShow() {
       gender = "Female only";
     } else {
       gender = undefined;
+    }
+  }
+  // Access to public
+  if (bathroom) {
+    if (bathroom.tags.access === "yes") {
+      public_access = "Yes";
+    } else if (bathroom.tags.access === "customers") {
+      public_access = "Customers Only";
+    } else {
+      public_access = undefined;
     }
   }
 
@@ -114,8 +124,7 @@ export default function BathroomShow() {
               </Heading>
               <Text color={"gray.500"}>{bathroom.tags.description}</Text>
               <DataDisplay
-                data={bathroom}
-                tag="operator"
+                data={bathroom.tags.operator}
                 header="Operated By:"
               />
             </Box>
@@ -130,48 +139,46 @@ export default function BathroomShow() {
               align="center"
             >
               <DataDisplay
-                data={bathroom}
-                tag="fee"
+                data={public_access}
+                header="Access"
+                addInfo={true}
+              />
+              <DataDisplay
+                data={bathroom.tags.fee}
                 header="Fee?"
                 addInfo={true}
               />
               <DataDisplay
-                data={bathroom}
-                tag={gender as keyof Tags}
+                data={gender}
                 header="Gender Access?"
                 addInfo={true}
               />
               <DataDisplay
-                data={bathroom}
-                tag="wheelchair"
+                data={bathroom.tags.wheelchair}
                 header="Wheelchair (building)"
                 addInfo={true}
               />
               <DataDisplay
-                data={bathroom}
-                tag="toilets:wheelchair"
+                data={bathroom.tags["toilets:wheelchair"]}
                 header="Wheelchair (toilet)"
                 addInfo={true}
               />
               {bathroom.tags["wheelchair:description"] && (
                 <DataDisplay
-                  data={bathroom}
-                  tag="wheelchair:description"
+                  data={bathroom.tags["wheelchair:description"]}
                   header="Wheelchair info"
                   addInfo={true}
                 />
               )}
 
               <DataDisplay
-                data={bathroom}
-                tag="changing_table"
+                data={bathroom.tags.changing_table}
                 header="Changing Table?"
                 addInfo={true}
               />
               {changing_table && (
                 <DataDisplay
-                  data={bathroom}
-                  tag={changing_locations as keyof Tags}
+                  data={changing_locations}
                   header="Table location(s)"
                   addInfo={true}
                 />
@@ -186,55 +193,41 @@ export default function BathroomShow() {
             >
               {bathroom.tags["toilets:position"] && (
                 <DataDisplay
-                  data={bathroom}
-                  tag={toilet_positions as keyof Tags}
+                  data={toilet_positions}
                   header="Toilet positions"
-                  addInfo={true}
-                />
-              )}
-              {bathroom.tags.access && (
-                <DataDisplay
-                  data={bathroom}
-                  tag="access"
-                  header="Access"
                   addInfo={true}
                 />
               )}
               {bathroom.tags.level && (
                 <DataDisplay
-                  data={bathroom}
-                  tag="level"
+                  data={bathroom.tags.level}
                   header="Floor"
                   addInfo={true}
                 />
               )}
               {bathroom.tags.shower && (
                 <DataDisplay
-                  data={bathroom}
-                  tag="shower"
+                  data={bathroom.tags.shower}
                   header="Shower?"
                   addInfo={true}
                 />
               )}
               {bathroom.tags.child && (
                 <DataDisplay
-                  data={bathroom}
-                  tag="child"
+                  data={bathroom.tags.child}
                   header="Seats / urinals for children?"
                   addInfo={true}
                 />
               )}
               {bathroom.tags.drinking_water && (
                 <DataDisplay
-                  data={bathroom}
-                  tag="drinking_water"
+                  data={bathroom.tags.drinking_water}
                   header="Drinking water?"
                   addInfo={true}
                 />
               )}
               <DataDisplay
-                data={bathroom}
-                tag="toilets:menstrual_products"
+                data={bathroom.tags["toilets:menstrual_products"]}
                 header="Menstrual products?"
                 addInfo={true}
               />

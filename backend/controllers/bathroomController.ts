@@ -77,6 +77,8 @@ const createBathroom = async (req: Request, res: Response) => {
           ? data.wheelchairToiletAccess
           : undefined,
       "wheelchair:description": data.wheelchairDescription,
+      access: data.access !== "unknown" ? data.access : undefined,
+      locked: "no",
       fee: data.fee !== "unknown" ? data.fee : undefined,
       child: data.child !== "unknown" ? data.child : undefined,
       check_date: getDate(),
@@ -94,8 +96,6 @@ const createBathroom = async (req: Request, res: Response) => {
         data["toilets:menstrual_products"] !== "unknown"
           ? data["toilets:menstrual_products"]
           : undefined,
-      access: "yes",
-      locked: "no",
       indoor: "no",
       level: 0,
       shower: "no",

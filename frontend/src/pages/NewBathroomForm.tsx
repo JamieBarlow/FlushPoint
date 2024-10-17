@@ -77,6 +77,16 @@ export default function NewBathroomForm() {
                 11:30-15:30; Fr 09:00-12:00; PH off)
               </FormHelperText>
             </FormControl>
+            <FormControl sx={formInputStyles} isRequired>
+              <FormLabel>Accessible to public?</FormLabel>
+              <RadioGroup name="access">
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Yes</Radio>
+                  <Radio value="customers">Customers only</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
             <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
               <FormLabel>Fee for entry?</FormLabel>
               <RadioGroup defaultValue="unknown" name="fee">
