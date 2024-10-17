@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import type { BathroomType } from "../../../backend/models/bathroomModel";
 import {
   Box,
@@ -9,69 +8,39 @@ import {
   Button,
 } from "@chakra-ui/react";
 import BathroomCard from "../components/BathroomCard";
-import { useParams } from "react-router-dom";
 import { useLoaderData } from "react-router-dom";
 
 export default function BathroomShow() {
   const bathroom = useLoaderData() as BathroomType;
-  const { id } = useParams();
-  // const [bathroom, setBathroom] = useState<BathroomType | null>(null);
-  const [genderAccess, setGenderAccess] = useState<string | null>(null);
-  const [wheelchairBuildingAccess, setWheelchairBuildingAccess] = useState<
-    string | null
-  >(null);
-  const [wheelchairToiletAccess, setWheelchairToiletAccess] = useState<
-    string | null
-  >(null);
-  const [changingTable, setChangingTable] = useState<string | null>(null);
-  const [changingLocations, setChangingLocations] = useState<string | null>(
-    null
-  );
-  const [toiletPositions, setToiletPositions] = useState<string | null>(null);
-  useEffect(() => {
-    let gender, changing_table, position;
-    // Gender access display
-    if (bathroom) {
-      if (bathroom.tags.gender_segregated === "no") {
-        gender = "Unisex (gender neutral)";
-      } else if (bathroom.tags.gender_segregated === "yes") {
-        gender = "Male and female (gender segregated)";
-      } else if (bathroom.tags.male === "yes") {
-        gender = "Male only";
-      } else if (bathroom.tags.female === "yes") {
-        gender = "Female only";
-      } else {
-        gender = "Unknown";
-      }
-      setGenderAccess(gender);
 
-      // Wheelchair access
-      setWheelchairBuildingAccess(bathroom.tags.wheelchair);
-      setWheelchairToiletAccess(bathroom.tags["toilets:wheelchair"]);
-
-      // Changing table access
-      if (bathroom.tags.changing_table) {
-        changing_table = bathroom.tags.changing_table;
-      } else {
-        changing_table = "Unknown";
-      }
-      setChangingTable(changing_table);
-
-      // Changing table location
-      let changing_locations = bathroom.tags["changing_table:location"]
-        .split(";")
-        .map((str) => str.split("_").join(" "))
-        .join(", ");
-
-      console.log(changing_locations);
-      setChangingLocations(changing_locations);
-
-      // Toilet position options.
-      if (bathroom.tags["toilets:position"]) {
-        setToiletPositions(bathroom.tags["toilets:position"]);
-      }
+  let gender, changing_table, changing_locations;
+  // Gender access display
+  if (bathroom) {
+    if (bathroom.tags.gender_segregated === "no") {
+      gender = "Unisex (gender neutral)";
+    } else if (bathroom.tags.gender_segregated === "yes") {
+      gender = "Male and female (gender segregated)";
+    } else if (bathroom.tags.male === "yes") {
+      gender = "Male only";
+    } else if (bathroom.tags.female === "yes") {
+      gender = "Female only";
+    } else {
+      gender = "Unknown";
     }
-  }, [bathroom]);
+  }
+
+  // Changing table access
+  if (bathroom.tags.changing_table) {
+    changing_table = bathroom.tags.changing_table;
+  } else {
+    changing_table = "Unknown";
+  }
+
+  // Changing table location
+  changing_locations = bathroom.tags["changing_table:location"]
+    .split(";")
+    .map((str) => str.split("_").join(" "))
+    .join(", ");
 
   const addressBox = {
     bg: "black",
@@ -128,21 +97,21 @@ export default function BathroomShow() {
               </Box>
               <Box>
                 <Text sx={dataHeader}>Gender Access?</Text>
-                <Text sx={dataText}>{genderAccess}</Text>
-                {genderAccess === "Unknown" && <Button>Add info</Button>}
+                <Text sx={dataText}>{gender}</Text>
+                {gender === "Unknown" && <Button>Add info</Button>}
               </Box>
 
               <Box>
                 <Text sx={dataHeader}>Wheelchair (building)</Text>
-                <Text sx={dataText}>{wheelchairBuildingAccess}</Text>
-                {wheelchairBuildingAccess === "Unknown" && (
+                <Text sx={dataText}>{bathroom.tags.wheelchair}</Text>
+                {bathroom.tags.wheelchair === "Unknown" && (
                   <Button>Add info</Button>
                 )}
               </Box>
               <Box>
                 <Text sx={dataHeader}>Wheelchair (toilet)</Text>
-                <Text sx={dataText}>{wheelchairToiletAccess}</Text>
-                {wheelchairToiletAccess === "Unknown" && (
+                <Text sx={dataText}>{bathroom.tags["toilets:wheelchair"]}</Text>
+                {bathroom.tags["toilets:wheelchair"] === "Unknown" && (
                   <Button>Add info</Button>
                 )}
               </Box>
@@ -156,14 +125,16 @@ export default function BathroomShow() {
               )}
               <Box>
                 <Text sx={dataHeader}>Changing Table?</Text>
-                <Text sx={dataText}>{changingTable}</Text>
-                {changingTable === "Unknown" && <Button>Add info</Button>}
+                <Text sx={dataText}>{changing_table}</Text>
+                {changing_table === "Unknown" && <Button>Add info</Button>}
               </Box>
-              {changingTable !== "Unknown" && (
+              {changing_table !== "Unknown" && (
                 <Box>
                   <Text sx={dataHeader}>Table location(s)</Text>
-                  <Text sx={dataText}>{changingLocations}</Text>
-                  {changingLocations === "Unknown" && <Button>Add info</Button>}
+                  <Text sx={dataText}>{changing_locations}</Text>
+                  {changing_locations === "Unknown" && (
+                    <Button>Add info</Button>
+                  )}
                 </Box>
               )}
             </Stack>
@@ -174,10 +145,10 @@ export default function BathroomShow() {
               direction="row"
               align="center"
             >
-              {toiletPositions && (
+              {bathroom.tags["toilets:position"] && (
                 <Box>
                   <Text sx={dataHeader}>Toilet positions</Text>
-                  <Text sx={dataText}>{toiletPositions}</Text>
+                  <Text sx={dataText}>{bathroom.tags["toilets:position"]}</Text>
                 </Box>
               )}
               {bathroom.tags.access && (
