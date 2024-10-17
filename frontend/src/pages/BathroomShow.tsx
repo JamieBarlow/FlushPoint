@@ -99,6 +99,20 @@ export default function BathroomShow() {
   changing_locations = convertMulti(bathroom.tags["changing_table:location"]);
   toilet_positions = convertMulti(bathroom.tags["toilets:position"]);
 
+  // Menstrual products location
+  let menstrual_products =
+    bathroom.tags["toilets:menstrual_products"] || undefined;
+  let products_location;
+  if (menstrual_products !== undefined) {
+    if (menstrual_products === "limited") {
+      products_location = "Free (Female-only stalls)";
+    } else if (bathroom.tags.vending === "feminine_hygiene") {
+      products_location = "Vending machine";
+    } else if (menstrual_products === "yes") {
+      products_location = "Free (accessible to all)";
+    }
+  }
+
   const addressBox = {
     bg: "black",
     display: "inline-block",
@@ -231,6 +245,13 @@ export default function BathroomShow() {
                 header="Menstrual products?"
                 addInfo={true}
               />
+              {menstrual_products && (
+                <DataDisplay
+                  data={products_location}
+                  header="Menstrual products location"
+                  addInfo={true}
+                />
+              )}
             </Stack>
             <Stack
               className="bathroom__updated"

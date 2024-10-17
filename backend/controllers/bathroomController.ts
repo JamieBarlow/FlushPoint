@@ -42,6 +42,28 @@ const createBathroom = async (req: Request, res: Response) => {
     femaleOnly: "",
   };
 
+  // Handling menstrual product options
+  let menstrual_products, vending;
+  if (data["toilets:menstrual_products"]) {
+    const selection = data["toilets:menstrual_products"];
+    const location = data.menstrualProducts_location;
+    if (selection !== "yes") {
+      menstrual_products = selection;
+      vending = undefined;
+    } else {
+      if (location === "limited") {
+        menstrual_products = "limited";
+        vending = undefined;
+      } else if (location === "vending") {
+        menstrual_products = "yes";
+        vending = "feminine_hygiene";
+      } else {
+        menstrual_products = "yes";
+        vending = undefined;
+      }
+    }
+  }
+
   // Fetches today's date in ISO format
   const getDate = () => {
     const now = new Date().toISOString().split("T")[0];
@@ -93,9 +115,8 @@ const createBathroom = async (req: Request, res: Response) => {
         data.drinking_water !== "unknown" ? data.drinking_water : undefined,
       "toilets:position": "seated;urinal",
       "toilets:menstrual_products":
-        data["toilets:menstrual_products"] !== "unknown"
-          ? data["toilets:menstrual_products"]
-          : undefined,
+        menstrual_products !== "unknown" ? menstrual_products : undefined,
+      vending: vending !== "unknown" ? vending : undefined,
       indoor: "no",
       level: 0,
       shower: "no",

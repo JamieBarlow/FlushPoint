@@ -39,6 +39,7 @@ export const createBathroom: ActionFunction = async ({ request }) => {
     "changing_table:location": data.getAll("changing_table:location"),
     drinking_water: data.get("drinking_water"),
     "toilets:menstrual_products": data.get("toilets:menstrual_products"),
+    menstrualProducts_location: data.get("menstrualProducts_location"),
   };
   console.log(submission);
   // validation

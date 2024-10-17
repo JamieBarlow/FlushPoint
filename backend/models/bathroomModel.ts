@@ -101,7 +101,7 @@ const tagsSchema = new Schema({
   },
   "toilets:access": {
     type: String,
-    // use instead of 'access' only if amenity != "toilets" (i.e. not dedicated toilet building)
+    // use instead of 'access' only if amenity !== "toilets" (i.e. if in dedicated toilet building)
     enum: ["yes", "customers", undefined],
     default: undefined,
   },
@@ -188,6 +188,7 @@ const tagsSchema = new Schema({
     enum: ["yes", "no", "limited", undefined],
     default: undefined,
   },
+  // Apply if menstrual products are available from vending machine but not free
   vending: {
     type: String,
     enum: ["feminine_hygiene", undefined],

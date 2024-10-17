@@ -31,6 +31,12 @@ export default function NewBathroomForm() {
   };
   const { value, setValue, getCheckboxProps } = useCheckboxGroup();
   const [isLocationUnknown, setIsLocationUnknown] = useState(false);
+  const [productsAvailable, setProductsAvailable] = useState(false);
+
+  // Used to toggle state
+  const toggleState = (state: boolean, setState: (value: boolean) => void) => {
+    setState(!state);
+  };
 
   // Used to toggle disabled state for other checkboxes and set their values to 'false'
   const handleCheckboxChange = (val: string) => {
@@ -300,13 +306,57 @@ export default function NewBathroomForm() {
                 name="toilets:menstrual_products"
               >
                 <Stack spacing={4} direction="row">
-                  <Radio value="yes">Yes</Radio>
-                  <Radio value="no">No</Radio>
-                  <Radio value="limited">Limited</Radio>
-                  <Radio value="unknown">Unknown</Radio>
+                  <Radio
+                    value="yes"
+                    onChange={() => {
+                      !productsAvailable && setProductsAvailable(true);
+                    }}
+                  >
+                    Yes
+                  </Radio>
+                  <Radio
+                    value="no"
+                    onChange={() => {
+                      productsAvailable && setProductsAvailable(false);
+                    }}
+                  >
+                    No
+                  </Radio>
+                  {/* <Radio
+                    value="limited"
+                    onChange={() => {
+                      productsAvailable && setProductsAvailable(false);
+                    }}
+                  >
+                    Limited (female stalls only)
+                  </Radio> */}
+                  <Radio
+                    value="unknown"
+                    onChange={() => {
+                      productsAvailable && setProductsAvailable(false);
+                    }}
+                  >
+                    Unknown
+                  </Radio>
                 </Stack>
               </RadioGroup>
             </FormControl>
+            {productsAvailable && (
+              <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
+                <FormLabel>Available where?</FormLabel>
+                <RadioGroup
+                  defaultValue="unknown"
+                  name="menstrualProducts_location"
+                >
+                  <Stack spacing={4} direction="row">
+                    <Radio value="free">Free (Accessible to all)</Radio>
+                    <Radio value="limited">Free (Female only stalls)</Radio>
+                    <Radio value="vending">Vending machine</Radio>
+                    <Radio value="unknown">Unknown</Radio>
+                  </Stack>
+                </RadioGroup>
+              </FormControl>
+            )}
             <Button type="submit">Submit</Button>
           </Form>
           {data?.error && <p>{data.error}</p>}
