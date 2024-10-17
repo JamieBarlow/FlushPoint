@@ -77,6 +77,17 @@ export default function NewBathroomForm() {
                 11:30-15:30; Fr 09:00-12:00; PH off)
               </FormHelperText>
             </FormControl>
+            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
+              <FormLabel>Fee for entry?</FormLabel>
+              <RadioGroup defaultValue="unknown" name="fee">
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Yes</Radio>
+                  <Radio value="no">No (free)</Radio>
+                  <Radio value="donation">Donation (voluntary)</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
             <FormControl sx={formInputStyles} isRequired>
               <FormLabel>Gender Access</FormLabel>
               <Select
@@ -137,15 +148,42 @@ export default function NewBathroomForm() {
                 name="wheelchairDescription"
               />
             </FormControl>
-            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
-              <FormLabel>Fee for entry?</FormLabel>
-              <RadioGroup defaultValue="unknown" name="fee">
+            <FormControl sx={formInputStyles} defaultValue={"unknown"}>
+              <FormLabel>
+                Toilet position(s) available (tick all that apply):
+              </FormLabel>
+              <CheckboxGroup>
                 <Stack spacing={4} direction="row">
-                  <Radio value="yes">Yes</Radio>
-                  <Radio value="no">No (free)</Radio>
-                  <Radio value="unknown">Unknown</Radio>
+                  <Checkbox
+                    name="toilets:position"
+                    {...getCheckboxProps({ value: "seated" })}
+                    isDisabled={isLocationUnknown}
+                  >
+                    Seated
+                  </Checkbox>
+                  <Checkbox
+                    name="toilets:position"
+                    {...getCheckboxProps({ value: "urinal" })}
+                    isDisabled={isLocationUnknown}
+                  >
+                    Urinal
+                  </Checkbox>
+                  <Checkbox
+                    name="toilets:position"
+                    {...getCheckboxProps({ value: "squat" })}
+                    isDisabled={isLocationUnknown}
+                  >
+                    Squat
+                  </Checkbox>
+                  <Checkbox
+                    name="toilets:position"
+                    {...getCheckboxProps({ value: "unknown" })}
+                    onChange={() => handleCheckboxChange("unknown")}
+                  >
+                    Unknown
+                  </Checkbox>
                 </Stack>
-              </RadioGroup>
+              </CheckboxGroup>
             </FormControl>
             <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
               <FormLabel>Seats / urinals for children?</FormLabel>
@@ -231,9 +269,34 @@ export default function NewBathroomForm() {
                 </Stack>
               </CheckboxGroup>
             </FormControl>
-            <h3>The selected checkboxes are: {value.sort().join(" and ")}</h3>
-            <p>{value}</p>
-            <p></p>
+            <Box>
+              <h3>The selected checkboxes are: {value.sort().join(" and ")}</h3>
+              <p>{value}</p>
+            </Box>
+            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
+              <FormLabel>Drinking water available?</FormLabel>
+              <RadioGroup defaultValue="unknown" name="drinking_water">
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Yes</Radio>
+                  <Radio value="no">No</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
+              <FormLabel>Menstrual products available?</FormLabel>
+              <RadioGroup
+                defaultValue="unknown"
+                name="toilets:menstrual_products"
+              >
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Yes</Radio>
+                  <Radio value="no">No</Radio>
+                  <Radio value="limited">Limited</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
             <Button type="submit">Submit</Button>
           </Form>
           {data?.error && <p>{data.error}</p>}

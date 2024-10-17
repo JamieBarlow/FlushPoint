@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 
 const iso8601Regex = /^\d{4}-\d{2}-\d{2}$/;
 
-interface Tags {
+export interface Tags {
   amenity: string;
   building: string;
   "addr:street": string;
@@ -88,6 +88,10 @@ const tagsSchema = new Schema({
     type: String,
     // example format: "Mo 10:00-16:00; Tu-Fr 10:00-20:00; We 11:00-18:00; Sa 11:30-15:30; PH off". See https://openingh.ypid.de/evaluation_tool/
   },
+  fee: {
+    type: String,
+    enum: ["yes", "no", "donation", undefined],
+  },
   // gender options
   female: {
     type: String,
@@ -133,25 +137,14 @@ const tagsSchema = new Schema({
     type: String,
     maxLength: 100,
   },
-  fee: {
+  "toilets:position": {
     type: String,
-    required: true,
-    enum: ["yes", "no", "unknown"],
+    // options are: "seated" (only), "urinal" (only), "squat" (only). If multiple types exist, separate with semicolon
   },
   child: {
     type: String,
     // Seats and urinals specifically for children
     enum: ["yes", "no", undefined],
-    default: undefined,
-  },
-  check_date: {
-    type: String,
-    required: true,
-    match: [iso8601Regex, "Please enter a valid date in the format YYYY-MM-DD"],
-  },
-  "disused:amenity": {
-    type: String,
-    enum: ["toilets", undefined],
     default: undefined,
   },
   // Changing table options. 'Limited' means there is a facility available, but not built to be used as a changing table
@@ -164,15 +157,10 @@ const tagsSchema = new Schema({
     type: String,
     // options are: "wheelchair_toilet", "female_toilet", "male_toilet", "unisex_toilet", "dedicated_room", "room". If multiple, can be separated by semicolon
   },
-
   drinking_water: {
     type: String,
     enum: ["yes", "no", undefined],
     default: undefined,
-  },
-  "toilets:position": {
-    type: String,
-    // options are: "seated" (only), "urinal" (only), "squat" (only). If multiple types exist, separate with semicolon
   },
   "toilets:menstrual_products": {
     // "yes" = available for all toilet users (for free). "no" = non available. "limited" means e.g. only available in female-only stalls.
@@ -227,10 +215,20 @@ const tagsSchema = new Schema({
     enum: ["yes", "no", undefined],
     default: undefined,
   },
+  "disused:amenity": {
+    type: String,
+    enum: ["toilets", undefined],
+    default: undefined,
+  },
   // A flag to other mappers that something may need changing / checking
   fixme: {
     type: String,
     maxLength: 200,
+  },
+  check_date: {
+    type: String,
+    required: true,
+    match: [iso8601Regex, "Please enter a valid date in the format YYYY-MM-DD"],
   },
 });
 

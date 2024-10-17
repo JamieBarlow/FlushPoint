@@ -27,14 +27,17 @@ export const createBathroom: ActionFunction = async ({ request }) => {
     description: data.get("description"),
     operator: data.get("operator"),
     openingHours: data.get("openingHours"),
+    fee: data.get("fee"),
     gender: data.get("gender"),
     wheelchairBuildingAccess: data.get("wheelchairBuildingAccess"),
     wheelchairToiletAccess: data.get("wheelchairToiletAccess"),
     wheelchairDescription: data.get("wheelchairDescription"),
-    fee: data.get("fee"),
+    "toilets:position": data.getAll("toilets:position"),
     child: data.get("child"),
     changing_table: data.get("changing_table"),
     "changing_table:location": data.getAll("changing_table:location"),
+    drinking_water: data.get("drinking_water"),
+    "toilets:menstrual_products": data.get("toilets:menstrual_products"),
   };
   console.log(submission);
   // validation

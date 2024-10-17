@@ -62,9 +62,9 @@ const createBathroom = async (req: Request, res: Response) => {
       opening_hours:
         data.openingHours ||
         "Mo 10:00-16:00; Tu-Fr 10:00-20:00; We 11:00-18:00; Sa 11:30-15:30; PH off",
-      female: femaleOnly,
-      male: maleOnly,
-      gender_segregated: isSegregated,
+      female: femaleOnly !== "" ? femaleOnly : undefined,
+      male: maleOnly !== "" ? maleOnly : undefined,
+      gender_segregated: isSegregated !== "" ? isSegregated : undefined,
       unisex: isSegregated === "no" ? "yes" : undefined,
       wheelchair:
         data.wheelchairBuildingAccess !== "unknown"
@@ -77,7 +77,7 @@ const createBathroom = async (req: Request, res: Response) => {
           ? data.wheelchairToiletAccess
           : undefined,
       "wheelchair:description": data.wheelchairDescription,
-      fee: data.fee,
+      fee: data.fee !== "unknown" ? data.fee : undefined,
       child: data.child !== "unknown" ? data.child : undefined,
       check_date: getDate(),
       source: "local_knowledge",
@@ -87,9 +87,13 @@ const createBathroom = async (req: Request, res: Response) => {
         data["changing_table:location"][0] !== "unknown"
           ? data["changing_table:location"].join(";")
           : undefined,
-      drinking_water: "no",
+      drinking_water:
+        data.drinking_water !== "unknown" ? data.drinking_water : undefined,
       "toilets:position": "seated;urinal",
-      "toilets:menstrual_products": "yes",
+      "toilets:menstrual_products":
+        data["toilets:menstrual_products"] !== "unknown"
+          ? data["toilets:menstrual_products"]
+          : undefined,
       access: "yes",
       locked: "no",
       indoor: "no",
