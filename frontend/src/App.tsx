@@ -40,6 +40,12 @@ export const createBathroom: ActionFunction = async ({ request }) => {
     drinking_water: data.get("drinking_water"),
     "toilets:menstrual_products": data.get("toilets:menstrual_products"),
     menstrualProducts_location: data.get("menstrualProducts_location"),
+    supervised: data.get("supervised"),
+    indoor: data.get("indoor"),
+    level: data.get("level"),
+    shower: data.get("shower"),
+    locked: data.get("locked"),
+    fixme: data.get("fixme"),
   };
   console.log(submission);
   // validation

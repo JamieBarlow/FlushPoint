@@ -57,7 +57,8 @@ export default function BathroomShow() {
     changing_table,
     changing_locations,
     toilet_positions,
-    public_access;
+    public_access,
+    entrance_location;
   // Gender access display
   if (bathroom) {
     if (bathroom.tags.gender_segregated === "no") {
@@ -80,6 +81,17 @@ export default function BathroomShow() {
       public_access = "Customers Only";
     } else {
       public_access = undefined;
+    }
+  }
+
+  // Entrance location
+  if (bathroom) {
+    if (bathroom.tags.indoor === "yes") {
+      entrance_location = "Indoors";
+    } else if (bathroom.tags.indoor === "no") {
+      entrance_location = "Outdoors";
+    } else {
+      entrance_location = undefined;
     }
   }
 
@@ -163,6 +175,11 @@ export default function BathroomShow() {
                 addInfo={true}
               />
               <DataDisplay
+                data={bathroom.tags.locked}
+                header="Locked (requires key)?"
+                addInfo={true}
+              />
+              <DataDisplay
                 data={gender}
                 header="Gender Access?"
                 addInfo={true}
@@ -212,13 +229,11 @@ export default function BathroomShow() {
                   addInfo={true}
                 />
               )}
-              {bathroom.tags.level && (
-                <DataDisplay
-                  data={bathroom.tags.level}
-                  header="Floor"
-                  addInfo={true}
-                />
-              )}
+              <DataDisplay
+                data={bathroom.tags.level}
+                header="Floor"
+                addInfo={true}
+              />
               {bathroom.tags.shower && (
                 <DataDisplay
                   data={bathroom.tags.shower}
@@ -249,6 +264,23 @@ export default function BathroomShow() {
                 <DataDisplay
                   data={products_location}
                   header="Menstrual products location"
+                  addInfo={true}
+                />
+              )}
+              <DataDisplay
+                data={bathroom.tags.supervised}
+                header="Supervised"
+                addInfo={true}
+              />
+              <DataDisplay
+                data={entrance_location}
+                header="Entrance location"
+                addInfo={true}
+              />
+              {bathroom.tags.fixme && (
+                <DataDisplay
+                  data={bathroom.tags.fixme}
+                  header="Additional comments"
                   addInfo={true}
                 />
               )}

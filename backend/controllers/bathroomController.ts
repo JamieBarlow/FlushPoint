@@ -100,7 +100,7 @@ const createBathroom = async (req: Request, res: Response) => {
           : undefined,
       "wheelchair:description": data.wheelchairDescription,
       access: data.access !== "unknown" ? data.access : undefined,
-      locked: "no",
+      locked: data.locked !== "unknown" ? data.locked : undefined,
       fee: data.fee !== "unknown" ? data.fee : undefined,
       child: data.child !== "unknown" ? data.child : undefined,
       check_date: getDate(),
@@ -117,9 +117,11 @@ const createBathroom = async (req: Request, res: Response) => {
       "toilets:menstrual_products":
         menstrual_products !== "unknown" ? menstrual_products : undefined,
       vending: vending !== "unknown" ? vending : undefined,
-      indoor: "no",
-      level: 0,
-      shower: "no",
+      supervised: data.supervised !== "unknown" ? data.supervised : undefined,
+      indoor: data.indoor !== "unknown" ? data.indoor : undefined,
+      level: data.level,
+      shower: data.shower !== "unknown" ? data.shower : undefined,
+      fixme: data.fixme ? data.fixme : undefined,
     },
   });
   await bathroom.save();

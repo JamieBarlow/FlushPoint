@@ -11,6 +11,11 @@ import {
   FormLabel,
   Heading,
   Input,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
   Textarea,
   Select,
   RadioGroup,
@@ -103,6 +108,39 @@ export default function NewBathroomForm() {
                   <Radio value="unknown">Unknown</Radio>
                 </Stack>
               </RadioGroup>
+            </FormControl>
+            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
+              <FormLabel>Locked / requires key?</FormLabel>
+              <RadioGroup defaultValue="unknown" name="locked">
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Yes</Radio>
+                  <Radio value="no">No</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
+              <FormHelperText>
+                Doesn't refer to locking outside operating hours
+              </FormHelperText>
+            </FormControl>
+            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
+              <FormLabel>Entrance location</FormLabel>
+              <RadioGroup defaultValue="unknown" name="indoor">
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Indoors</Radio>
+                  <Radio value="no">Outdoors</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Floor (0 = ground floor)</FormLabel>
+              <NumberInput defaultValue={0} min={-10} max={10} name="level">
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
             </FormControl>
             <FormControl sx={formInputStyles} isRequired>
               <FormLabel>Gender Access</FormLabel>
@@ -322,14 +360,6 @@ export default function NewBathroomForm() {
                   >
                     No
                   </Radio>
-                  {/* <Radio
-                    value="limited"
-                    onChange={() => {
-                      productsAvailable && setProductsAvailable(false);
-                    }}
-                  >
-                    Limited (female stalls only)
-                  </Radio> */}
                   <Radio
                     value="unknown"
                     onChange={() => {
@@ -357,6 +387,35 @@ export default function NewBathroomForm() {
                 </RadioGroup>
               </FormControl>
             )}
+            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
+              <FormLabel>Supervised?</FormLabel>
+              <RadioGroup defaultValue="unknown" name="supervised">
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Yes</Radio>
+                  <Radio value="no">No</Radio>
+                  <Radio value="interval">Intervals</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
+              <FormLabel>Shower?</FormLabel>
+              <RadioGroup defaultValue="unknown" name="shower">
+                <Stack spacing={4} direction="row">
+                  <Radio value="yes">Yes</Radio>
+                  <Radio value="no">No</Radio>
+                  <Radio value="unknown">Unknown</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+            <FormControl mb="40px" sx={formInputStyles}>
+              <FormLabel>Any other comments?</FormLabel>
+              <Textarea placeholder="Enter more info" name="fixme" />
+              <FormHelperText>
+                Use only to flag anything to other taggers that may need
+                changing / checking
+              </FormHelperText>
+            </FormControl>
             <Button type="submit">Submit</Button>
           </Form>
           {data?.error && <p>{data.error}</p>}
