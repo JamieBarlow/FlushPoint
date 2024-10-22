@@ -9,6 +9,16 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "frontend/src/pages/NewBathroomForm.tsx",
+			"bookmarks": [
+				{
+					"line": 218,
+					"column": 22,
+					"label": ""
+				}
+			]
 		}
 	]
 }

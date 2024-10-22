@@ -21,6 +21,7 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
+import { CustomCheckbox } from "../components/CustomCheckbox";
 import { useEffect, useState } from "react";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import { Form, useActionData } from "react-router-dom";
@@ -208,6 +209,13 @@ export default function NewBathroomForm() {
               </FormLabel>
               <CheckboxGroup>
                 <Stack spacing={4} direction="row">
+                  <CustomCheckbox
+                    isChecked={true}
+                    isDisabled={false}
+                    onChange={(e) => {
+                      console.log("something");
+                    }}
+                  />
                   <Checkbox
                     name="toilets:position"
                     {...getCheckboxProps({ value: "seated" })}
