@@ -21,10 +21,11 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
-import { CustomCheckbox } from "../components/CustomCheckbox";
+import { CustomCheckbox } from "../components/CustomCheckboxGroup";
 import { useEffect, useState } from "react";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import { Form, useActionData } from "react-router-dom";
+import CustomCheckboxGroup from "../components/CustomCheckboxGroup";
 
 interface ActionData {
   error?: string;
@@ -36,20 +37,18 @@ export default function NewBathroomForm() {
     mb: "20px",
   };
   const { value, setValue, getCheckboxProps } = useCheckboxGroup();
-  const [isLocationUnknown, setIsLocationUnknown] = useState(false);
+  // const [isLocationUnknown, setIsLocationUnknown] = useState(false);
   const [productsAvailable, setProductsAvailable] = useState(false);
 
+  const [isPositionUnknown, setIsPositionUnknown] = useState(false);
   // Used to toggle state
   const toggleState = (state: boolean, setState: (value: boolean) => void) => {
     setState(!state);
   };
 
   // Used to toggle disabled state for other checkboxes and set their values to 'false'
-  const handleCheckboxChange = (val: string) => {
-    if (val === "unknown") {
-      setIsLocationUnknown(!isLocationUnknown);
-      // setValue(["unknown"]);
-    }
+  const handleCheckboxChange = () => {
+    setIsPositionUnknown((prev) => !prev);
   };
 
   return (
@@ -207,45 +206,14 @@ export default function NewBathroomForm() {
               <FormLabel>
                 Toilet position(s) available (tick all that apply):
               </FormLabel>
-              <CheckboxGroup>
-                <Stack spacing={4} direction="row">
-                  <CustomCheckbox
-                    isChecked={true}
-                    isDisabled={false}
-                    onChange={(e) => {
-                      console.log("something");
-                    }}
-                  />
-                  <Checkbox
-                    name="toilets:position"
-                    {...getCheckboxProps({ value: "seated" })}
-                    isDisabled={isLocationUnknown}
-                  >
-                    Seated
-                  </Checkbox>
-                  <Checkbox
-                    name="toilets:position"
-                    {...getCheckboxProps({ value: "urinal" })}
-                    isDisabled={isLocationUnknown}
-                  >
-                    Urinal
-                  </Checkbox>
-                  <Checkbox
-                    name="toilets:position"
-                    {...getCheckboxProps({ value: "squat" })}
-                    isDisabled={isLocationUnknown}
-                  >
-                    Squat
-                  </Checkbox>
-                  <Checkbox
-                    name="toilets:position"
-                    {...getCheckboxProps({ value: "unknown" })}
-                    onChange={() => handleCheckboxChange("unknown")}
-                  >
-                    Unknown
-                  </Checkbox>
-                </Stack>
-              </CheckboxGroup>
+              <CustomCheckboxGroup
+                options={[
+                  { value: "seated", label: "Seated" },
+                  { value: "urinal", label: "Urinal" },
+                  { value: "squat", label: "Squat" },
+                  { value: "unknown", label: "Unknown" },
+                ]}
+              />
             </FormControl>
             <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
               <FormLabel>Seats / urinals for children?</FormLabel>
@@ -276,7 +244,7 @@ export default function NewBathroomForm() {
               <FormLabel>
                 Changing table location (can select multiple)
               </FormLabel>
-              <CheckboxGroup>
+              {/* <CheckboxGroup>
                 <Stack spacing={4} direction="row">
                   <Checkbox
                     name="changing_table:location"
@@ -329,7 +297,7 @@ export default function NewBathroomForm() {
                     Unknown
                   </Checkbox>
                 </Stack>
-              </CheckboxGroup>
+              </CheckboxGroup> */}
             </FormControl>
             <Box>
               <h3>The selected checkboxes are: {value.sort().join(" and ")}</h3>
