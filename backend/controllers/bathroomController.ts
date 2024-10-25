@@ -113,7 +113,10 @@ const createBathroom = async (req: Request, res: Response) => {
           : undefined,
       drinking_water:
         data.drinking_water !== "unknown" ? data.drinking_water : undefined,
-      "toilets:position": "seated;urinal",
+      "toilets:position":
+        data["toilets:position"][0] !== "unknown"
+          ? data["toilets:position"].join(";")
+          : undefined,
       "toilets:menstrual_products":
         menstrual_products !== "unknown" ? menstrual_products : undefined,
       vending: vending !== "unknown" ? vending : undefined,

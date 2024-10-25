@@ -9,23 +9,28 @@ import {
 import { FiCheck } from "react-icons/fi";
 import { useState } from "react";
 
-interface ICustomCheckboxProps {
-  label?: string;
-  isChecked: boolean;
-  isDisabled: boolean;
-  onChange: () => void;
+interface CheckboxGroupProps {
+  options: Option[];
+  name: string;
 }
-
 type Option = {
   value: string;
   label: string;
 };
-interface CheckboxGroupProps {
-  options: Option[];
+interface CustomCheckboxProps {
+  label?: string;
+  isChecked: boolean;
+  isDisabled: boolean;
+  onChange: () => void;
+  value: string;
+  name: string;
 }
 
-export default function customCheckboxGroup({ options }: CheckboxGroupProps) {
-  function CustomCheckbox(props: ICustomCheckboxProps) {
+export default function customCheckboxGroup({
+  options,
+  name,
+}: CheckboxGroupProps) {
+  function CustomCheckbox(props: CustomCheckboxProps) {
     const { state, getCheckboxProps, getInputProps, getLabelProps, htmlProps } =
       useCheckbox(props);
     const { isDisabled } = props;
@@ -97,6 +102,8 @@ export default function customCheckboxGroup({ options }: CheckboxGroupProps) {
             isDisabled={value.includes("unknown") && option.value !== "unknown"} // Disable if "unknown" is selected
             isChecked={isChecked}
             onChange={() => handleClick(option.value)}
+            name={name}
+            value={option.value}
           />
         );
       })}

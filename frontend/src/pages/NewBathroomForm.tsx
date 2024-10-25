@@ -16,6 +16,8 @@ import {
   Select,
   RadioGroup,
   Radio,
+  Checkbox,
+  CheckboxGroup,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Form, useActionData } from "react-router-dom";
@@ -188,6 +190,7 @@ export default function NewBathroomForm() {
                 Toilet position(s) available (tick all that apply):
               </FormLabel>
               <CustomCheckboxGroup
+                name="toilets:position"
                 options={[
                   { value: "seated", label: "Seated" },
                   { value: "urinal", label: "Urinal" },
@@ -225,60 +228,43 @@ export default function NewBathroomForm() {
               <FormLabel>
                 Changing table location (can select multiple)
               </FormLabel>
-              {/* <CheckboxGroup>
+              <CheckboxGroup>
                 <Stack spacing={4} direction="row">
                   <Checkbox
                     name="changing_table:location"
-                    {...getCheckboxProps({ value: "wheelchair_toilet" })}
-                    isDisabled={isLocationUnknown}
+                    value="wheelchair_toilet"
                   >
                     Wheelchair toilet
                   </Checkbox>
                   <Checkbox
                     name="changing_table:location"
-                    {...getCheckboxProps({ value: "female_toilet" })}
-                    isDisabled={isLocationUnknown}
+                    value="female_toilet"
                   >
                     Female toilet
                   </Checkbox>
-                  <Checkbox
-                    name="changing_table:location"
-                    {...getCheckboxProps({ value: "male_toilet" })}
-                    isDisabled={isLocationUnknown}
-                  >
+                  <Checkbox name="changing_table:location" value="male_toilet">
                     Male toilet
                   </Checkbox>
                   <Checkbox
                     name="changing_table:location"
-                    {...getCheckboxProps({ value: "unisex_toilet" })}
-                    isDisabled={isLocationUnknown}
+                    value="unisex_toilet"
                   >
                     Unisex toilet
                   </Checkbox>
                   <Checkbox
                     name="changing_table:location"
-                    {...getCheckboxProps({ value: "dedicated_room" })}
-                    isDisabled={isLocationUnknown}
+                    value="dedicated_room"
                   >
                     Dedicated room
                   </Checkbox>
-                  <Checkbox
-                    name="changing_table:location"
-                    isDisabled={isLocationUnknown}
-                    {...getCheckboxProps({ value: "room" })}
-                    onChange={() => handleCheckboxChange("room")}
-                  >
+                  <Checkbox name="changing_table:location" value="room">
                     Other room
                   </Checkbox>
-                  <Checkbox
-                    name="changing_table:location"
-                    {...getCheckboxProps({ value: "unknown" })}
-                    onChange={() => handleCheckboxChange("unknown")}
-                  >
+                  <Checkbox name="changing_table:location" value="unknown">
                     Unknown
                   </Checkbox>
                 </Stack>
-              </CheckboxGroup> */}
+              </CheckboxGroup>
             </FormControl>
             <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
               <FormLabel>Drinking water available?</FormLabel>
