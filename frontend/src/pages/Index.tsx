@@ -1,4 +1,3 @@
-import type { BathroomType } from "../../../backend/models/bathroomModel";
 import { Box, Text, Heading, Wrap } from "@chakra-ui/react";
 import FallbackBathroomCard from "../components/FallbackBathroomCard";
 import { useLoaderData, Await } from "react-router-dom";

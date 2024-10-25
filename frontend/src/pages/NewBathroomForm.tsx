@@ -33,6 +33,7 @@ export default function NewBathroomForm() {
     mb: "20px",
   };
   const [productsAvailable, setProductsAvailable] = useState(false);
+  const [changingTableAvailable, setChangingTableAvailable] = useState(false);
 
   return (
     <>
@@ -217,55 +218,64 @@ export default function NewBathroomForm() {
               <FormLabel>Changing table</FormLabel>
               <RadioGroup defaultValue="unknown" name="changing_table">
                 <Stack spacing={4} direction="row">
-                  <Radio value="yes">Yes</Radio>
-                  <Radio value="no">No</Radio>
-                  <Radio value="limited">Limited</Radio>
-                  <Radio value="unknown">Unknown</Radio>
+                  <Radio
+                    value="yes"
+                    onChange={() => {
+                      !changingTableAvailable &&
+                        setChangingTableAvailable(true);
+                    }}
+                  >
+                    Yes
+                  </Radio>
+                  <Radio
+                    value="no"
+                    onChange={() => {
+                      changingTableAvailable &&
+                        setChangingTableAvailable(false);
+                    }}
+                  >
+                    No
+                  </Radio>
+                  <Radio
+                    value="limited"
+                    onChange={() => {
+                      changingTableAvailable &&
+                        setChangingTableAvailable(false);
+                    }}
+                  >
+                    Limited
+                  </Radio>
+                  <Radio
+                    value="unknown"
+                    onChange={() => {
+                      changingTableAvailable &&
+                        setChangingTableAvailable(false);
+                    }}
+                  >
+                    Unknown
+                  </Radio>
                 </Stack>
               </RadioGroup>
             </FormControl>
-            <FormControl sx={formInputStyles} defaultValue={"unknown"}>
-              <FormLabel>
-                Changing table location (can select multiple)
-              </FormLabel>
-              <CheckboxGroup>
-                <Stack spacing={4} direction="row">
-                  <Checkbox
-                    name="changing_table:location"
-                    value="wheelchair_toilet"
-                  >
-                    Wheelchair toilet
-                  </Checkbox>
-                  <Checkbox
-                    name="changing_table:location"
-                    value="female_toilet"
-                  >
-                    Female toilet
-                  </Checkbox>
-                  <Checkbox name="changing_table:location" value="male_toilet">
-                    Male toilet
-                  </Checkbox>
-                  <Checkbox
-                    name="changing_table:location"
-                    value="unisex_toilet"
-                  >
-                    Unisex toilet
-                  </Checkbox>
-                  <Checkbox
-                    name="changing_table:location"
-                    value="dedicated_room"
-                  >
-                    Dedicated room
-                  </Checkbox>
-                  <Checkbox name="changing_table:location" value="room">
-                    Other room
-                  </Checkbox>
-                  <Checkbox name="changing_table:location" value="unknown">
-                    Unknown
-                  </Checkbox>
-                </Stack>
-              </CheckboxGroup>
-            </FormControl>
+            {changingTableAvailable && (
+              <FormControl sx={formInputStyles} defaultValue={"unknown"}>
+                <FormLabel>
+                  Changing table location (can select multiple)
+                </FormLabel>
+                <CustomCheckboxGroup
+                  name="changing_table:location"
+                  options={[
+                    { value: "wheelchair_toilet", label: "Wheelchair toilet" },
+                    { value: "female_toilet", label: "Female toilet" },
+                    { value: "male_toilet", label: "Male toilet" },
+                    { value: "unisex_toilet", label: "Unisex toilet" },
+                    { value: "dedicated_room", label: "Dedicated room" },
+                    { value: "room", label: "Other room" },
+                    { value: "unknown", label: "Unknown" },
+                  ]}
+                />
+              </FormControl>
+            )}
             <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
               <FormLabel>Drinking water available?</FormLabel>
               <RadioGroup defaultValue="unknown" name="drinking_water">
