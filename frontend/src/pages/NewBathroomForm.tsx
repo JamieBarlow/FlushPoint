@@ -2,10 +2,6 @@ import {
   Stack,
   Box,
   Button,
-  Checkbox,
-  CheckboxGroup,
-  useCheckbox,
-  useCheckboxGroup,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -21,9 +17,7 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
-import { CustomCheckbox } from "../components/CustomCheckboxGroup";
-import { useEffect, useState } from "react";
-import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
+import { useState } from "react";
 import { Form, useActionData } from "react-router-dom";
 import CustomCheckboxGroup from "../components/CustomCheckboxGroup";
 
@@ -36,20 +30,7 @@ export default function NewBathroomForm() {
   const formInputStyles = {
     mb: "20px",
   };
-  const { value, setValue, getCheckboxProps } = useCheckboxGroup();
-  // const [isLocationUnknown, setIsLocationUnknown] = useState(false);
   const [productsAvailable, setProductsAvailable] = useState(false);
-
-  const [isPositionUnknown, setIsPositionUnknown] = useState(false);
-  // Used to toggle state
-  const toggleState = (state: boolean, setState: (value: boolean) => void) => {
-    setState(!state);
-  };
-
-  // Used to toggle disabled state for other checkboxes and set their values to 'false'
-  const handleCheckboxChange = () => {
-    setIsPositionUnknown((prev) => !prev);
-  };
 
   return (
     <>
@@ -299,10 +280,6 @@ export default function NewBathroomForm() {
                 </Stack>
               </CheckboxGroup> */}
             </FormControl>
-            <Box>
-              <h3>The selected checkboxes are: {value.sort().join(" and ")}</h3>
-              <p>{value}</p>
-            </Box>
             <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
               <FormLabel>Drinking water available?</FormLabel>
               <RadioGroup defaultValue="unknown" name="drinking_water">

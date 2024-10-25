@@ -1,15 +1,11 @@
 import {
   useCheckbox,
-  FormLabel,
   Stack,
-  Icon,
   Text,
   Flex,
-  Box,
   useCheckboxGroup,
   chakra,
 } from "@chakra-ui/react";
-import { CgOptions } from "react-icons/cg";
 import { FiCheck } from "react-icons/fi";
 import { useState } from "react";
 
@@ -18,10 +14,17 @@ interface ICustomCheckboxProps {
   isChecked: boolean;
   isDisabled: boolean;
   onChange: () => void;
-  value: string;
 }
 
-export default function customCheckboxGroup({ options, defaultValues = [] }) {
+type Option = {
+  value: string;
+  label: string;
+};
+interface CheckboxGroupProps {
+  options: Option[];
+}
+
+export default function customCheckboxGroup({ options }: CheckboxGroupProps) {
   function CustomCheckbox(props: ICustomCheckboxProps) {
     const { state, getCheckboxProps, getInputProps, getLabelProps, htmlProps } =
       useCheckbox(props);
@@ -64,7 +67,7 @@ export default function customCheckboxGroup({ options, defaultValues = [] }) {
 
   const { value, setValue, getCheckboxProps } = useCheckboxGroup();
   const [isUnknown, setIsUnknown] = useState(false);
-  const handleClick = (selection) => {
+  const handleClick = (selection: string) => {
     if (selection === "unknown" && !isUnknown) {
       setValue(["unknown"]);
       setIsUnknown(true);
