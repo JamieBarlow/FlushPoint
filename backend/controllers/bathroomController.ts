@@ -80,7 +80,7 @@ const createBathroom = async (req: Request, res: Response) => {
       name: data.name,
       "addr:street": data.address,
       description: data.description,
-      operator: data.operator,
+      operator: data.operator !== "" ? data.operator : undefined,
       opening_hours:
         data.openingHours ||
         "Mo 10:00-16:00; Tu-Fr 10:00-20:00; We 11:00-18:00; Sa 11:30-15:30; PH off",
@@ -98,7 +98,10 @@ const createBathroom = async (req: Request, res: Response) => {
         data.wheelchairToiletAccess !== "unknown"
           ? data.wheelchairToiletAccess
           : undefined,
-      "wheelchair:description": data.wheelchairDescription,
+      "wheelchair:description":
+        data.wheelchairDescription !== ""
+          ? data.wheelchairDescription
+          : undefined,
       access: data.access !== "unknown" ? data.access : undefined,
       locked: data.locked !== "unknown" ? data.locked : undefined,
       fee: data.fee !== "unknown" ? data.fee : undefined,

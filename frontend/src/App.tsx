@@ -55,7 +55,10 @@ export const createBathroom: ActionFunction = async ({ request }) => {
   ) {
     return { error: "Description must be over 10 chars long" };
   }
-  if (submission["changing_table:location"].length === 0) {
+  if (
+    submission.changing_table === "yes" &&
+    submission["changing_table:location"].length === 0
+  ) {
     return {
       error: "Please select at least one checkbox for changing table location",
     };
