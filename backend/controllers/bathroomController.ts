@@ -12,122 +12,49 @@ const showBathroom = async (req: Request, res: Response) => {
   res.json(bathroom);
 };
 
-interface genderOptions {
-  isSegregated: string;
-  maleOnly: string;
-  femaleOnly: string;
-}
-
 const createBathroom = async (req: Request, res: Response) => {
   const data = req.body;
-  // Handling gender options
-  const genderMapping: Record<string, genderOptions> = {
-    "Don't Know": { isSegregated: "", maleOnly: "", femaleOnly: "" },
-    "Gender segregated": {
-      isSegregated: "yes",
-      maleOnly: "no",
-      femaleOnly: "no",
-    },
-    "Unisex (gender neutral)": {
-      isSegregated: "no",
-      maleOnly: "no",
-      femaleOnly: "no",
-    },
-    "Male only": { isSegregated: "yes", maleOnly: "yes", femaleOnly: "no" },
-    "Female only": { isSegregated: "yes", maleOnly: "no", femaleOnly: "yes" },
-  };
-  const { isSegregated, maleOnly, femaleOnly } = genderMapping[data.gender] || {
-    isSegregated: "",
-    maleOnly: "",
-    femaleOnly: "",
-  };
-
-  // Handling menstrual product options
-  let menstrual_products, vending;
-  if (data["toilets:menstrual_products"]) {
-    const selection = data["toilets:menstrual_products"];
-    const location = data.menstrualProducts_location;
-    if (selection !== "yes") {
-      menstrual_products = selection;
-      vending = undefined;
-    } else {
-      if (location === "limited") {
-        menstrual_products = "limited";
-        vending = undefined;
-      } else if (location === "vending") {
-        menstrual_products = "yes";
-        vending = "feminine_hygiene";
-      } else {
-        menstrual_products = "yes";
-        vending = undefined;
-      }
-    }
-  }
-
-  // Fetches today's date in ISO format
-  const getDate = () => {
-    const now = new Date().toISOString().split("T")[0];
-    return now;
-  };
+  const { tags } = data;
 
   const bathroom = new Bathroom({
-    type: "node",
-    bathroom_id: 1,
-    lat: 51.5173639,
-    long: -0.140043,
+    type: data.type,
+    bathroom_id: data.bathroom_id,
+    lat: data.lat,
+    long: data.long,
     tags: {
-      amenity: "toilets",
-      name: data.name,
-      "addr:street": data.address,
-      description: data.description,
-      operator: data.operator !== "" ? data.operator : undefined,
+      amenity: tags.amenity,
+      source: tags.source,
+      name: tags.name,
+      "addr:street": tags.address,
+      description: tags.description,
+      operator: tags.operator,
       opening_hours:
-        data.openingHours ||
+        tags.opening_hours ||
         "Mo 10:00-16:00; Tu-Fr 10:00-20:00; We 11:00-18:00; Sa 11:30-15:30; PH off",
-      female: femaleOnly !== "" ? femaleOnly : undefined,
-      male: maleOnly !== "" ? maleOnly : undefined,
-      gender_segregated: isSegregated !== "" ? isSegregated : undefined,
-      unisex: isSegregated === "no" ? "yes" : undefined,
-      wheelchair:
-        data.wheelchairBuildingAccess !== "unknown"
-          ? data.wheelchairBuildingAccess
-          : undefined,
-      "ramp:wheelchair":
-        data.wheelchairBuildingAccess === "yes" ? "yes" : undefined,
-      "toilets:wheelchair":
-        data.wheelchairToiletAccess !== "unknown"
-          ? data.wheelchairToiletAccess
-          : undefined,
-      "wheelchair:description":
-        data.wheelchairDescription !== ""
-          ? data.wheelchairDescription
-          : undefined,
-      access: data.access !== "unknown" ? data.access : undefined,
-      locked: data.locked !== "unknown" ? data.locked : undefined,
-      fee: data.fee !== "unknown" ? data.fee : undefined,
-      child: data.child !== "unknown" ? data.child : undefined,
-      check_date: getDate(),
-      source: "local_knowledge",
-      changing_table:
-        data.changing_table !== "unknown" ? data.changing_table : undefined,
-      "changing_table:location":
-        data["changing_table:location"][0] !== "unknown"
-          ? data["changing_table:location"].join(";")
-          : undefined,
-      drinking_water:
-        data.drinking_water !== "unknown" ? data.drinking_water : undefined,
-      "toilets:position":
-        data["toilets:position"][0] !== "unknown"
-          ? data["toilets:position"].join(";")
-          : undefined,
-      "toilets:menstrual_products":
-        menstrual_products !== "unknown" ? menstrual_products : undefined,
-      vending: vending !== "unknown" ? vending : undefined,
-      supervised: data.supervised !== "unknown" ? data.supervised : undefined,
-      indoor: data.indoor !== "unknown" ? data.indoor : undefined,
-      level: data.level,
-      shower: data.shower !== "unknown" ? data.shower : undefined,
-      fixme: data.fixme ? data.fixme : undefined,
+      access: tags.access,
+      fee: tags.fee,
+      gender_segregated: tags.gender_segregated,
+      unisex: tags.unisex,
+      female: tags.female,
+      male: tags.male,
+      wheelchair: tags.wheelchairBuildingAccess,
+      "ramp:wheelchair": tags["ramp:wheelchair"],
+      "toilets:wheelchair": tags.wheelchairToiletAccess,
+      "wheelchair:description": tags.wheelchairDescription,
+      locked: tags.locked,
+      child: tags.child,
+      changing_table: tags.changing_table,
+      "changing_table:location": tags["changing_table:location"],
+      drinking_water: tags.drinking_water,
+      "toilets:position": tags["toilets:position"],
+      "toilets:menstrual_products": tags["toilets:menstrual_products"],
+      vending: tags.vending,
+      supervised: tags.supervised,
+      indoor: tags.indoor,
+      level: tags.level,
+      shower: tags.shower,
+      check_date: tags.check_date,
+      fixme: tags.fixme,
     },
   });
   await bathroom.save();

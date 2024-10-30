@@ -3,13 +3,19 @@ import bathroomController from "../controllers/bathroomController";
 import requireLogin from "../middleware/requireLogin";
 import seedDB from "../seeds/seedDB";
 import wrapAsync from "../middleware/wrapAsync";
+import sanitizeBathroom from "../middleware/sanitizeBathroom";
+import validateBathroom from "../middleware/validateBathroom";
 
 const router = express.Router();
 
 router
   .route("/")
   .get(wrapAsync(bathroomController.showBathroomsIndex))
-  .post(wrapAsync(bathroomController.createBathroom));
+  .post(
+    sanitizeBathroom,
+    validateBathroom,
+    wrapAsync(bathroomController.createBathroom)
+  );
 
 router.route("/seedDB").post(seedDB);
 
