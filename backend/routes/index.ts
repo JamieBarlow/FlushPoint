@@ -47,6 +47,7 @@ app.use(
       },
       collectionName: "sessions",
     }),
+    resave: false,
   })
 );
 

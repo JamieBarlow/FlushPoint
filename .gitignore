@@ -3,3 +3,4 @@ API queries/
 node_modules/
 .env
 testdata/
+docs/

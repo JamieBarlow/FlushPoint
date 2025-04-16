@@ -48,6 +48,22 @@ export interface BathroomType {
   tags: Tags;
 }
 
+function semicolonEnumValidator(allowedValues: string[], label = "value") {
+  return {
+    validator: function (value: string | undefined) {
+      if (!value) return true; // allow undefined
+      const parts = value.split(";").map((p) => p.trim());
+      return parts.every((p) => allowedValues.includes(p));
+    },
+    message: (props: any) =>
+      `"${
+        props.value
+      }" contains an invalid ${label}. Allowed values: ${allowedValues.join(
+        ", "
+      )}`,
+  };
+}
+
 const tagsSchema = new Schema({
   amenity: {
     type: String,
@@ -69,20 +85,24 @@ const tagsSchema = new Schema({
   },
   name: {
     type: String,
-    // do not use if there is no explicit name - tagging with amenity:toilets is sufficient
+    // OSM docs: if there is no explicit name - tagging with amenity:toilets is sufficient. However, a name is preferred so this is marked as required
     maxLength: 50,
+    required: true,
   },
   "addr:street": {
     type: String,
     maxLength: 50,
+    required: true,
   },
   description: {
     type: String,
     maxLength: 200,
+    default: undefined,
   },
   operator: {
     type: String,
     maxLength: 50,
+    default: undefined,
   },
   opening_hours: {
     type: String,
@@ -138,6 +158,7 @@ const tagsSchema = new Schema({
   wheelchair: {
     type: String,
     enum: ["yes", "no", "limited", "designated", undefined],
+    default: undefined,
   },
   // combine w wheelchair property if "yes"
   "ramp:wheelchair": {
@@ -155,10 +176,16 @@ const tagsSchema = new Schema({
   "wheelchair:description": {
     type: String,
     maxLength: 100,
+    default: undefined,
   },
   "toilets:position": {
     type: String,
     // options are: "seated" (only), "urinal" (only), "squat" (only). If multiple types exist, separate with semicolon
+    validate: semicolonEnumValidator(
+      ["seated", "urinal", "squat"],
+      "toilet position"
+    ),
+    default: undefined,
   },
   child: {
     type: String,
@@ -175,6 +202,18 @@ const tagsSchema = new Schema({
   "changing_table:location": {
     type: String,
     // options are: "wheelchair_toilet", "female_toilet", "male_toilet", "unisex_toilet", "dedicated_room", "room". If multiple, can be separated by semicolon
+    validate: semicolonEnumValidator(
+      [
+        "wheelchair_toilet",
+        "female_toilet",
+        "male_toilet",
+        "unisex_toilet",
+        "dedicated_room",
+        "room",
+      ],
+      "changing table location"
+    ),
+    default: undefined,
   },
   drinking_water: {
     type: String,
@@ -225,6 +264,7 @@ const tagsSchema = new Schema({
   fixme: {
     type: String,
     maxLength: 200,
+    default: undefined,
   },
   check_date: {
     type: String,
