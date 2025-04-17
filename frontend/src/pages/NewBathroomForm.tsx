@@ -5,6 +5,7 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
+  FormErrorMessage,
   Heading,
   Input,
   NumberInput,
@@ -20,12 +21,33 @@ import {
   CheckboxGroup,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, useFetcher } from "react-router-dom";
 import CustomCheckboxGroup from "../components/CustomCheckboxGroup";
+import { useForm } from "react-hook-form";
 
 interface ActionData {
   error?: string;
 }
+
+const {
+  register,
+  handleSubmit,
+  formState: { errors, isSubmitting },
+} = useForm();
+
+const fetcher = useFetcher();
+const onValid = (data: any) => {
+  const formData = new FormData();
+  Object.entries(data).forEach(([key, value]) => {
+    if (typeof value === "string" || value instanceof Blob) {
+      formData.append(key, value);
+    } else if (value != null) {
+      formData.append(key, String(value));
+    }
+  });
+  console.log(formData);
+  fetcher.submit(formData, { method: "post" });
+};
 
 export default function NewBathroomForm() {
   const data = useActionData() as ActionData | null;
@@ -40,17 +62,51 @@ export default function NewBathroomForm() {
       <Box className="pageWrapper" py="40px">
         <Heading>New Bathroom</Heading>
         <Box maxW="480px">
-          <Form method="post">
-            <FormControl isRequired sx={formInputStyles}>
-              <FormLabel>Bathroom name:</FormLabel>
-              <Input type="text" name="name" />
+          <form onSubmit={handleSubmit(onValid)}>
+            <FormControl
+              isRequired
+              sx={formInputStyles}
+              isInvalid={!!errors.name}
+            >
+              <FormLabel htmlFor="name">Bathroom name:</FormLabel>
+              <Input
+                id="name"
+                type="text"
+                {...register("name", {
+                  required: "Name is required",
+                  minLength: {
+                    value: 4,
+                    message: "Minimum length should be 4 characters",
+                  },
+                })}
+              />
+              <FormErrorMessage>
+                {String(errors.name?.message)}
+              </FormErrorMessage>
               <FormHelperText>
                 Enter the location name (e.g. 'London Road Public Toilets')
               </FormHelperText>
             </FormControl>
-            <FormControl isRequired sx={formInputStyles}>
-              <FormLabel>Address</FormLabel>
-              <Input type="text" name="addr:street" />
+            <FormControl
+              isRequired
+              sx={formInputStyles}
+              isInvalid={!!errors["addr:street"]}
+            >
+              <FormLabel htmlFor="addr:street">Address</FormLabel>
+              <Input
+                id="addr:street"
+                type="text"
+                {...register("addr:street", {
+                  required: "Address is required",
+                  minLength: {
+                    value: 4,
+                    message: "Minimum length should be 4 characters",
+                  },
+                })}
+              />
+              <FormErrorMessage>
+                {String(errors["addr:street"]?.message)}
+              </FormErrorMessage>
               <FormHelperText>
                 (include street and full postcode if known)
               </FormHelperText>
@@ -359,8 +415,10 @@ export default function NewBathroomForm() {
                 changing / checking
               </FormHelperText>
             </FormControl>
-            <Button type="submit">Submit</Button>
-          </Form>
+            <Button type="submit" isLoading={isSubmitting}>
+              Submit
+            </Button>
+          </form>
           {data?.error && <p>{data.error}</p>}
         </Box>
       </Box>
