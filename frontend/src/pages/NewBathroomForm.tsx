@@ -50,7 +50,7 @@ export default function NewBathroomForm() {
             </FormControl>
             <FormControl isRequired sx={formInputStyles}>
               <FormLabel>Address</FormLabel>
-              <Input type="text" name="address" />
+              <Input type="text" name="addr:street" />
               <FormHelperText>
                 (include street and full postcode if known)
               </FormHelperText>
@@ -66,7 +66,7 @@ export default function NewBathroomForm() {
             </FormControl>
             <FormControl sx={formInputStyles}>
               <FormLabel>Opening Hours</FormLabel>
-              <Input type="text" name="openingHours" />
+              <Input type="text" name="opening_hours" />
               <FormHelperText>
                 (e.g. Mo 10:00-16:00; Tu 10:00-20:00; We 11:00-18:00; Th
                 11:30-15:30; Fr 09:00-12:00; PH off)
@@ -131,7 +131,7 @@ export default function NewBathroomForm() {
               <Select
                 placeholder="Select option"
                 variant="outline"
-                name="gender"
+                name="gender_segregated"
               >
                 <option value="Gender segregated">
                   Gender segregated (M & F separate)
@@ -150,10 +150,7 @@ export default function NewBathroomForm() {
               defaultValue={"unknown"}
             >
               <FormLabel>Wheelchair building access</FormLabel>
-              <RadioGroup
-                defaultValue="unknown"
-                name="wheelchairBuildingAccess"
-              >
+              <RadioGroup defaultValue="unknown" name="wheelchair">
                 <Stack spacing={4} direction="row">
                   <Radio value="yes">Unrestricted (stepless entry)</Radio>
                   <Radio value="limited">Limited (partially accessible)</Radio>
@@ -169,7 +166,7 @@ export default function NewBathroomForm() {
               defaultValue={"unknown"}
             >
               <FormLabel>Wheelchair toilet access</FormLabel>
-              <RadioGroup defaultValue="unknown" name="wheelchairToiletAccess">
+              <RadioGroup defaultValue="unknown" name="toilets:wheelchair">
                 <Stack spacing={4} direction="row">
                   <Radio value="yes">Unrestricted (stepless entry)</Radio>
                   <Radio value="limited">Limited (partially accessible)</Radio>
@@ -183,7 +180,7 @@ export default function NewBathroomForm() {
               <FormLabel>Any other wheelchair info?</FormLabel>
               <Textarea
                 placeholder="Enter more info"
-                name="wheelchairDescription"
+                name="wheelchair:description"
               />
             </FormControl>
             <FormControl sx={formInputStyles} defaultValue={"unknown"}>
@@ -323,10 +320,7 @@ export default function NewBathroomForm() {
             {productsAvailable && (
               <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
                 <FormLabel>Available where?</FormLabel>
-                <RadioGroup
-                  defaultValue="unknown"
-                  name="menstrualProducts_location"
-                >
+                <RadioGroup defaultValue="unknown" name="vending">
                   <Stack spacing={4} direction="row">
                     <Radio value="free">Free (Accessible to all)</Radio>
                     <Radio value="limited">Free (Female only stalls)</Radio>

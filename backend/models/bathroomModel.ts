@@ -42,7 +42,7 @@ export interface Tags {
 export interface BathroomType {
   _id: string;
   type: string;
-  bathroom_id: number;
+  bathroom_id: string;
   lat: number;
   long: number;
   tags: Tags;
@@ -249,6 +249,7 @@ const tagsSchema = new Schema({
     type: Number,
     min: -10,
     max: 10,
+    default: undefined,
   },
   shower: {
     type: String,
@@ -281,7 +282,7 @@ const bathroomSchema = new Schema<BathroomType>({
     default: "node",
   },
   bathroom_id: {
-    type: Number,
+    type: String,
     required: true,
   },
   lat: {

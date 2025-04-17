@@ -32,6 +32,50 @@ export const createBathroom: ActionFunction = async ({ request }) => {
     const now = new Date().toISOString().split("T")[0];
     return now;
   };
+
+  const rawTags = {
+    amenity: "toilets",
+    source: "local_knowledge",
+    name: data.get("name"),
+    "addr:street": data.get("addr:street"),
+    description: data.get("description"),
+    operator: data.get("operator"),
+    opening_hours: data.get("opening_hours"),
+    access: data.get("access"),
+    fee: data.get("fee"),
+    gender_segregated: data.get("gender_segregated"),
+    wheelchair: data.get("wheelchair"),
+    "toilets:wheelchair": data.get("toilets:wheelchair"),
+    "wheelchair:description": data.get("wheelchair:description"),
+    locked: data.get("locked"),
+    child: data.get("child"),
+    changing_table: data.get("changing_table"),
+    "changing_table:location": data.getAll("changing_table:location"),
+    drinking_water: data.get("drinking_water"),
+    "toilets:position": data.getAll("toilets:position"),
+    "toilets:menstrual_products": data.get("toilets:menstrual_products"),
+    vending: data.get("vending"),
+    supervised: data.get("supervised"),
+    indoor: data.get("indoor"),
+    level: data.get("level"),
+    shower: data.get("shower"),
+    check_date: getDate(),
+    fixme: data.get("fixme"),
+  };
+
+  // Ensure that empty arrays, empty strings, "unknown" entries and 'null' entries are returned as 'undefined'
+  const sanitizeField = (field: any) => {
+    if (Array.isArray(field) && field.length === 0) {
+      return undefined;
+    }
+    if (field === "" || field === "unknown" || field === null) return undefined;
+    return field;
+  };
+
+  const sanitizedTags = Object.fromEntries(
+    Object.entries(rawTags).map(([key, value]) => [key, sanitizeField(value)])
+  );
+
   // Submission for request body
   const submission = {
     // to add: lat and long
@@ -39,36 +83,9 @@ export const createBathroom: ActionFunction = async ({ request }) => {
     bathroom_id: uuidv4(),
     lat: geo[0],
     long: geo[1],
-    tags: {
-      amenity: "toilets",
-      source: "local_knowledge",
-      name: data.get("name"),
-      "addr:street": data.get("address"),
-      description: data.get("description"),
-      operator: data.get("operator"),
-      opening_hours: data.get("openingHours"),
-      access: data.get("access"),
-      fee: data.get("fee"),
-      gender_segregated: data.get("gender"),
-      wheelchairBuildingAccess: data.get("wheelchairBuildingAccess"),
-      wheelchairToiletAccess: data.get("wheelchairToiletAccess"),
-      wheelchairDescription: data.get("wheelchairDescription"),
-      locked: data.get("locked"),
-      child: data.get("child"),
-      changing_table: data.get("changing_table"),
-      "changing_table:location": data.getAll("changing_table:location"),
-      drinking_water: data.get("drinking_water"),
-      "toilets:position": data.getAll("toilets:position"),
-      "toilets:menstrual_products": data.get("toilets:menstrual_products"),
-      menstrualProducts_location: data.get("menstrualProducts_location"),
-      supervised: data.get("supervised"),
-      indoor: data.get("indoor"),
-      level: data.get("level"),
-      shower: data.get("shower"),
-      check_date: getDate(),
-      fixme: data.get("fixme"),
-    },
+    tags: sanitizedTags,
   };
+
   console.log(submission);
   // validation
   if (

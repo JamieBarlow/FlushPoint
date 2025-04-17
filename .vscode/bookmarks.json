@@ -1,20 +1,10 @@
 {
 	"files": [
 		{
-			"path": "backend/models/bathroomModel.ts",
-			"bookmarks": [
-				{
-					"line": 173,
-					"column": 7,
-					"label": ""
-				}
-			]
-		},
-		{
 			"path": "frontend/src/pages/NewBathroomForm.tsx",
 			"bookmarks": [
 				{
-					"line": 192,
+					"line": 189,
 					"column": 34,
 					"label": ""
 				}

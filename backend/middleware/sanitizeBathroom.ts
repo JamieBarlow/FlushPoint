@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import AppError from "./AppError";
 
 interface genderOptions {
-  isSegregated: string;
-  maleOnly: string;
-  femaleOnly: string;
+  isSegregated?: string;
+  maleOnly?: string;
+  femaleOnly?: string;
 }
 
 const sanitizeBathroom = (req: Request, res: Response, next: NextFunction) => {
@@ -13,7 +13,11 @@ const sanitizeBathroom = (req: Request, res: Response, next: NextFunction) => {
 
     // Handling gender options
     const genderMapping: Record<string, genderOptions> = {
-      "Don't Know": { isSegregated: "", maleOnly: "", femaleOnly: "" },
+      "Don't Know": {
+        isSegregated: undefined,
+        maleOnly: undefined,
+        femaleOnly: undefined,
+      },
       "Gender segregated": {
         isSegregated: "yes",
         maleOnly: "no",
@@ -30,9 +34,9 @@ const sanitizeBathroom = (req: Request, res: Response, next: NextFunction) => {
     const { isSegregated, maleOnly, femaleOnly } = genderMapping[
       data.tags.gender_segregated
     ] || {
-      isSegregated: "",
-      maleOnly: "",
-      femaleOnly: "",
+      isSegregated: undefined,
+      maleOnly: undefined,
+      femaleOnly: undefined,
     };
     data.tags.gender_segregated = isSegregated;
     data.tags.male = maleOnly;
@@ -44,7 +48,7 @@ const sanitizeBathroom = (req: Request, res: Response, next: NextFunction) => {
     // Handling menstrual product options
     if (data.tags["toilets:menstrual_products"]) {
       const selection = data.tags["toilets:menstrual_products"];
-      const location = data.tags.menstrualProducts_location;
+      const location = data.tags.vending;
       if (selection !== "yes") {
         data.tags["toilets:menstrual_products"] = selection;
         data.tags.vending = undefined;
@@ -66,7 +70,7 @@ const sanitizeBathroom = (req: Request, res: Response, next: NextFunction) => {
     }
 
     // Handling wheelchair options
-    data.tags.wheelchairBuildingAccess === "yes"
+    data.tags.wheelchair === "yes"
       ? (data.tags["ramp:wheelchair"] = "yes")
       : (data.tags["ramp:wheelchair"] = undefined);
 
