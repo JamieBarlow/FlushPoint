@@ -23,31 +23,15 @@ import {
 import { useState } from "react";
 import { Form, useActionData, useFetcher } from "react-router-dom";
 import CustomCheckboxGroup from "../components/CustomCheckboxGroup";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { bathroomSchema, FormFields } from "../schemas/bathroomSchema";
+import ControlledRadioGroup from "../components/ControlledRadioGroup";
+import ControlledNumberInput from "../components/ControlledNumberInput";
 
 interface ActionData {
   error?: string;
 }
-
-const {
-  register,
-  handleSubmit,
-  formState: { errors, isSubmitting },
-} = useForm();
-
-const fetcher = useFetcher();
-const onValid = (data: any) => {
-  const formData = new FormData();
-  Object.entries(data).forEach(([key, value]) => {
-    if (typeof value === "string" || value instanceof Blob) {
-      formData.append(key, value);
-    } else if (value != null) {
-      formData.append(key, String(value));
-    }
-  });
-  console.log(formData);
-  fetcher.submit(formData, { method: "post" });
-};
 
 export default function NewBathroomForm() {
   const data = useActionData() as ActionData | null;
@@ -56,6 +40,29 @@ export default function NewBathroomForm() {
   };
   const [productsAvailable, setProductsAvailable] = useState(false);
   const [changingTableAvailable, setChangingTableAvailable] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<FormFields>({
+    resolver: zodResolver(bathroomSchema),
+  });
+
+  const fetcher = useFetcher();
+  const onValid = (data: any) => {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (typeof value === "string" || value instanceof Blob) {
+        formData.append(key, value);
+      } else if (value != null) {
+        formData.append(key, String(value));
+      }
+    });
+    console.log(formData);
+    fetcher.submit(formData, { method: "post" });
+  };
 
   return (
     <>
@@ -69,17 +76,7 @@ export default function NewBathroomForm() {
               isInvalid={!!errors.name}
             >
               <FormLabel htmlFor="name">Bathroom name:</FormLabel>
-              <Input
-                id="name"
-                type="text"
-                {...register("name", {
-                  required: "Name is required",
-                  minLength: {
-                    value: 4,
-                    message: "Minimum length should be 4 characters",
-                  },
-                })}
-              />
+              <Input id="name" type="text" {...register("name")} />
               <FormErrorMessage>
                 {String(errors.name?.message)}
               </FormErrorMessage>
@@ -96,13 +93,7 @@ export default function NewBathroomForm() {
               <Input
                 id="addr:street"
                 type="text"
-                {...register("addr:street", {
-                  required: "Address is required",
-                  minLength: {
-                    value: 4,
-                    message: "Minimum length should be 4 characters",
-                  },
-                })}
+                {...register("addr:street")}
               />
               <FormErrorMessage>
                 {String(errors["addr:street"]?.message)}
@@ -111,14 +102,28 @@ export default function NewBathroomForm() {
                 (include street and full postcode if known)
               </FormHelperText>
             </FormControl>
-            <FormControl mb="40px" sx={formInputStyles}>
-              <FormLabel>Description</FormLabel>
-              <Textarea placeholder="Enter a description" name="description" />
+            <FormControl
+              mb="40px"
+              sx={formInputStyles}
+              isInvalid={!!errors.description}
+            >
+              <FormLabel htmlFor="description">Description</FormLabel>
+              <Textarea
+                id="description"
+                placeholder="Enter a description"
+                {...register("description")}
+              />
+              <FormErrorMessage>
+                {String(errors.description?.message)}
+              </FormErrorMessage>
             </FormControl>
-            <FormControl sx={formInputStyles}>
-              <FormLabel>Operator</FormLabel>
-              <Input type="text" name="operator" />
+            <FormControl sx={formInputStyles} isInvalid={!!errors.operator}>
+              <FormLabel htmlFor="operator">Operator</FormLabel>
+              <Input type="text" id="operator" {...register("operator")} />
               <FormHelperText>(e.g. Westminster City Council)</FormHelperText>
+              <FormErrorMessage>
+                {String(errors.operator?.message)}
+              </FormErrorMessage>
             </FormControl>
             <FormControl sx={formInputStyles}>
               <FormLabel>Opening Hours</FormLabel>
@@ -128,60 +133,71 @@ export default function NewBathroomForm() {
                 11:30-15:30; Fr 09:00-12:00; PH off)
               </FormHelperText>
             </FormControl>
-            <FormControl sx={formInputStyles} isRequired>
-              <FormLabel>Accessible to public?</FormLabel>
-              <RadioGroup name="access">
-                <Stack spacing={4} direction="row">
-                  <Radio value="yes">Yes</Radio>
-                  <Radio value="customers">Customers only</Radio>
-                  <Radio value="unknown">Unknown</Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
-            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
-              <FormLabel>Fee for entry?</FormLabel>
-              <RadioGroup defaultValue="unknown" name="fee">
-                <Stack spacing={4} direction="row">
-                  <Radio value="yes">Yes</Radio>
-                  <Radio value="no">No (free)</Radio>
-                  <Radio value="donation">Donation (voluntary)</Radio>
-                  <Radio value="unknown">Unknown</Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
-            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
-              <FormLabel>Locked / requires key?</FormLabel>
-              <RadioGroup defaultValue="unknown" name="locked">
-                <Stack spacing={4} direction="row">
-                  <Radio value="yes">Yes</Radio>
-                  <Radio value="no">No</Radio>
-                  <Radio value="unknown">Unknown</Radio>
-                </Stack>
-              </RadioGroup>
-              <FormHelperText>
-                Doesn't refer to locking outside operating hours
-              </FormHelperText>
-            </FormControl>
-            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
-              <FormLabel>Entrance location</FormLabel>
-              <RadioGroup defaultValue="unknown" name="indoor">
-                <Stack spacing={4} direction="row">
-                  <Radio value="yes">Indoors</Radio>
-                  <Radio value="no">Outdoors</Radio>
-                  <Radio value="unknown">Unknown</Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Floor (0 = ground floor)</FormLabel>
-              <NumberInput defaultValue={0} min={-10} max={10} name="level">
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
+            <ControlledRadioGroup
+              name="access"
+              styles={formInputStyles}
+              control={control}
+              label="Accessible to public?"
+              isRequired
+              options={[
+                { value: "yes", label: "Yes" },
+                { value: "customers", label: "Customers only" },
+                { value: "unknown", label: "Unknown" },
+              ]}
+              errors={errors}
+            />
+            <ControlledRadioGroup
+              name="fee"
+              styles={formInputStyles}
+              control={control}
+              label="Fee for entry?"
+              isRequired
+              options={[
+                { value: "yes", label: "Yes" },
+                { value: "no", label: "No (free)" },
+                { value: "donation", label: "Donation (voluntary)" },
+                { value: "unknown", label: "Unknown" },
+              ]}
+              errors={errors}
+            />
+            <ControlledRadioGroup
+              name="locked"
+              styles={formInputStyles}
+              control={control}
+              label="Locked / requires key?"
+              isRequired
+              options={[
+                { value: "yes", label: "Yes" },
+                { value: "no", label: "No" },
+                { value: "unknown", label: "Unknown" },
+              ]}
+              helperText="Doesn't refer to locking outside operating hours"
+              errors={errors}
+            />
+            <ControlledRadioGroup
+              name="indoor"
+              styles={formInputStyles}
+              control={control}
+              label="Entrance location"
+              isRequired
+              options={[
+                { value: "yes", label: "Indoors" },
+                { value: "no", label: "Outdoors" },
+                { value: "unknown", label: "Unknown" },
+              ]}
+              errors={errors}
+            />
+            <ControlledNumberInput
+              name="level"
+              control={control}
+              styles={formInputStyles}
+              label="Floor"
+              errors={errors}
+              defaultValue={0}
+              min={-10}
+              max={10}
+              helperText="(0 = ground floor)"
+            />
             <FormControl sx={formInputStyles} isRequired>
               <FormLabel>Gender Access</FormLabel>
               <Select
