@@ -22,19 +22,21 @@ export const bathroomSchema = z.object({
   fee: Enums.FeeEnum.optional(),
   locked: Enums.lockedEnum.optional(),
   indoor: Enums.indoorEnum.optional(),
-  level: z.number().min(-10).max(10),
+  level: z.number().min(-10).max(10).optional(),
   gender_segregated: Enums.gender_segregatedEnum.optional(),
   wheelchair: Enums.wheelchairEnum.optional(),
   "toilets:wheelchair": Enums.toilets_wheelchairEnum.optional(),
   "wheelchair:description": z
     .string()
     .max(200, { message: "Cannot be over 200 characters long" }),
-  "toilets:position": z.array(Enums.toilets_positionEnum.optional()),
+  "toilets:position": z
+    .array(Enums.toilets_positionEnum.optional())
+    .min(1, "Select at least 1 option"),
   child: Enums.childEnum.optional(),
   changing_table: Enums.changing_tableEnum.optional(),
-  "changing_table:location": z.array(
-    Enums.changing_table_locationEnum.optional()
-  ),
+  "changing_table:location": z
+    .array(Enums.changing_table_locationEnum.optional())
+    .min(1, "Select at least 1 option"),
   drinking_water: Enums.drinking_waterEnum.optional(),
   "toilets:menstrual_products": Enums.toilets_menstrual_productsEnum.optional(),
   vending: Enums.vendingEnum.optional(),

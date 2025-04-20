@@ -24,6 +24,7 @@ interface CheckboxGroupProps {
   helperText?: string;
 }
 interface CustomCheckboxProps {
+  name: string;
   label?: string;
   isChecked: boolean;
   isDisabled: boolean;
@@ -62,7 +63,7 @@ export default function CustomCheckboxGroup({
         cursor={isDisabled ? "not-allowed" : "pointer"}
         {...htmlProps}
       >
-        <input {...getInputProps()} hidden />
+        <input {...getInputProps()} name={props.name} />
         <Flex
           alignItems="center"
           justifyContent="center"
@@ -115,6 +116,7 @@ export default function CustomCheckboxGroup({
               {options.map((opt) => (
                 <CustomCheckbox
                   key={opt.value}
+                  name={name}
                   value={opt.value}
                   label={opt.label}
                   isChecked={value.includes(opt.value)}

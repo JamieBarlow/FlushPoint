@@ -56,6 +56,8 @@ export default function NewBathroomForm() {
     Object.entries(data).forEach(([key, value]) => {
       if (typeof value === "string" || value instanceof Blob) {
         formData.append(key, value);
+      } else if (Array.isArray(value)) {
+        value.forEach((v) => formData.append(key, v)); // Preserve as array
       } else if (value != null) {
         formData.append(key, String(value));
       }
@@ -282,7 +284,6 @@ export default function NewBathroomForm() {
               styles={formInputStyles}
               control={control}
               label="Toilet position(s) available (tick all that apply):"
-              isRequired
               options={[
                 { value: "seated", label: "Seated" },
                 { value: "urinal", label: "Urinal" },
@@ -349,7 +350,6 @@ export default function NewBathroomForm() {
                 styles={formInputStyles}
                 label={"Changing table location (can select multiple)"}
                 control={control}
-                isRequired
                 options={[
                   { value: "wheelchair_toilet", label: "Wheelchair toilet" },
                   { value: "female_toilet", label: "Female toilet" },
@@ -362,91 +362,112 @@ export default function NewBathroomForm() {
                 errors={errors}
               />
             )}
-            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
-              <FormLabel>Drinking water available?</FormLabel>
-              <RadioGroup defaultValue="unknown" name="drinking_water">
-                <Stack spacing={4} direction="row">
-                  <Radio value="yes">Yes</Radio>
-                  <Radio value="no">No</Radio>
-                  <Radio value="unknown">Unknown</Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
-            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
-              <FormLabel>Menstrual products available?</FormLabel>
-              <RadioGroup
-                defaultValue="unknown"
-                name="toilets:menstrual_products"
-              >
-                <Stack spacing={4} direction="row">
-                  <Radio
-                    value="yes"
-                    onChange={() => {
-                      !productsAvailable && setProductsAvailable(true);
-                    }}
-                  >
-                    Yes
-                  </Radio>
-                  <Radio
-                    value="no"
-                    onChange={() => {
-                      productsAvailable && setProductsAvailable(false);
-                    }}
-                  >
-                    No
-                  </Radio>
-                  <Radio
-                    value="unknown"
-                    onChange={() => {
-                      productsAvailable && setProductsAvailable(false);
-                    }}
-                  >
-                    Unknown
-                  </Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
+            <ControlledRadioGroup
+              name="drinking_water"
+              styles={formInputStyles}
+              label={"Drinking water available?"}
+              control={control}
+              isRequired
+              options={[
+                { value: "yes", label: "Yes" },
+                { value: "no", label: "No" },
+                { value: "unknown", label: "Unknown" },
+              ]}
+              errors={errors}
+            />
+            <ControlledRadioGroup
+              name="toilets:menstrual_products"
+              styles={formInputStyles}
+              label="Menstrual products available?"
+              control={control}
+              isRequired
+              options={[
+                {
+                  value: "yes",
+                  label: "Yes",
+                  onChange: () => {
+                    !productsAvailable && setProductsAvailable(true);
+                  },
+                },
+                {
+                  value: "no",
+                  label: "No",
+                  onChange: () => {
+                    productsAvailable && setProductsAvailable(false);
+                  },
+                },
+                {
+                  value: "unknown",
+                  label: "Unknown",
+                  onChange: () => {
+                    productsAvailable && setProductsAvailable(false);
+                  },
+                },
+              ]}
+              errors={errors}
+            />
+
             {productsAvailable && (
-              <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
-                <FormLabel>Available where?</FormLabel>
-                <RadioGroup defaultValue="unknown" name="vending">
-                  <Stack spacing={4} direction="row">
-                    <Radio value="free">Free (Accessible to all)</Radio>
-                    <Radio value="limited">Free (Female only stalls)</Radio>
-                    <Radio value="vending">Vending machine</Radio>
-                    <Radio value="unknown">Unknown</Radio>
-                  </Stack>
-                </RadioGroup>
-              </FormControl>
+              <ControlledRadioGroup
+                name="vending"
+                label="Available where?"
+                styles={formInputStyles}
+                control={control}
+                isRequired
+                options={[
+                  { value: "free", label: "Free (accessible to all)" },
+                  { value: "limited", label: "Free (Female only stalls" },
+                  { value: "vending", label: "Vending machine" },
+                  { value: "unknown", label: "Unknown" },
+                ]}
+                errors={errors}
+              />
             )}
-            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
-              <FormLabel>Supervised?</FormLabel>
-              <RadioGroup defaultValue="unknown" name="supervised">
-                <Stack spacing={4} direction="row">
-                  <Radio value="yes">Yes</Radio>
-                  <Radio value="no">No</Radio>
-                  <Radio value="interval">Intervals</Radio>
-                  <Radio value="unknown">Unknown</Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
-            <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
-              <FormLabel>Shower?</FormLabel>
-              <RadioGroup defaultValue="unknown" name="shower">
-                <Stack spacing={4} direction="row">
-                  <Radio value="yes">Yes</Radio>
-                  <Radio value="no">No</Radio>
-                  <Radio value="unknown">Unknown</Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
-            <FormControl mb="40px" sx={formInputStyles}>
-              <FormLabel>Any other comments?</FormLabel>
-              <Textarea placeholder="Enter more info" name="fixme" />
+            <ControlledRadioGroup
+              name="supervised"
+              label="Supervised?"
+              styles={formInputStyles}
+              control={control}
+              isRequired
+              options={[
+                { value: "yes", label: "Yes" },
+                { value: "no", label: "No" },
+                { value: "interval", label: "Intervals" },
+                { value: "unknown", label: "Unknown" },
+              ]}
+              errors={errors}
+            />
+            <ControlledRadioGroup
+              name="shower"
+              label="Shower?"
+              styles={formInputStyles}
+              control={control}
+              isRequired
+              options={[
+                { value: "yes", label: "Yes" },
+                { value: "no", label: "No" },
+                { value: "unknown", label: "Unknown" },
+              ]}
+              errors={errors}
+            />
+            <FormControl
+              mb="40px"
+              sx={formInputStyles}
+              isInvalid={!!errors["fixme"]}
+            >
+              <FormLabel htmlFor="fixme">Any other comments?</FormLabel>
+              <Textarea
+                id="fixme"
+                placeholder="Enter more info"
+                {...register("fixme")}
+              />
               <FormHelperText>
                 Use only to flag anything to other taggers that may need
                 changing / checking
               </FormHelperText>
+              <FormErrorMessage>
+                {String(errors["fixme"]?.message)}
+              </FormErrorMessage>
             </FormControl>
             <Button type="submit" isLoading={isSubmitting}>
               Submit
