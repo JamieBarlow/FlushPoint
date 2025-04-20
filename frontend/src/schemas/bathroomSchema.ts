@@ -32,7 +32,9 @@ export const bathroomSchema = z.object({
   "toilets:position": z.array(Enums.toilets_positionEnum.optional()),
   child: Enums.childEnum.optional(),
   changing_table: Enums.changing_tableEnum.optional(),
-  "changing_table:location": Enums.changing_table_locationEnum.optional(),
+  "changing_table:location": z.array(
+    Enums.changing_table_locationEnum.optional()
+  ),
   drinking_water: Enums.drinking_waterEnum.optional(),
   "toilets:menstrual_products": Enums.toilets_menstrual_productsEnum.optional(),
   vending: Enums.vendingEnum.optional(),

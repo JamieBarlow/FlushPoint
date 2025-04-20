@@ -14,6 +14,7 @@ import { Controller } from "react-hook-form";
 
 interface CheckboxGroupProps {
   name: string;
+  styles?: Record<string, any>;
   control: any;
   label: string;
   options: { value: string; label: string }[];
@@ -32,6 +33,7 @@ interface CustomCheckboxProps {
 
 export default function CustomCheckboxGroup({
   name,
+  styles,
   control,
   label,
   options,
@@ -78,7 +80,11 @@ export default function CustomCheckboxGroup({
   }
 
   return (
-    <FormControl isRequired={isRequired} isInvalid={!!errors?.[name]}>
+    <FormControl
+      sx={styles}
+      isRequired={isRequired}
+      isInvalid={!!errors?.[name]}
+    >
       <FormLabel>{label}</FormLabel>
       <Controller
         name={name as any}

@@ -15,7 +15,7 @@ type Props = {
   styles?: Record<string, any>;
   control: any;
   label: string;
-  options: { value: string; label: string }[];
+  options: { value: string; label: string; onChange?: () => void }[];
   errors?: Record<string, any>;
   isRequired?: boolean;
   defaultValue?: string;
@@ -49,7 +49,11 @@ export default function ControlledRadioGroup({
           <RadioGroup {...field} id={String(name)} defaultValue={defaultValue}>
             <Stack spacing={4} direction="row">
               {options.map((opt) => (
-                <Radio key={opt.value} value={opt.value}>
+                <Radio
+                  key={opt.value}
+                  value={opt.value}
+                  onChange={opt.onChange}
+                >
                   {opt.label}
                 </Radio>
               ))}
