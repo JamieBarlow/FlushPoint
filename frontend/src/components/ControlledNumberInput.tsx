@@ -53,7 +53,7 @@ export default function ControlledNumberInput({
             min={min}
             max={max}
             value={field.value}
-            onChange={(valueString, valueNumber) => {
+            onChange={(_, valueNumber) => {
               field.onChange(isNaN(valueNumber) ? undefined : valueNumber); // Parse string to number
             }}
             id={name}

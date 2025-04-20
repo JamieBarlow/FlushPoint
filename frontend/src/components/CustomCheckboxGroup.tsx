@@ -3,41 +3,51 @@ import {
   Stack,
   Text,
   Flex,
-  useCheckboxGroup,
   chakra,
+  FormLabel,
+  FormHelperText,
+  FormErrorMessage,
+  FormControl,
 } from "@chakra-ui/react";
 import { FiCheck } from "react-icons/fi";
-import { useState } from "react";
+import { Controller } from "react-hook-form";
 
 interface CheckboxGroupProps {
-  options: Option[];
   name: string;
-}
-type Option = {
-  value: string;
+  control: any;
   label: string;
-};
+  options: { value: string; label: string }[];
+  errors?: Record<string, any>;
+  isRequired?: boolean;
+  defaultValue?: string;
+  helperText?: string;
+}
 interface CustomCheckboxProps {
   label?: string;
   isChecked: boolean;
   isDisabled: boolean;
   onChange: () => void;
   value: string;
-  name: string;
 }
 
-export default function customCheckboxGroup({
-  options,
+export default function CustomCheckboxGroup({
   name,
+  control,
+  label,
+  options,
+  errors,
+  isRequired = false,
+  defaultValue,
+  helperText,
 }: CheckboxGroupProps) {
   function CustomCheckbox(props: CustomCheckboxProps) {
     const { state, getCheckboxProps, getInputProps, getLabelProps, htmlProps } =
       useCheckbox(props);
     const { isDisabled } = props;
+
     return (
       <chakra.label
         display="flex"
-        flexDirection="row"
         alignItems="center"
         gridColumnGap={2}
         maxW="40"
@@ -60,53 +70,60 @@ export default function customCheckboxGroup({
           h={4}
           {...getCheckboxProps()}
         >
-          {state.isChecked && (
-            <FiCheck />
-            // <Box w={2} h={2} bg={isDisabled ? "gray.500" : "green.500"} />
-          )}
+          {state.isChecked && <FiCheck />}
         </Flex>
         <Text {...getLabelProps()}>{props.label}</Text>
       </chakra.label>
     );
   }
 
-  const { value, setValue, getCheckboxProps } = useCheckboxGroup();
-  const [isUnknown, setIsUnknown] = useState(false);
-  const handleClick = (selection: string) => {
-    if (selection === "unknown" && !isUnknown) {
-      setValue(["unknown"]);
-      setIsUnknown(true);
-    } else if (selection === "unknown" && isUnknown) {
-      setValue([]);
-      setIsUnknown(false);
-    } else {
-      if (value.includes(selection)) {
-        setValue(value.filter((v) => v !== selection));
-      } else {
-        setValue([...value, selection]);
-      }
-    }
-  };
-
   return (
-    <Stack spacing={2}>
-      <Text>The selected checkboxes are: {value.sort().join(" and ")}</Text>
-      {options.map((option) => {
-        const isChecked = value.includes(option.value); // Check if the current option is selected
+    <FormControl isRequired={isRequired} isInvalid={!!errors?.[name]}>
+      <FormLabel>{label}</FormLabel>
+      <Controller
+        name={name as any}
+        control={control}
+        defaultValue={defaultValue || []}
+        render={({ field }) => {
+          const { value = [], onChange } = field;
 
-        return (
-          <CustomCheckbox
-            key={option.value} // Unique key
-            {...getCheckboxProps({ value: option.value })}
-            label={option.label}
-            isDisabled={value.includes("unknown") && option.value !== "unknown"} // Disable if "unknown" is selected
-            isChecked={isChecked}
-            onChange={() => handleClick(option.value)}
-            name={name}
-            value={option.value}
-          />
-        );
-      })}
-    </Stack>
+          const handleCheckboxClick = (val: string) => {
+            const currentValue = value as string[];
+            if (val === "unknown") {
+              onChange(currentValue.includes("unknown") ? [] : ["unknown"]);
+            } else {
+              const filtered = currentValue.filter((v) => v !== "unknown");
+              if (currentValue.includes(val)) {
+                onChange(filtered.filter((v) => v !== val));
+              } else {
+                onChange([...filtered, val]);
+              }
+            }
+          };
+
+          return (
+            <Stack spacing={2}>
+              <Text>
+                The selected checkboxes are: {value.sort().join(" and ")}
+              </Text>
+              {options.map((opt) => (
+                <CustomCheckbox
+                  key={opt.value}
+                  value={opt.value}
+                  label={opt.label}
+                  isChecked={value.includes(opt.value)}
+                  isDisabled={
+                    value.includes("unknown") && opt.value !== "unknown"
+                  }
+                  onChange={() => handleCheckboxClick(opt.value)}
+                />
+              ))}
+            </Stack>
+          );
+        }}
+      />
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      <FormErrorMessage>{errors?.[name]?.message}</FormErrorMessage>
+    </FormControl>
   );
 }

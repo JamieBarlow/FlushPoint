@@ -198,12 +198,17 @@ export default function NewBathroomForm() {
               max={10}
               helperText="(0 = ground floor)"
             />
-            <FormControl sx={formInputStyles} isRequired>
-              <FormLabel>Gender Access</FormLabel>
+            <FormControl
+              sx={formInputStyles}
+              isRequired
+              isInvalid={!!errors.gender_segregated}
+            >
+              <FormLabel htmlFor="gender_segregated">Gender Access</FormLabel>
               <Select
+                id="gender_segregated"
                 placeholder="Select option"
                 variant="outline"
-                name="gender_segregated"
+                {...register("gender_segregated")}
               >
                 <option value="Gender segregated">
                   Gender segregated (M & F separate)
@@ -215,58 +220,76 @@ export default function NewBathroomForm() {
                 <option value="Female only">Female only</option>
                 <option value="Don't know">Don't know</option>
               </Select>
+              <FormErrorMessage>
+                {String(errors.gender_segregated?.message)}
+              </FormErrorMessage>
             </FormControl>
-            <FormControl
-              sx={formInputStyles}
+            <ControlledRadioGroup
+              name="wheelchair"
+              styles={formInputStyles}
+              control={control}
+              label={"Wheelchair building access"}
               isRequired
-              defaultValue={"unknown"}
-            >
-              <FormLabel>Wheelchair building access</FormLabel>
-              <RadioGroup defaultValue="unknown" name="wheelchair">
-                <Stack spacing={4} direction="row">
-                  <Radio value="yes">Unrestricted (stepless entry)</Radio>
-                  <Radio value="limited">Limited (partially accessible)</Radio>
-                  <Radio value="no">Restricted (stairs only)</Radio>
-                  <Radio value="designated">Designated (e.g. elevator)</Radio>
-                  <Radio value="unknown">Unknown</Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
-            <FormControl
-              sx={formInputStyles}
+              options={[
+                {
+                  value: "yes",
+                  label: "Unrestricted (stepless entry)",
+                },
+                { value: "limited", label: "Limited (partially accessible)" },
+                { value: "no", label: "Restricted (stairs only)" },
+                { value: "designated", label: "Designated (e.g. elevator)" },
+                { value: "unknown", label: "Unknown" },
+              ]}
+              errors={errors}
+            />
+            <ControlledRadioGroup
+              name="toilets:wheelchair"
+              styles={formInputStyles}
+              control={control}
+              label={"Wheelchair toilet access"}
               isRequired
-              defaultValue={"unknown"}
+              options={[
+                {
+                  value: "yes",
+                  label: "Unrestricted (stepless entry)",
+                },
+                { value: "limited", label: "Limited (partially accessible)" },
+                { value: "no", label: "Restricted (stairs only)" },
+                { value: "designated", label: "Designated (e.g. elevator)" },
+                { value: "unknown", label: "Unknown" },
+              ]}
+              errors={errors}
+            />
+            <FormControl
+              mb="40px"
+              sx={formInputStyles}
+              isInvalid={!!errors["wheelchair:description"]}
             >
-              <FormLabel>Wheelchair toilet access</FormLabel>
-              <RadioGroup defaultValue="unknown" name="toilets:wheelchair">
-                <Stack spacing={4} direction="row">
-                  <Radio value="yes">Unrestricted (stepless entry)</Radio>
-                  <Radio value="limited">Limited (partially accessible)</Radio>
-                  <Radio value="no">Restricted (stairs only)</Radio>
-                  <Radio value="designated">Designated (e.g. elevator)</Radio>
-                  <Radio value="unknown">Unknown</Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
-            <FormControl mb="40px" sx={formInputStyles}>
-              <FormLabel>Any other wheelchair info?</FormLabel>
+              <FormLabel htmlFor="wheelchair:description">
+                Any other wheelchair info?
+              </FormLabel>
               <Textarea
+                id="wheelchair:description"
                 placeholder="Enter more info"
-                name="wheelchair:description"
+                {...register("wheelchair:description")}
               />
+              <FormErrorMessage>
+                {String(errors["wheelchair:description"]?.message)}
+              </FormErrorMessage>
             </FormControl>
             <FormControl sx={formInputStyles} defaultValue={"unknown"}>
-              <FormLabel>
-                Toilet position(s) available (tick all that apply):
-              </FormLabel>
               <CustomCheckboxGroup
                 name="toilets:position"
+                control={control}
+                label="Toilet position(s) available (tick all that apply):"
+                isRequired
                 options={[
                   { value: "seated", label: "Seated" },
                   { value: "urinal", label: "Urinal" },
                   { value: "squat", label: "Squat" },
                   { value: "unknown", label: "Unknown" },
                 ]}
+                errors={errors}
               />
             </FormControl>
             <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>
@@ -331,7 +354,7 @@ export default function NewBathroomForm() {
                 <FormLabel>
                   Changing table location (can select multiple)
                 </FormLabel>
-                <CustomCheckboxGroup
+                {/* <CustomCheckboxGroup
                   name="changing_table:location"
                   options={[
                     { value: "wheelchair_toilet", label: "Wheelchair toilet" },
@@ -342,7 +365,7 @@ export default function NewBathroomForm() {
                     { value: "room", label: "Other room" },
                     { value: "unknown", label: "Unknown" },
                   ]}
-                />
+                /> */}
               </FormControl>
             )}
             <FormControl sx={formInputStyles} isRequired defaultValue={"no"}>

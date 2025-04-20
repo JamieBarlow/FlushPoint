@@ -28,8 +28,8 @@ export const bathroomSchema = z.object({
   "toilets:wheelchair": Enums.toilets_wheelchairEnum.optional(),
   "wheelchair:description": z
     .string()
-    .max(100, { message: "Cannot be over 100 characters long" }),
-  "toilets:position": Enums.toilets_positionEnum.optional(),
+    .max(200, { message: "Cannot be over 200 characters long" }),
+  "toilets:position": z.array(Enums.toilets_positionEnum.optional()),
   child: Enums.childEnum.optional(),
   changing_table: Enums.changing_tableEnum.optional(),
   "changing_table:location": Enums.changing_table_locationEnum.optional(),

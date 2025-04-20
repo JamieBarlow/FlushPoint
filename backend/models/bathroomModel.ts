@@ -175,7 +175,7 @@ const tagsSchema = new Schema({
   // if unsure of any of above - values should only be explicitly entered if known
   "wheelchair:description": {
     type: String,
-    maxLength: 100,
+    maxLength: 200,
     default: undefined,
   },
   "toilets:position": {
