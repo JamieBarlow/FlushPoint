@@ -20,7 +20,8 @@ import { fakerEN_GB } from "@faker-js/faker";
 
 export const createBathroom: ActionFunction = async ({ request }) => {
   // gather data from form
-  const data = await request.formData();
+  const data = await request.json();
+  console.log(JSON.stringify(data, null, 2));
   // fake GPS coords within range for Oxford
   const geo = fakerEN_GB.location.nearbyGPSCoordinate({
     isMetric: false,
@@ -36,31 +37,8 @@ export const createBathroom: ActionFunction = async ({ request }) => {
   const rawTags = {
     amenity: "toilets",
     source: "local_knowledge",
-    name: data.get("name"),
-    "addr:street": data.get("addr:street"),
-    description: data.get("description"),
-    operator: data.get("operator"),
-    opening_hours: data.get("opening_hours"),
-    access: data.get("access"),
-    fee: data.get("fee"),
-    gender_segregated: data.get("gender_segregated"),
-    wheelchair: data.get("wheelchair"),
-    "toilets:wheelchair": data.get("toilets:wheelchair"),
-    "wheelchair:description": data.get("wheelchair:description"),
-    locked: data.get("locked"),
-    child: data.get("child"),
-    changing_table: data.get("changing_table"),
-    "changing_table:location": data.getAll("changing_table:location"),
-    drinking_water: data.get("drinking_water"),
-    "toilets:position": data.getAll("toilets:position"),
-    "toilets:menstrual_products": data.get("toilets:menstrual_products"),
-    vending: data.get("vending"),
-    supervised: data.get("supervised"),
-    indoor: data.get("indoor"),
-    level: data.get("level"),
-    shower: data.get("shower"),
+    ...data,
     check_date: getDate(),
-    fixme: data.get("fixme"),
   };
 
   // Ensure that empty arrays, empty strings, "unknown" entries and 'null' entries are returned as 'undefined'

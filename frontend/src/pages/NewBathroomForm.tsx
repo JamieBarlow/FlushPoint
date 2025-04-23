@@ -52,18 +52,12 @@ export default function NewBathroomForm() {
 
   const fetcher = useFetcher();
   const onValid = (data: any) => {
-    const formData = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      if (typeof value === "string" || value instanceof Blob) {
-        formData.append(key, value);
-      } else if (Array.isArray(value)) {
-        value.forEach((v) => formData.append(key, v)); // Preserve as array
-      } else if (value != null) {
-        formData.append(key, String(value));
-      }
+    const submission = JSON.stringify(data);
+    fetcher.submit(submission, {
+      method: "post",
+      action: "/bathrooms",
+      encType: "application/json",
     });
-    console.log(formData);
-    fetcher.submit(formData, { method: "post" });
   };
 
   return (
