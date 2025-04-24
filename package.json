@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "npx --prefix backend rimraf dist",
-    "build": "npm run clean && npx tsc --project backend/tsconfig.json",
-    "preserve": "npm run build",
-    "serve": "nodemon backend/dist/routes/index.js",
-    "dev": "npm run clean && concurrently \"npx tsc -w --project backend/tsconfig.json\" \"npm run serve\"",
-    "start:backend": "npm run dev",
+    "clean:backend": "npx --prefix backend rimraf backend/dist",
+    "build:backend": "npx tsc --project backend/tsconfig.json",
+    "serve:backend": "nodemon backend/dist/routes/index.js",
+    "start:backend:no-clean": "npm run build:backend && npm run serve:backend",
+    "start:backend": "npm run clean:backend && npm run build:backend && npm run serve:backend",
     "start:frontend": "npm --prefix frontend run dev",
-    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start": "concurrently -k -n backend,frontend -c cyan,magenta \"npm run start:backend\" \"npm run start:frontend\"",
+    "dev:backend": "tsx watch backend/routes/index.ts",
     "install:backend": "npm --prefix backend install",
     "install:frontend": "npm --prefix frontend install",
     "install:both": "npm install && npm run install:backend && npm run install:frontend"
@@ -25,6 +25,7 @@
     "@types/cors": "^2.8.17",
     "concurrently": "^8.2.2",
     "nodemon": "^3.1.4",
+    "tsx": "^4.19.3",
     "typescript": "^5.5.3"
   }
 }
