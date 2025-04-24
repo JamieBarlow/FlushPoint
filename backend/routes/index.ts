@@ -51,6 +51,11 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  console.log("🧲 Reached backend - BEFORE ROUTING");
+  next();
+});
+
 // Routing
 app.use("/users", userRoutes);
 app.use("/bathrooms", bathroomRoutes);
@@ -60,5 +65,6 @@ app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`now listening on port ${port}`.red.underline.bold);
+  console.log("Testing running correct server build");
   connectDB();
 });

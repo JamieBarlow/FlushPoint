@@ -8,6 +8,7 @@ interface genderOptions {
 }
 
 const sanitizeBathroom = (req: Request, res: Response, next: NextFunction) => {
+  console.log("Sanitizing bathroom data...");
   try {
     const data = req.body;
 

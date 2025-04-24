@@ -104,7 +104,7 @@ export const createBathroom: ActionFunction = async ({ request }) => {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />} errorElement={<NotFound />}>
-      <Route path="/bathrooms">
+      <Route path="/bathrooms" action={createBathroom}>
         <Route index element={<Index />} loader={indexLoader} />
         <Route
           path=":id"

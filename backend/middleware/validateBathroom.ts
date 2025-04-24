@@ -3,6 +3,7 @@ import Joi, { CustomHelpers } from "joi";
 import AppError from "./AppError";
 
 const validateBathroom = (req: Request, res: Response, next: NextFunction) => {
+  console.log("Validating bathroom data...");
   const noValue = ["", "unknown"];
   const toiletPositions = ["seated", "urinal", "squat"];
   // Custom Joi sanitization of empty ("") or "unknown" value strings
